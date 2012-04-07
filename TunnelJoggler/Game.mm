@@ -227,7 +227,8 @@
     _world = new b2World(gravity, doSleep);            
 }
 
-- (void)createTestBodyAtPostition:(CGPoint)position {
+- (void)createTestBodyAtPostition:(CGPoint)position 
+{
     
     b2BodyDef testBodyDef;
     testBodyDef.type = b2_dynamicBody;
@@ -236,23 +237,52 @@
     
     b2CircleShape testBodyShape;
     b2FixtureDef testFixtureDef;
-    testBodyShape.m_radius = 25.0/PTM_RATIO;
+    testBodyShape.m_radius = 5.0/PTM_RATIO;
     testFixtureDef.shape = &testBodyShape;
-    testFixtureDef.density = 1.0;
-    testFixtureDef.friction = 0.2;
-    testFixtureDef.restitution = 0.5;
+    testFixtureDef.density = 0.1;
+    testFixtureDef.friction = 0.1;
+    testFixtureDef.restitution = 1.0;
     testBody->CreateFixture(&testFixtureDef);
     
 }
 
+- (void) createInitialBall
+{
+    // Create sprite and add it to the layer
+    CCSprite *ball = [CCSprite spriteWithFile:@"Ball.png" 
+                                         rect:CGRectMake(0, 0, 52, 52)];
+    ball.position = ccp(100, 100);
+    ball.tag = 1;
+    [self addChild:ball];
+    
+    // Create ball body 
+    b2BodyDef ballBodyDef;
+    ballBodyDef.type = b2_dynamicBody;
+    ballBodyDef.position.Set(100/PTM_RATIO, 100/PTM_RATIO);
+    ballBodyDef.userData = ball;
+    b2Body * ballBody = _world->CreateBody(&ballBodyDef);
+    
+    // Create circle shape
+    b2CircleShape circle;
+    circle.m_radius = 26.0/PTM_RATIO;
+    
+    // Create shape definition and add to body
+    b2FixtureDef ballShapeDef;
+    ballShapeDef.shape = &circle;
+    ballShapeDef.density = 1.0f;
+    ballShapeDef.friction = 0.f;
+    ballShapeDef.restitution = 1.0f;
+    _ballFixture = ballBody->CreateFixture(&ballShapeDef);}
+
 -(id) init {
     if((self=[super init])) {
         [self setupWorld];
-//        _terrain = [Terrain node];
         _terrain = [[[Terrain alloc] initWithWorld:_world] autorelease];
+        _paddle = [[[Paddle alloc] initWithWorld:_world] autorelease];
         [self genBackground];
         [self addChild:_terrain z:1];
-        self.isTouchEnabled = YES;  
+        [_terrain.batchNode addChild: _paddle];
+        self.isTouchEnabled = YES;
         [self scheduleUpdate];
     }
     return self;
@@ -279,14 +309,19 @@
     }
     
     
-    float PIXELS_PER_SECOND = 100;
-    static float offset = 0;
-    offset += PIXELS_PER_SECOND * dt;
+//    float PIXELS_PER_SECOND = 100;
+//    static float offset = 0;
+//    offset += PIXELS_PER_SECOND * dt;
+//    
     
+    [_paddle update];
+    float offset = _paddle.position.x - _paddle.contentSize.width;
+    if (offset < 0) {
+        offset = 1;
+    }
     CGSize textureSize = _background.textureRect.size;
     [_background setTextureRect:CGRectMake(offset, 0, textureSize.width, textureSize.height)];
-    [_terrain setOffsetX:offset  * 0.25];
-    
+    [_terrain setOffsetX:offset];
 }
 
 - (void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
@@ -296,6 +331,101 @@
     UITouch *anyTouch = [touches anyObject];
     CGPoint touchLocation = [_terrain convertTouchToNodeSpace:anyTouch];
     [self createTestBodyAtPostition:touchLocation];
+}
+
+//- (void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+//	
+//    if (_mouseJoint != NULL) return;
+//	
+//    UITouch *myTouch = [touches anyObject];
+//    CGPoint location = [myTouch locationInView:[myTouch view]];
+//    location = [[CCDirector sharedDirector] convertToGL:location];
+//    b2Vec2 locationWorld = b2Vec2(location.x/PTM_RATIO, location.y/PTM_RATIO);
+//	
+//    if (_paddleFixture->TestPoint(locationWorld)) {
+//        b2MouseJointDef md;
+//        md.bodyA = _groundBody;
+//        md.bodyB = _paddleBody;
+//        md.target = locationWorld;
+//        md.collideConnected = true;
+//        md.maxForce = 1000.0f * _paddleBody->GetMass();
+//		
+//        _mouseJoint = (b2MouseJoint *)_world->CreateJoint(&md);
+//        _paddleBody->SetAwake(true);
+//    }
+//	
+//}
+
+-(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
+
+//    if (_mouseJoint == NULL) return;
+    
+    UITouch *myTouch = [touches anyObject];
+	
+//	CGFloat panX = self.position.x - (prevPT.x - currPT.x);
+//	
+//	if (panX > 0) {
+//		panX = 0;
+//	}
+//	
+//	if (panX < -480.0f) {
+//		panX = -480.0f;
+//	}
+    
+    
+    
+    
+    CGPoint location = [myTouch locationInView:[myTouch view]];
+    location = [[CCDirector sharedDirector] convertToGL:location];
+    
+    
+    float sign = -1;
+    CGPoint prevPT = [myTouch previousLocationInView:myTouch.view];
+	CGPoint currPT = [myTouch locationInView:myTouch.view];
+    if (currPT.y > prevPT.y) {
+        sign = 1;
+    }
+    
+    b2Vec2 locationWorld = b2Vec2(location.x/PTM_RATIO, sign * location.y/PTM_RATIO);
+    NSLog(@"yPos: %f", locationWorld.y);
+    [_paddle setYPos: locationWorld.y];
+//    _mouseJoint->SetTarget(locationWorld);
+
+    
+//    if (_mouseJoint == NULL) return;
+//    
+//    UITouch *myTouch = [touches anyObject];
+//    CGPoint location = [myTouch locationInView:[myTouch view]];
+//    location = [[CCDirector sharedDirector] convertToGL:location];
+//    b2Vec2 locationWorld = b2Vec2(location.x/PTM_RATIO, location.y/PTM_RATIO);
+//    
+//    _mouseJoint->SetTarget(locationWorld);
+    
+}
+
+-(void)ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event {
+	
+//    if (_mouseJoint) {
+//        _world->DestroyJoint(_mouseJoint);
+//        _mouseJoint = NULL;
+//    }
+	
+}
+
+- (void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
+//    if (_mouseJoint) {
+//        _world->DestroyJoint(_mouseJoint);
+//        _mouseJoint = NULL;
+//    }  
+}
+
+- (void)dealloc {
+	
+    delete _world;
+//	delete _contactListener;
+//    _groundBody = NULL;
+    [super dealloc];
+	
 }
 
 @end

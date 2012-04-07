@@ -10,6 +10,7 @@
 @implementation Terrain
 
 @synthesize stripes = _stripes;
+@synthesize batchNode = _batchNode;
 
 - (void)setupDebugDraw {    
     _debugDraw = new GLESDebugDraw(PTM_RATIO*[[CCDirector sharedDirector] contentScaleFactor]);
@@ -23,6 +24,10 @@
         [self setupDebugDraw];
         [self generateHills];
         [self resetHillVertices];
+        
+        _batchNode = [CCSpriteBatchNode batchNodeWithFile:@"TunnelJoggler.png"];
+        [self addChild:_batchNode];
+        [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"TunnelJoggler.plist"];
     }
     return self;
 }

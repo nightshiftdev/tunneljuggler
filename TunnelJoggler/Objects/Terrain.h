@@ -9,8 +9,6 @@
 #import "Box2D.h"
 #import "GLES-Render.h"
 
-@class HelloWorldLayer;
-
 #define kMaxHillKeyPoints 1000
 #define kHillSegmentWidth 5
 
@@ -37,9 +35,11 @@
     b2World *_world;
     b2Body *_body;
     GLESDebugDraw * _debugDraw;
+    CCSpriteBatchNode * _batchNode;
 }
 
 @property (retain) CCSprite * stripes;
+@property (retain) CCSpriteBatchNode * batchNode;
 - (void) setOffsetX:(float)newOffsetX;
 - (void) generateHills;
 - (void)resetHillVertices;

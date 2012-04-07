@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E511A1211519638800BE805E /* Ball.png in Resources */ = {isa = PBXBuildFile; fileRef = E511A11E1519638800BE805E /* Ball.png */; };
+		E511A1221519638800BE805E /* Block.png in Resources */ = {isa = PBXBuildFile; fileRef = E511A11F1519638800BE805E /* Block.png */; };
+		E511A1231519638800BE805E /* Paddle.png in Resources */ = {isa = PBXBuildFile; fileRef = E511A1201519638800BE805E /* Paddle.png */; };
 		E53C611F150828860047EF66 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E53C611E150828860047EF66 /* QuartzCore.framework */; };
 		E53C6121150828860047EF66 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E53C6120150828860047EF66 /* OpenGLES.framework */; };
 		E53C6123150828860047EF66 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E53C6122150828860047EF66 /* OpenAL.framework */; };
@@ -163,9 +166,15 @@
 		E53C62F41508288B0047EF66 /* blocks.png in Resources */ = {isa = PBXBuildFile; fileRef = E53C62F31508288B0047EF66 /* blocks.png */; };
 		E53C62FD150829970047EF66 /* Terrain.mm in Sources */ = {isa = PBXBuildFile; fileRef = E53C62FC150829970047EF66 /* Terrain.mm */; };
 		E53C62FF15082AC70047EF66 /* Noise.png in Resources */ = {isa = PBXBuildFile; fileRef = E53C62FE15082AC70047EF66 /* Noise.png */; };
+		E5B7D72D152A647800407342 /* Paddle.mm in Sources */ = {isa = PBXBuildFile; fileRef = E5B7D72C152A647800407342 /* Paddle.mm */; };
+		E5B7D730152BB6D300407342 /* TunnelJoggler.plist in Resources */ = {isa = PBXBuildFile; fileRef = E5B7D72E152BB6D300407342 /* TunnelJoggler.plist */; };
+		E5B7D731152BB6D300407342 /* TunnelJoggler.png in Resources */ = {isa = PBXBuildFile; fileRef = E5B7D72F152BB6D300407342 /* TunnelJoggler.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		E511A11E1519638800BE805E /* Ball.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Ball.png; path = Resources/Ball.png; sourceTree = "<group>"; };
+		E511A11F1519638800BE805E /* Block.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Block.png; path = Resources/Block.png; sourceTree = "<group>"; };
+		E511A1201519638800BE805E /* Paddle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Paddle.png; path = Resources/Paddle.png; sourceTree = "<group>"; };
 		E53C611A150828860047EF66 /* TunnelJoggler.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TunnelJoggler.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E53C611E150828860047EF66 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		E53C6120150828860047EF66 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -478,6 +487,10 @@
 		E53C62FB150829970047EF66 /* Terrain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Terrain.h; path = Objects/Terrain.h; sourceTree = "<group>"; };
 		E53C62FC150829970047EF66 /* Terrain.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Terrain.mm; path = Objects/Terrain.mm; sourceTree = "<group>"; };
 		E53C62FE15082AC70047EF66 /* Noise.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Noise.png; sourceTree = "<group>"; };
+		E5B7D72B152A647800407342 /* Paddle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Paddle.h; path = Objects/Paddle.h; sourceTree = "<group>"; };
+		E5B7D72C152A647800407342 /* Paddle.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Paddle.mm; path = Objects/Paddle.mm; sourceTree = "<group>"; };
+		E5B7D72E152BB6D300407342 /* TunnelJoggler.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = TunnelJoggler.plist; path = Resources/TunnelJoggler.plist; sourceTree = "<group>"; };
+		E5B7D72F152BB6D300407342 /* TunnelJoggler.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = TunnelJoggler.png; path = Resources/TunnelJoggler.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -559,6 +572,11 @@
 		E53C612F150828860047EF66 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				E5B7D72E152BB6D300407342 /* TunnelJoggler.plist */,
+				E5B7D72F152BB6D300407342 /* TunnelJoggler.png */,
+				E511A11E1519638800BE805E /* Ball.png */,
+				E511A11F1519638800BE805E /* Block.png */,
+				E511A1201519638800BE805E /* Paddle.png */,
 				E53C62FE15082AC70047EF66 /* Noise.png */,
 				E53C6130150828860047EF66 /* Default.png */,
 				E53C6132150828860047EF66 /* fps_images.png */,
@@ -907,6 +925,8 @@
 		E53C62FA1508297B0047EF66 /* Objects */ = {
 			isa = PBXGroup;
 			children = (
+				E5B7D72B152A647800407342 /* Paddle.h */,
+				E5B7D72C152A647800407342 /* Paddle.mm */,
 				E53C62FB150829970047EF66 /* Terrain.h */,
 				E53C62FC150829970047EF66 /* Terrain.mm */,
 			);
@@ -974,6 +994,11 @@
 				E53C6142150828860047EF66 /* iTunesArtwork in Resources */,
 				E53C62F41508288B0047EF66 /* blocks.png in Resources */,
 				E53C62FF15082AC70047EF66 /* Noise.png in Resources */,
+				E511A1211519638800BE805E /* Ball.png in Resources */,
+				E511A1221519638800BE805E /* Block.png in Resources */,
+				E511A1231519638800BE805E /* Paddle.png in Resources */,
+				E5B7D730152BB6D300407342 /* TunnelJoggler.plist in Resources */,
+				E5B7D731152BB6D300407342 /* TunnelJoggler.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1121,6 +1146,7 @@
 				E53C62EE1508288B0047EF66 /* Game.mm in Sources */,
 				E53C62F11508288B0047EF66 /* GLES-Render.mm in Sources */,
 				E53C62FD150829970047EF66 /* Terrain.mm in Sources */,
+				E5B7D72D152A647800407342 /* Paddle.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1216,6 +1242,7 @@
 				E53C62F91508288B0047EF66 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
