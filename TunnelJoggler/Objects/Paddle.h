@@ -16,6 +16,7 @@
 
 - (id)initWithWorld:(b2World *)world;
 - (void)update;
+- (b2Body *) body;
 
 @property (assign, nonatomic) float yPos;
 

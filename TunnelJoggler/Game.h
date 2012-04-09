@@ -19,7 +19,6 @@
     Paddle * _paddle;
     b2World *_world;
     b2Fixture *_ballFixture;
-//    b2MouseJoint *_mouseJoint;
 }
 
 +(CCScene *) scene;

@@ -47,8 +47,12 @@
 - (void)update {
     static float offset = 0;
     offset += 1;
-    _body->SetLinearVelocity(b2Vec2(-(_body->GetPosition().x*PTM_RATIO - offset), 0));
+    _body->SetLinearVelocity(b2Vec2(-(_body->GetPosition().x*PTM_RATIO - offset), yPos));
     self.position = ccp(_body->GetPosition().x*PTM_RATIO, _body->GetPosition().y*PTM_RATIO);
+}
+
+- (b2Body *) body {
+    return _body;
 }
 
 @end

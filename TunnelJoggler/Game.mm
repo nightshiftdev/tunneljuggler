@@ -272,17 +272,25 @@
     ballShapeDef.density = 1.0f;
     ballShapeDef.friction = 0.f;
     ballShapeDef.restitution = 1.0f;
-    _ballFixture = ballBody->CreateFixture(&ballShapeDef);}
+    _ballFixture = ballBody->CreateFixture(&ballShapeDef);
+}
 
 -(id) init {
     if((self=[super init])) {
         [self setupWorld];
         _terrain = [[[Terrain alloc] initWithWorld:_world] autorelease];
         _paddle = [[[Paddle alloc] initWithWorld:_world] autorelease];
+        
+        
         [self genBackground];
         [self addChild:_terrain z:1];
         [_terrain.batchNode addChild: _paddle];
         self.isTouchEnabled = YES;
+        
+        CGSize winSize = [CCDirector sharedDirector].winSize;
+        [self createTestBodyAtPostition:ccp(winSize.width, winSize.height/4)];
+        [self createTestBodyAtPostition:ccp(winSize.width - 10, winSize.height/6)];
+        [self createTestBodyAtPostition:ccp(winSize.width/2, winSize.height/2)];
         [self scheduleUpdate];
     }
     return self;
@@ -309,121 +317,56 @@
     }
     
     
-//    float PIXELS_PER_SECOND = 100;
-//    static float offset = 0;
-//    offset += PIXELS_PER_SECOND * dt;
-//    
-    
     [_paddle update];
+    
     float offset = _paddle.position.x - _paddle.contentSize.width;
-    if (offset < 0) {
-        offset = 1;
-    }
     CGSize textureSize = _background.textureRect.size;
     [_background setTextureRect:CGRectMake(offset, 0, textureSize.width, textureSize.height)];
     [_terrain setOffsetX:offset];
 }
 
-- (void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-    
-    [self genBackground];
-    
-    UITouch *anyTouch = [touches anyObject];
-    CGPoint touchLocation = [_terrain convertTouchToNodeSpace:anyTouch];
-    [self createTestBodyAtPostition:touchLocation];
-}
-
 //- (void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-//	
-//    if (_mouseJoint != NULL) return;
-//	
-//    UITouch *myTouch = [touches anyObject];
-//    CGPoint location = [myTouch locationInView:[myTouch view]];
-//    location = [[CCDirector sharedDirector] convertToGL:location];
-//    b2Vec2 locationWorld = b2Vec2(location.x/PTM_RATIO, location.y/PTM_RATIO);
-//	
-//    if (_paddleFixture->TestPoint(locationWorld)) {
-//        b2MouseJointDef md;
-//        md.bodyA = _groundBody;
-//        md.bodyB = _paddleBody;
-//        md.target = locationWorld;
-//        md.collideConnected = true;
-//        md.maxForce = 1000.0f * _paddleBody->GetMass();
-//		
-//        _mouseJoint = (b2MouseJoint *)_world->CreateJoint(&md);
-//        _paddleBody->SetAwake(true);
-//    }
-//	
+//    
+//    [self genBackground];
+//    
+//    UITouch *anyTouch = [touches anyObject];
+//    CGPoint touchLocation = [_terrain convertTouchToNodeSpace:anyTouch];
+//    [self createTestBodyAtPostition:touchLocation];
 //}
 
 -(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
-
-//    if (_mouseJoint == NULL) return;
     
-    UITouch *myTouch = [touches anyObject];
-	
-//	CGFloat panX = self.position.x - (prevPT.x - currPT.x);
-//	
-//	if (panX > 0) {
-//		panX = 0;
-//	}
-//	
-//	if (panX < -480.0f) {
-//		panX = -480.0f;
-//	}
-    
-    
-    
+    UITouch *myTouch = [touches anyObject];    
     
     CGPoint location = [myTouch locationInView:[myTouch view]];
     location = [[CCDirector sharedDirector] convertToGL:location];
     
-    
     float sign = -1;
     CGPoint prevPT = [myTouch previousLocationInView:myTouch.view];
 	CGPoint currPT = [myTouch locationInView:myTouch.view];
+    
+    float force = fabs(prevPT.y - currPT.y);
     if (currPT.y > prevPT.y) {
         sign = 1;
     }
     
-    b2Vec2 locationWorld = b2Vec2(location.x/PTM_RATIO, sign * location.y/PTM_RATIO);
+    b2Vec2 locationWorld = b2Vec2(0.0, sign * force);
     NSLog(@"yPos: %f", locationWorld.y);
     [_paddle setYPos: locationWorld.y];
-//    _mouseJoint->SetTarget(locationWorld);
-
-    
-//    if (_mouseJoint == NULL) return;
-//    
-//    UITouch *myTouch = [touches anyObject];
-//    CGPoint location = [myTouch locationInView:[myTouch view]];
-//    location = [[CCDirector sharedDirector] convertToGL:location];
-//    b2Vec2 locationWorld = b2Vec2(location.x/PTM_RATIO, location.y/PTM_RATIO);
-//    
-//    _mouseJoint->SetTarget(locationWorld);
-    
 }
 
 -(void)ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event {
-	
-//    if (_mouseJoint) {
-//        _world->DestroyJoint(_mouseJoint);
-//        _mouseJoint = NULL;
-//    }
-	
+//    [_paddle setYPos: 0.0];
 }
 
 - (void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
-//    if (_mouseJoint) {
-//        _world->DestroyJoint(_mouseJoint);
-//        _mouseJoint = NULL;
-//    }  
+//    [_paddle setYPos: 0.0];
 }
 
 - (void)dealloc {
 	
     delete _world;
 //	delete _contactListener;
-//    _groundBody = NULL;
     [super dealloc];
 	
 }
