@@ -1,6 +1,6 @@
 //
 //  Game.mm
-//  TinySeal
+//  TunnelJoggler
 //
 
 #import "Game.h"
@@ -179,16 +179,16 @@
     
     
     [_background removeFromParentAndCleanup:YES];
-   
+    
     ccColor4F bgColor = [self randomBrightColor];
-     if (SOFTLAYER) {
-         ccColor4B redColor = 
-         ccc4(255,
-              255, 
-              255, 
-              255);
-         bgColor = ccc4FFromccc4B(redColor);
-     }
+    if (SOFTLAYER) {
+        ccColor4B redColor = 
+        ccc4(255,
+             255, 
+             255, 
+             255);
+        bgColor = ccc4FFromccc4B(redColor);
+    }
     _background = [self spriteWithColor:bgColor textureSize:512];
     
     CGSize winSize = [CCDirector sharedDirector].winSize;
@@ -278,9 +278,9 @@
 -(id) init {
     if((self=[super init])) {
         [self setupWorld];
+        _obstacles = [[NSMutableArray alloc] init];
         _terrain = [[[Terrain alloc] initWithWorld:_world] autorelease];
         _paddle = [[[Paddle alloc] initWithWorld:_world] autorelease];
-        
         
         [self genBackground];
         [self addChild:_terrain z:1];
@@ -291,12 +291,22 @@
         [self createTestBodyAtPostition:ccp(winSize.width, winSize.height/4)];
         [self createTestBodyAtPostition:ccp(winSize.width - 10, winSize.height/6)];
         [self createTestBodyAtPostition:ccp(winSize.width/2, winSize.height/2)];
+        
+        _addObstacleInterval = 5.0;
+        
         [self scheduleUpdate];
     }
     return self;
 }
 
 - (void)update:(ccTime)dt {
+    CGSize winSize = [CCDirector sharedDirector].winSize;
+    if ((_addObstacleInterval -= dt) < 0) {
+        _addObstacleInterval = 5.0;
+        Obstacle *obstacle = [[[Obstacle alloc] initWithWorld: _world position: CGPointMake(_paddle.position.x + winSize.width, winSize.height/2)] autorelease];
+        [_obstacles addObject: obstacle];
+        [_terrain.batchNode addChild: obstacle];
+    }
     static double UPDATE_INTERVAL = 1.0f/60.0f;
     static double MAX_CYCLES_PER_FRAME = 5;
     static double timeAccumulator = 0;
@@ -317,7 +327,19 @@
     }
     
     
-    [_paddle update];
+    [_paddle update: dt];
+    for (int index = 0; index < [_obstacles count]; index++) {
+        Obstacle *o = [_obstacles objectAtIndex: index];
+        float obstacleXPos = o.body->GetPosition().x*PTM_RATIO;
+        if (obstacleXPos >= _paddle.position.x) {
+            [o update:dt];
+        }
+        else {
+            [_terrain removeChild:o cleanup:YES];
+            _world->DestroyBody(o.body);
+            [_obstacles removeObject: o];
+        }
+    }
     
     float offset = _paddle.position.x - _paddle.contentSize.width;
     CGSize textureSize = _background.textureRect.size;
@@ -325,17 +347,8 @@
     [_terrain setOffsetX:offset];
 }
 
-//- (void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-//    
-//    [self genBackground];
-//    
-//    UITouch *anyTouch = [touches anyObject];
-//    CGPoint touchLocation = [_terrain convertTouchToNodeSpace:anyTouch];
-//    [self createTestBodyAtPostition:touchLocation];
-//}
-
 -(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
-
+    
     _paddle.decreaseHorizontalForceToZero = NO;
     
     UITouch *myTouch = [touches anyObject];    
@@ -353,24 +366,22 @@
     }
     
     b2Vec2 paddleTouchForce = b2Vec2(0.0, sign * force);
-//    NSLog(@"horizontalForce: %f", paddleTouchForce.y);
     _paddle.horizontalForce = paddleTouchForce.y;
 }
 
 -(void)ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event {
     _paddle.decreaseHorizontalForceToZero = YES;
-//    [_paddle setYPos: 0.0];
 }
 
 - (void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
     _paddle.decreaseHorizontalForceToZero = YES;
-//    [_paddle setYPos: 0.0];
 }
 
 - (void)dealloc {
 	
     delete _world;
-//	delete _contactListener;
+    [_obstacles release];
+    //	delete _contactListener;
     [super dealloc];
 	
 }

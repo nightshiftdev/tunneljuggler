@@ -7,15 +7,15 @@
             <key>Paddle.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,2},{45,118}}</string>
+                <string>{{2,2},{10,30}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,1},{45,118}}</string>
+                <string>{{0,0},{10,30}}</string>
                 <key>sourceSize</key>
-                <string>{45,120}</string>
+                <string>{10,30}</string>
             </dict>
         </dict>
         <key>metadata</key>
@@ -25,9 +25,9 @@
             <key>realTextureFileName</key>
             <string>TunnelJoggler.png</string>
             <key>size</key>
-            <string>{64,128}</string>
+            <string>{16,64}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:2f0591496a4f7de7a0a39f69a58de7b4$</string>
+            <string>$TexturePacker:SmartUpdate:254d865221aeef35497537529bdd738b$</string>
             <key>textureFileName</key>
             <string>TunnelJoggler.png</string>
         </dict>

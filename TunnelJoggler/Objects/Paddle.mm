@@ -7,6 +7,10 @@
 #import "Game.h"
 #import "Paddle.h"
 
+#ifndef M_PI_X_2
+#define M_PI_X_2 (float)M_PI * 2.0f
+#endif
+
 @implementation Paddle
 
 @synthesize horizontalForce;
@@ -52,7 +56,7 @@
     decreaseHorizontalForceToZero = decrease;
 }
 
-- (void)update {
+- (void)update:(ccTime)dt {
     if(decreaseHorizontalForceToZero) {
         if (horizontalForce > 0) {
             horizontalForce -= decreaseRate;

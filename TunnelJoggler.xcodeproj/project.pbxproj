@@ -166,6 +166,7 @@
 		E53C62F41508288B0047EF66 /* blocks.png in Resources */ = {isa = PBXBuildFile; fileRef = E53C62F31508288B0047EF66 /* blocks.png */; };
 		E53C62FD150829970047EF66 /* Terrain.mm in Sources */ = {isa = PBXBuildFile; fileRef = E53C62FC150829970047EF66 /* Terrain.mm */; };
 		E53C62FF15082AC70047EF66 /* Noise.png in Resources */ = {isa = PBXBuildFile; fileRef = E53C62FE15082AC70047EF66 /* Noise.png */; };
+		E5A42E8B153B5033000CFFB2 /* Obstacle.mm in Sources */ = {isa = PBXBuildFile; fileRef = E5A42E8A153B5033000CFFB2 /* Obstacle.mm */; };
 		E5B7D72D152A647800407342 /* Paddle.mm in Sources */ = {isa = PBXBuildFile; fileRef = E5B7D72C152A647800407342 /* Paddle.mm */; };
 		E5B7D730152BB6D300407342 /* TunnelJoggler.plist in Resources */ = {isa = PBXBuildFile; fileRef = E5B7D72E152BB6D300407342 /* TunnelJoggler.plist */; };
 		E5B7D731152BB6D300407342 /* TunnelJoggler.png in Resources */ = {isa = PBXBuildFile; fileRef = E5B7D72F152BB6D300407342 /* TunnelJoggler.png */; };
@@ -487,6 +488,8 @@
 		E53C62FB150829970047EF66 /* Terrain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Terrain.h; path = Objects/Terrain.h; sourceTree = "<group>"; };
 		E53C62FC150829970047EF66 /* Terrain.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Terrain.mm; path = Objects/Terrain.mm; sourceTree = "<group>"; };
 		E53C62FE15082AC70047EF66 /* Noise.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Noise.png; sourceTree = "<group>"; };
+		E5A42E89153B5033000CFFB2 /* Obstacle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Obstacle.h; sourceTree = "<group>"; };
+		E5A42E8A153B5033000CFFB2 /* Obstacle.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Obstacle.mm; sourceTree = "<group>"; };
 		E5B7D72B152A647800407342 /* Paddle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Paddle.h; path = Objects/Paddle.h; sourceTree = "<group>"; };
 		E5B7D72C152A647800407342 /* Paddle.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Paddle.mm; path = Objects/Paddle.mm; sourceTree = "<group>"; };
 		E5B7D72E152BB6D300407342 /* TunnelJoggler.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = TunnelJoggler.plist; path = Resources/TunnelJoggler.plist; sourceTree = "<group>"; };
@@ -929,6 +932,8 @@
 				E5B7D72C152A647800407342 /* Paddle.mm */,
 				E53C62FB150829970047EF66 /* Terrain.h */,
 				E53C62FC150829970047EF66 /* Terrain.mm */,
+				E5A42E89153B5033000CFFB2 /* Obstacle.h */,
+				E5A42E8A153B5033000CFFB2 /* Obstacle.mm */,
 			);
 			name = Objects;
 			sourceTree = "<group>";
@@ -1147,6 +1152,7 @@
 				E53C62F11508288B0047EF66 /* GLES-Render.mm in Sources */,
 				E53C62FD150829970047EF66 /* Terrain.mm in Sources */,
 				E5B7D72D152A647800407342 /* Paddle.mm in Sources */,
+				E5A42E8B153B5033000CFFB2 /* Obstacle.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

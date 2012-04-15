@@ -17,7 +17,7 @@
 }
 
 - (id)initWithWorld:(b2World *)world;
-- (void)update;
+- (void)update:(ccTime)dt;
 - (b2Body *) body;
 
 @property (assign, nonatomic) float horizontalForce;
