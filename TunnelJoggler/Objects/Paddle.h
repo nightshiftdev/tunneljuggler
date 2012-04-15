@@ -11,13 +11,16 @@
     b2World *_world;
     b2Body *_body;
     BOOL _awake;
-    float yPos;
+    float horizontalForce;
+    float decreaseRate;
+    BOOL decreaseHorizontalForceToZero;
 }
 
 - (id)initWithWorld:(b2World *)world;
 - (void)update;
 - (b2Body *) body;
 
-@property (assign, nonatomic) float yPos;
+@property (assign, nonatomic) float horizontalForce;
+@property (assign, nonatomic) BOOL decreaseHorizontalForceToZero;
 
 @end

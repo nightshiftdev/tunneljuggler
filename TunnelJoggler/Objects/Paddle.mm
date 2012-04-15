@@ -9,7 +9,8 @@
 
 @implementation Paddle
 
-@synthesize yPos;
+@synthesize horizontalForce;
+@synthesize decreaseHorizontalForceToZero;
 
 - (void)createBody {
     CGSize winSize = [CCDirector sharedDirector].winSize;
@@ -44,15 +45,40 @@
     return self;
 }
 
+- (void)setDecreaseHorizontalForceToZero:(BOOL)decrease {
+    if (decrease) {
+        decreaseRate = fabs(horizontalForce/40);
+    }
+    decreaseHorizontalForceToZero = decrease;
+}
+
 - (void)update {
+    if(decreaseHorizontalForceToZero) {
+        if (horizontalForce > 0) {
+            horizontalForce -= decreaseRate;
+        } else {
+            horizontalForce += decreaseRate;
+        }
+//        NSLog(@"decrease rate %f ", decreaseRate);
+//        NSLog(@"horizontalForce %f ", horizontalForce);
+        if (fabs(horizontalForce) < decreaseRate) {
+            decreaseHorizontalForceToZero = NO;
+            horizontalForce = 0;
+        }
+    }
+    
     static float offset = 0;
     offset += 1;
-    _body->SetLinearVelocity(b2Vec2(-(_body->GetPosition().x*PTM_RATIO - offset), yPos));
+    _body->SetLinearVelocity(b2Vec2(-(_body->GetPosition().x*PTM_RATIO - offset), horizontalForce));
     self.position = ccp(_body->GetPosition().x*PTM_RATIO, _body->GetPosition().y*PTM_RATIO);
 }
 
 - (b2Body *) body {
     return _body;
+}
+
+- (void) setHorizontalForce:(float)force {
+    horizontalForce = force;
 }
 
 @end

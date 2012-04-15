@@ -335,6 +335,8 @@
 //}
 
 -(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
+
+    _paddle.decreaseHorizontalForceToZero = NO;
     
     UITouch *myTouch = [touches anyObject];    
     
@@ -350,16 +352,18 @@
         sign = 1;
     }
     
-    b2Vec2 locationWorld = b2Vec2(0.0, sign * force);
-    NSLog(@"yPos: %f", locationWorld.y);
-    [_paddle setYPos: locationWorld.y];
+    b2Vec2 paddleTouchForce = b2Vec2(0.0, sign * force);
+//    NSLog(@"horizontalForce: %f", paddleTouchForce.y);
+    _paddle.horizontalForce = paddleTouchForce.y;
 }
 
 -(void)ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event {
+    _paddle.decreaseHorizontalForceToZero = YES;
 //    [_paddle setYPos: 0.0];
 }
 
 - (void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
+    _paddle.decreaseHorizontalForceToZero = YES;
 //    [_paddle setYPos: 0.0];
 }
 
