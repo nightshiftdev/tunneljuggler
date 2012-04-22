@@ -4,6 +4,7 @@
 //
 
 #import "Game.h"
+#import "MyContactListener.h"
 
 @implementation Game
 
@@ -294,6 +295,9 @@
         
         _addObstacleInterval = 5.0;
         
+        _contactListener = new MyContactListener();
+		_world->SetContactListener(_contactListener);
+        
         [self scheduleUpdate];
     }
     return self;
@@ -378,10 +382,9 @@
 }
 
 - (void)dealloc {
-	
     delete _world;
     [_obstacles release];
-    //	delete _contactListener;
+    delete _contactListener;
     [super dealloc];
 	
 }

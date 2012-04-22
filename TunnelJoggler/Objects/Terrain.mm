@@ -78,7 +78,6 @@
         _toKeyPointI++;
     }
     
-    
     if (prevFromKeyPointI != _fromKeyPointI || prevToKeyPointI != _toKeyPointI) {
         
         // vertices for visible area

@@ -12,6 +12,7 @@
 #define PTM_RATIO   32.0
 #define SOFTLAYER NO
 
+@class MyContactListener;
 
 @interface Game : CCLayer
 {
@@ -22,6 +23,7 @@
     b2Fixture *_ballFixture;
     NSMutableArray *_obstacles;
     float _addObstacleInterval;
+    MyContactListener *_contactListener;
 }
 
 +(CCScene *) scene;
