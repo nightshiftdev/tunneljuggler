@@ -9,10 +9,10 @@
 #import "Box2D.h"
 #import "GLES-Render.h"
 
-#define kMaxHillKeyPoints 1000
+#define kMaxHillKeyPoints 3000
 #define kHillSegmentWidth 5
 
-#define kMaxHillVertices 4000
+#define kMaxHillVertices 800
 #define kMaxBorderVertices 800
 
 @interface Terrain : CCNode {

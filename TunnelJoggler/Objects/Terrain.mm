@@ -71,10 +71,10 @@
     static int prevToKeyPointI = -1;
     
     // key points interval for drawing
-    while (_hillKeyPoints[_fromKeyPointI+1].x < _offsetX-winSize.width/8/self.scale) {
+    while ((_fromKeyPointI+1 < kMaxHillKeyPoints) && (_hillKeyPoints[_fromKeyPointI+1].x < _offsetX-winSize.width/8/self.scale)) {
         _fromKeyPointI++;
     }
-    while (_hillKeyPoints[_toKeyPointI].x < _offsetX+winSize.width*9/8/self.scale) {
+    while ((_toKeyPointI < kMaxHillKeyPoints) && (_hillKeyPoints[_toKeyPointI].x < _offsetX+winSize.width*9/8/self.scale)) {
         _toKeyPointI++;
     }
     
