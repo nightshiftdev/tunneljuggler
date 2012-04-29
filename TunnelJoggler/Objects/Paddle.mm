@@ -24,6 +24,7 @@
     b2BodyDef paddleBodyDef;
     paddleBodyDef.type = b2_dynamicBody;
     paddleBodyDef.position.Set(startPosition/PTM_RATIO, winSize.height/2/PTM_RATIO);
+    self.tag = 3;
     paddleBodyDef.userData = self;
     _body = _world->CreateBody(&paddleBodyDef);
     
@@ -63,8 +64,6 @@
         } else {
             horizontalForce += decreaseRate;
         }
-//        NSLog(@"decrease rate %f ", decreaseRate);
-//        NSLog(@"horizontalForce %f ", horizontalForce);
         if (fabs(horizontalForce) < decreaseRate) {
             decreaseHorizontalForceToZero = NO;
             horizontalForce = 0;

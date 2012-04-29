@@ -4,7 +4,6 @@
 //
 
 #import "Game.h"
-#import "MyContactListener.h"
 
 @implementation Game
 
@@ -228,58 +227,18 @@
     _world = new b2World(gravity, doSleep);            
 }
 
-- (void)createTestBodyAtPostition:(CGPoint)position 
+- (void)createBallBulletAtPosition:(CGPoint)position
 {
-    
-    b2BodyDef testBodyDef;
-    testBodyDef.type = b2_dynamicBody;
-    testBodyDef.position.Set(position.x/PTM_RATIO, position.y/PTM_RATIO);
-    b2Body * testBody = _world->CreateBody(&testBodyDef);
-    
-    b2CircleShape testBodyShape;
-    b2FixtureDef testFixtureDef;
-    testBodyShape.m_radius = 5.0/PTM_RATIO;
-    testFixtureDef.shape = &testBodyShape;
-    testFixtureDef.density = 0.1;
-    testFixtureDef.friction = 0.1;
-    testFixtureDef.restitution = 1.0;
-    testBody->CreateFixture(&testFixtureDef);
-    
-}
-
-- (void) createInitialBall
-{
-    // Create sprite and add it to the layer
-    CCSprite *ball = [CCSprite spriteWithFile:@"Ball.png" 
-                                         rect:CGRectMake(0, 0, 52, 52)];
-    ball.position = ccp(100, 100);
-    ball.tag = 1;
-    [self addChild:ball];
-    
-    // Create ball body 
-    b2BodyDef ballBodyDef;
-    ballBodyDef.type = b2_dynamicBody;
-    ballBodyDef.position.Set(100/PTM_RATIO, 100/PTM_RATIO);
-    ballBodyDef.userData = ball;
-    b2Body * ballBody = _world->CreateBody(&ballBodyDef);
-    
-    // Create circle shape
-    b2CircleShape circle;
-    circle.m_radius = 26.0/PTM_RATIO;
-    
-    // Create shape definition and add to body
-    b2FixtureDef ballShapeDef;
-    ballShapeDef.shape = &circle;
-    ballShapeDef.density = 1.0f;
-    ballShapeDef.friction = 0.f;
-    ballShapeDef.restitution = 1.0f;
-    _ballFixture = ballBody->CreateFixture(&ballShapeDef);
+    BallBullet *bb = [[BallBullet alloc] initWithWorld: _world position: position];
+    [_terrain.batchNode addChild: bb];
+    [_ballBullets addObject: bb];
 }
 
 -(id) init {
     if((self=[super init])) {
         [self setupWorld];
         _obstacles = [[NSMutableArray alloc] init];
+        _ballBullets = [[NSMutableArray alloc] init];
         _terrain = [[[Terrain alloc] initWithWorld:_world] autorelease];
         _paddle = [[[Paddle alloc] initWithWorld:_world] autorelease];
         
@@ -289,9 +248,9 @@
         self.isTouchEnabled = YES;
         
         CGSize winSize = [CCDirector sharedDirector].winSize;
-        [self createTestBodyAtPostition:ccp(winSize.width, winSize.height/4)];
-        [self createTestBodyAtPostition:ccp(winSize.width - 10, winSize.height/6)];
-        [self createTestBodyAtPostition:ccp(winSize.width/2, winSize.height/2)];
+        [self createBallBulletAtPosition:ccp(winSize.width, winSize.height/4)];
+        [self createBallBulletAtPosition:ccp(winSize.width - 10, winSize.height/6)];
+        [self createBallBulletAtPosition:ccp(winSize.width/2, winSize.height/2)];
         
         _addObstacleInterval = 5.0;
         
@@ -330,6 +289,9 @@
         
     }
     
+    for (BallBullet *bb in _ballBullets) {
+        [bb update: dt];
+    }
     
     [_paddle update: dt];
     for (int index = 0; index < [_obstacles count]; index++) {
@@ -349,6 +311,80 @@
     CGSize textureSize = _background.textureRect.size;
     [_background setTextureRect:CGRectMake(offset, 0, textureSize.width, textureSize.height)];
     [_terrain setOffsetX:offset];
+    
+    
+    std::vector<b2Body *>toDestroy;
+    std::vector<MyContact>::iterator pos;
+    for(pos = _contactListener->_contacts.begin(); pos != _contactListener->_contacts.end(); ++pos) {
+        NSLog(@"inside contact listener loop");
+        MyContact contact = *pos;
+        
+//        if ((contact.fixtureA == _bottomFixture && contact.fixtureB == _ballFixture) ||
+//            (contact.fixtureA == _ballFixture && contact.fixtureB == _bottomFixture)) {
+//            GameOverScene *gameOverScene = [GameOverScene node];
+//            [gameOverScene.layer.label setString:@"You Lose :["];
+//            [[CCDirector sharedDirector] replaceScene:gameOverScene];
+//        } 
+		
+        b2Body *bodyA = contact.fixtureA->GetBody();
+        b2Body *bodyB = contact.fixtureB->GetBody();
+        
+        NSLog(@"bodyA data %@", bodyA->GetUserData());
+        NSLog(@"bodyB data %@", bodyB->GetUserData());
+        
+        if (bodyA->GetUserData() != NULL && bodyB->GetUserData() != NULL) {
+            CCSprite *spriteA = (CCSprite *) bodyA->GetUserData();
+            CCSprite *spriteB = (CCSprite *) bodyB->GetUserData();
+        
+            NSLog(@"A tag %d", spriteA.tag);
+            NSLog(@"B tag %d", spriteB.tag);
+            
+            // Sprite A = ball, Sprite B = Block
+            if (spriteA.tag == 1 && spriteB.tag == 2) {
+                if (std::find(toDestroy.begin(), toDestroy.end(), bodyB) == toDestroy.end()) {
+                    toDestroy.push_back(bodyB);
+                    NSLog(@"ball touched block bodyB");
+                }
+            }
+            // Sprite B = block, Sprite A = ball
+            else if (spriteA.tag == 2 && spriteB.tag == 1) {
+                if (std::find(toDestroy.begin(), toDestroy.end(), bodyA) == toDestroy.end()) {
+                    toDestroy.push_back(bodyA);
+                    NSLog(@"ball touched block bodyA");
+                }
+            }
+            else if (spriteA.tag == 2 && spriteB.tag == 3) {
+                if (std::find(toDestroy.begin(), toDestroy.end(), bodyA) == toDestroy.end()) {
+                    toDestroy.push_back(bodyA);
+                    NSLog(@"GAME OVER paddle touched obstacle bodyB");
+                }
+            }
+            else if (spriteA.tag == 3 && spriteB.tag == 2) {
+                if (std::find(toDestroy.begin(), toDestroy.end(), bodyA) == toDestroy.end()) {
+                    toDestroy.push_back(bodyA);
+                    NSLog(@"GAME OVER paddle touched obstacle bodyA");
+                }
+            }
+        
+        }                 
+    }
+	
+    std::vector<b2Body *>::iterator pos2;
+    for(pos2 = toDestroy.begin(); pos2 != toDestroy.end(); ++pos2) {
+        b2Body *body = *pos2;     
+        if (body->GetUserData() != NULL) {
+            CCSprite *sprite = (CCSprite *) body->GetUserData();
+            sprite.visible = NO;
+            [_terrain removeChild:sprite cleanup:YES];
+            for (int index = 0; index < [_obstacles count]; index++) {
+                Obstacle *o = [_obstacles objectAtIndex: index];
+                if (o.body == body) {
+                    [_obstacles removeObject: o];
+                    _world->DestroyBody(body);
+                }
+            }
+        }
+    }
 }
 
 -(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {

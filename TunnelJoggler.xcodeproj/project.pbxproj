@@ -167,6 +167,7 @@
 		E53C62FD150829970047EF66 /* Terrain.mm in Sources */ = {isa = PBXBuildFile; fileRef = E53C62FC150829970047EF66 /* Terrain.mm */; };
 		E53C62FF15082AC70047EF66 /* Noise.png in Resources */ = {isa = PBXBuildFile; fileRef = E53C62FE15082AC70047EF66 /* Noise.png */; };
 		E54BBBD015445C900093A6CB /* MyContactListener.mm in Sources */ = {isa = PBXBuildFile; fileRef = E54BBBCF15445C900093A6CB /* MyContactListener.mm */; };
+		E55237D315461375005B05D3 /* BallBullet.mm in Sources */ = {isa = PBXBuildFile; fileRef = E55237D215461375005B05D3 /* BallBullet.mm */; };
 		E5A42E8B153B5033000CFFB2 /* Obstacle.mm in Sources */ = {isa = PBXBuildFile; fileRef = E5A42E8A153B5033000CFFB2 /* Obstacle.mm */; };
 		E5B7D72D152A647800407342 /* Paddle.mm in Sources */ = {isa = PBXBuildFile; fileRef = E5B7D72C152A647800407342 /* Paddle.mm */; };
 		E5B7D730152BB6D300407342 /* TunnelJoggler.plist in Resources */ = {isa = PBXBuildFile; fileRef = E5B7D72E152BB6D300407342 /* TunnelJoggler.plist */; };
@@ -491,6 +492,8 @@
 		E53C62FE15082AC70047EF66 /* Noise.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Noise.png; sourceTree = "<group>"; };
 		E54BBBCE15445C900093A6CB /* MyContactListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyContactListener.h; sourceTree = "<group>"; };
 		E54BBBCF15445C900093A6CB /* MyContactListener.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MyContactListener.mm; sourceTree = "<group>"; };
+		E55237D115461375005B05D3 /* BallBullet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BallBullet.h; path = Objects/BallBullet.h; sourceTree = "<group>"; };
+		E55237D215461375005B05D3 /* BallBullet.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = BallBullet.mm; path = Objects/BallBullet.mm; sourceTree = "<group>"; };
 		E5A42E89153B5033000CFFB2 /* Obstacle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Obstacle.h; sourceTree = "<group>"; };
 		E5A42E8A153B5033000CFFB2 /* Obstacle.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Obstacle.mm; sourceTree = "<group>"; };
 		E5B7D72B152A647800407342 /* Paddle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Paddle.h; path = Objects/Paddle.h; sourceTree = "<group>"; };
@@ -933,6 +936,8 @@
 		E53C62FA1508297B0047EF66 /* Objects */ = {
 			isa = PBXGroup;
 			children = (
+				E55237D115461375005B05D3 /* BallBullet.h */,
+				E55237D215461375005B05D3 /* BallBullet.mm */,
 				E5B7D72B152A647800407342 /* Paddle.h */,
 				E5B7D72C152A647800407342 /* Paddle.mm */,
 				E53C62FB150829970047EF66 /* Terrain.h */,
@@ -1159,6 +1164,7 @@
 				E5B7D72D152A647800407342 /* Paddle.mm in Sources */,
 				E5A42E8B153B5033000CFFB2 /* Obstacle.mm in Sources */,
 				E54BBBD015445C900093A6CB /* MyContactListener.mm in Sources */,
+				E55237D315461375005B05D3 /* BallBullet.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

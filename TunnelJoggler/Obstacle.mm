@@ -16,6 +16,7 @@
     b2BodyDef paddleBodyDef;
     paddleBodyDef.type = b2_kinematicBody;
     paddleBodyDef.position.Set(position.x/PTM_RATIO, position.y/PTM_RATIO);
+    self.tag = 2;
     paddleBodyDef.userData = self;
     _body = _world->CreateBody(&paddleBodyDef);
     
