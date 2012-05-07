@@ -22,12 +22,12 @@
     
     // Create obstacle shape
     b2CircleShape ballBulletShape;
-    ballBulletShape.m_radius = 5.0/PTM_RATIO;
+    ballBulletShape.m_radius = self.contentSize.width/PTM_RATIO/2;
     
     // Create shape definition and add to body
     b2FixtureDef ballBulletShapeDef;
     ballBulletShapeDef.shape = &ballBulletShape;
-    ballBulletShapeDef.density = 1.0f;
+    ballBulletShapeDef.density = 0.5f;
     ballBulletShapeDef.friction = 0.1f;
     ballBulletShapeDef.restitution = 1.0f;
     _body->CreateFixture(&ballBulletShapeDef);

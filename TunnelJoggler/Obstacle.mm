@@ -35,7 +35,7 @@
 }
 
 - (id)initWithWorld:(b2World *)world position: (CGPoint) position {
-    if ((self = [super initWithSpriteFrameName:@"Paddle.png"])) {
+    if ((self = [super initWithSpriteFrameName:@"Block.png"])) {
         _world = world;
         [self createBodyAtPosition:position];
     }

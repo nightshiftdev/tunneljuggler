@@ -7,28 +7,41 @@
             <key>Ball.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,2},{52,52}}</string>
+                <string>{{2,106},{10,10}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{52,52}}</string>
+                <string>{{0,0},{10,10}}</string>
                 <key>sourceSize</key>
-                <string>{52,52}</string>
+                <string>{10,10}</string>
             </dict>
-            <key>Paddle.png</key>
+            <key>Block.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,56},{10,30}}</string>
+                <string>{{2,74},{10,30}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <true/>
+                <false/>
                 <key>sourceColorRect</key>
                 <string>{{0,0},{10,30}}</string>
                 <key>sourceSize</key>
                 <string>{10,30}</string>
+            </dict>
+            <key>Paddle.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{2,2},{10,70}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{10,70}}</string>
+                <key>sourceSize</key>
+                <string>{10,70}</string>
             </dict>
         </dict>
         <key>metadata</key>
@@ -38,9 +51,9 @@
             <key>realTextureFileName</key>
             <string>TunnelJoggler.png</string>
             <key>size</key>
-            <string>{64,128}</string>
+            <string>{16,128}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:e8518f36ff767a4bbcb9d6b3ed04840b$</string>
+            <string>$TexturePacker:SmartUpdate:dc32fab31ddfac236bc7da01dc85be00$</string>
             <key>textureFileName</key>
             <string>TunnelJoggler.png</string>
         </dict>
