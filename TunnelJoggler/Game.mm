@@ -4,6 +4,7 @@
 //
 
 #import "Game.h"
+#import "SimpleAudioEngine.h"
 
 @implementation Game
 
@@ -257,6 +258,8 @@
         _contactListener = new MyContactListener();
 		_world->SetContactListener(_contactListener);
         
+        [[SimpleAudioEngine sharedEngine] playBackgroundMusic:@"background-music-aac.caf"];
+        
         [self scheduleUpdate];
     }
     return self;
@@ -375,6 +378,7 @@
         if (body->GetUserData() != NULL) {
             CCSprite *sprite = (CCSprite *) body->GetUserData();
             sprite.visible = NO;
+            [[SimpleAudioEngine sharedEngine] playEffect:@"blip.caf"];
             [_terrain removeChild:sprite cleanup:YES];
             for (int index = 0; index < [_obstacles count]; index++) {
                 Obstacle *o = [_obstacles objectAtIndex: index];

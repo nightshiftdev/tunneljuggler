@@ -168,6 +168,8 @@
 		E53C62FF15082AC70047EF66 /* Noise.png in Resources */ = {isa = PBXBuildFile; fileRef = E53C62FE15082AC70047EF66 /* Noise.png */; };
 		E54BBBD015445C900093A6CB /* MyContactListener.mm in Sources */ = {isa = PBXBuildFile; fileRef = E54BBBCF15445C900093A6CB /* MyContactListener.mm */; };
 		E55237D315461375005B05D3 /* BallBullet.mm in Sources */ = {isa = PBXBuildFile; fileRef = E55237D215461375005B05D3 /* BallBullet.mm */; };
+		E55237D71558A17A005B05D3 /* background-music-aac.caf in Resources */ = {isa = PBXBuildFile; fileRef = E55237D51558A17A005B05D3 /* background-music-aac.caf */; };
+		E55237D81558A17A005B05D3 /* blip.caf in Resources */ = {isa = PBXBuildFile; fileRef = E55237D61558A17A005B05D3 /* blip.caf */; };
 		E5A42E8B153B5033000CFFB2 /* Obstacle.mm in Sources */ = {isa = PBXBuildFile; fileRef = E5A42E8A153B5033000CFFB2 /* Obstacle.mm */; };
 		E5B7D72D152A647800407342 /* Paddle.mm in Sources */ = {isa = PBXBuildFile; fileRef = E5B7D72C152A647800407342 /* Paddle.mm */; };
 		E5B7D730152BB6D300407342 /* TunnelJoggler.plist in Resources */ = {isa = PBXBuildFile; fileRef = E5B7D72E152BB6D300407342 /* TunnelJoggler.plist */; };
@@ -494,6 +496,8 @@
 		E54BBBCF15445C900093A6CB /* MyContactListener.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MyContactListener.mm; sourceTree = "<group>"; };
 		E55237D115461375005B05D3 /* BallBullet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BallBullet.h; path = Objects/BallBullet.h; sourceTree = "<group>"; };
 		E55237D215461375005B05D3 /* BallBullet.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = BallBullet.mm; path = Objects/BallBullet.mm; sourceTree = "<group>"; };
+		E55237D51558A17A005B05D3 /* background-music-aac.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "background-music-aac.caf"; path = "Resources/background-music-aac.caf"; sourceTree = "<group>"; };
+		E55237D61558A17A005B05D3 /* blip.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = blip.caf; path = Resources/blip.caf; sourceTree = "<group>"; };
 		E5A42E89153B5033000CFFB2 /* Obstacle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Obstacle.h; sourceTree = "<group>"; };
 		E5A42E8A153B5033000CFFB2 /* Obstacle.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Obstacle.mm; sourceTree = "<group>"; };
 		E5B7D72B152A647800407342 /* Paddle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Paddle.h; path = Objects/Paddle.h; sourceTree = "<group>"; };
@@ -583,6 +587,8 @@
 		E53C612F150828860047EF66 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				E55237D51558A17A005B05D3 /* background-music-aac.caf */,
+				E55237D61558A17A005B05D3 /* blip.caf */,
 				E5B7D72E152BB6D300407342 /* TunnelJoggler.plist */,
 				E5B7D72F152BB6D300407342 /* TunnelJoggler.png */,
 				E511A11E1519638800BE805E /* Ball.png */,
@@ -1014,6 +1020,8 @@
 				E511A1231519638800BE805E /* Paddle.png in Resources */,
 				E5B7D730152BB6D300407342 /* TunnelJoggler.plist in Resources */,
 				E5B7D731152BB6D300407342 /* TunnelJoggler.png in Resources */,
+				E55237D71558A17A005B05D3 /* background-music-aac.caf in Resources */,
+				E55237D81558A17A005B05D3 /* blip.caf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
