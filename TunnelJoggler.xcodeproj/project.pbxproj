@@ -170,6 +170,7 @@
 		E55237D315461375005B05D3 /* BallBullet.mm in Sources */ = {isa = PBXBuildFile; fileRef = E55237D215461375005B05D3 /* BallBullet.mm */; };
 		E55237D71558A17A005B05D3 /* background-music-aac.caf in Resources */ = {isa = PBXBuildFile; fileRef = E55237D51558A17A005B05D3 /* background-music-aac.caf */; };
 		E55237D81558A17A005B05D3 /* blip.caf in Resources */ = {isa = PBXBuildFile; fileRef = E55237D61558A17A005B05D3 /* blip.caf */; };
+		E55237E515671693005B05D3 /* HUD.mm in Sources */ = {isa = PBXBuildFile; fileRef = E55237E415671693005B05D3 /* HUD.mm */; };
 		E5A42E8B153B5033000CFFB2 /* Obstacle.mm in Sources */ = {isa = PBXBuildFile; fileRef = E5A42E8A153B5033000CFFB2 /* Obstacle.mm */; };
 		E5B7D72D152A647800407342 /* Paddle.mm in Sources */ = {isa = PBXBuildFile; fileRef = E5B7D72C152A647800407342 /* Paddle.mm */; };
 		E5B7D730152BB6D300407342 /* TunnelJoggler.plist in Resources */ = {isa = PBXBuildFile; fileRef = E5B7D72E152BB6D300407342 /* TunnelJoggler.plist */; };
@@ -498,6 +499,8 @@
 		E55237D215461375005B05D3 /* BallBullet.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = BallBullet.mm; path = Objects/BallBullet.mm; sourceTree = "<group>"; };
 		E55237D51558A17A005B05D3 /* background-music-aac.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "background-music-aac.caf"; path = "Resources/background-music-aac.caf"; sourceTree = "<group>"; };
 		E55237D61558A17A005B05D3 /* blip.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = blip.caf; path = Resources/blip.caf; sourceTree = "<group>"; };
+		E55237E315671692005B05D3 /* HUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUD.h; sourceTree = "<group>"; };
+		E55237E415671693005B05D3 /* HUD.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HUD.mm; sourceTree = "<group>"; };
 		E5A42E89153B5033000CFFB2 /* Obstacle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Obstacle.h; sourceTree = "<group>"; };
 		E5A42E8A153B5033000CFFB2 /* Obstacle.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Obstacle.mm; sourceTree = "<group>"; };
 		E5B7D72B152A647800407342 /* Paddle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Paddle.h; path = Objects/Paddle.h; sourceTree = "<group>"; };
@@ -560,26 +563,28 @@
 		E53C612E150828860047EF66 /* TunnelJoggler */ = {
 			isa = PBXGroup;
 			children = (
-				E54BBBCE15445C900093A6CB /* MyContactListener.h */,
-				E54BBBCF15445C900093A6CB /* MyContactListener.mm */,
-				E53C62FA1508297B0047EF66 /* Objects */,
 				E53C62E61508288B0047EF66 /* AppDelegate.h */,
-				E53C62E71508288B0047EF66 /* AppDelegate.mm */,
+				E53C62EC1508288B0047EF66 /* Game.h */,
+				E53C62F21508288B0047EF66 /* GameConfig.h */,
+				E53C62EF1508288B0047EF66 /* GLES-Render.h */,
+				E55237E315671692005B05D3 /* HUD.h */,
+				E54BBBCE15445C900093A6CB /* MyContactListener.h */,
 				E53C62E91508288B0047EF66 /* RootViewController.h */,
 				E53C62EA1508288B0047EF66 /* RootViewController.m */,
-				E53C62EC1508288B0047EF66 /* Game.h */,
+				E53C62E71508288B0047EF66 /* AppDelegate.mm */,
 				E53C62ED1508288B0047EF66 /* Game.mm */,
-				E53C62EF1508288B0047EF66 /* GLES-Render.h */,
 				E53C62F01508288B0047EF66 /* GLES-Render.mm */,
-				E53C62F21508288B0047EF66 /* GameConfig.h */,
-				E53C612F150828860047EF66 /* Resources */,
+				E55237E415671693005B05D3 /* HUD.mm */,
+				E54BBBCF15445C900093A6CB /* MyContactListener.mm */,
+				E53C6276150828890047EF66 /* Box2D */,
 				E53C6143150828860047EF66 /* cocos2d */,
 				E53C6234150828880047EF66 /* CocosDenshion */,
 				E53C6242150828890047EF66 /* cocoslive */,
 				E53C624C150828890047EF66 /* FontLabel */,
-				E53C625D150828890047EF66 /* TouchJSON */,
-				E53C6276150828890047EF66 /* Box2D */,
+				E53C62FA1508297B0047EF66 /* Objects */,
+				E53C612F150828860047EF66 /* Resources */,
 				E53C62E21508288B0047EF66 /* Supporting Files */,
+				E53C625D150828890047EF66 /* TouchJSON */,
 			);
 			path = TunnelJoggler;
 			sourceTree = "<group>";
@@ -1173,6 +1178,7 @@
 				E5A42E8B153B5033000CFFB2 /* Obstacle.mm in Sources */,
 				E54BBBD015445C900093A6CB /* MyContactListener.mm in Sources */,
 				E55237D315461375005B05D3 /* BallBullet.mm in Sources */,
+				E55237E515671693005B05D3 /* HUD.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

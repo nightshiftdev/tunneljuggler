@@ -10,8 +10,8 @@
 #import "CCSprite.h"
 
 @interface BallBullet : CCSprite {
-    b2World *_world;
-    b2Body *_body;
+    b2World *world_;
+    b2Body *body_;
 }
 
 - (id)initWithWorld:(b2World *)world position: (CGPoint) position;

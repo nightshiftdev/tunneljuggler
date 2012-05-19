@@ -8,12 +8,12 @@
 #import "Box2D.h"
 
 @interface Paddle : CCSprite {
-    b2World *_world;
-    b2Body *_body;
-    BOOL _awake;
-    float horizontalForce;
-    float decreaseRate;
-    BOOL decreaseHorizontalForceToZero;
+    b2World *world_;
+    b2Body *body_;
+    BOOL awake_;
+    float horizontalForce_;
+    float decreaseRate_;
+    BOOL decreaseHorizontalForceToZero_;
 }
 
 - (id)initWithWorld:(b2World *)world;

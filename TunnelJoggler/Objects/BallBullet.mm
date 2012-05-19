@@ -18,7 +18,7 @@
     ballBulletBodyDef.position.Set(position.x/PTM_RATIO, position.y/PTM_RATIO);
     self.tag = 1;
     ballBulletBodyDef.userData = self;
-    _body = _world->CreateBody(&ballBulletBodyDef);
+    body_ = world_->CreateBody(&ballBulletBodyDef);
     
     // Create obstacle shape
     b2CircleShape ballBulletShape;
@@ -30,23 +30,23 @@
     ballBulletShapeDef.density = 0.5f;
     ballBulletShapeDef.friction = 0.1f;
     ballBulletShapeDef.restitution = 1.0f;
-    _body->CreateFixture(&ballBulletShapeDef);
+    body_->CreateFixture(&ballBulletShapeDef);
 }
 
 - (id)initWithWorld:(b2World *)world position: (CGPoint) position {
     if ((self = [super initWithSpriteFrameName:@"Ball.png"])) {
-        _world = world;
+        world_ = world;
         [self createBodyAtPosition:position];
     }
     return self;
 }
 
 - (void)update:(ccTime)dt {
-    self.position = ccp(_body->GetPosition().x*PTM_RATIO, _body->GetPosition().y*PTM_RATIO);
+    self.position = ccp(body_->GetPosition().x*PTM_RATIO, body_->GetPosition().y*PTM_RATIO);
 }
 
 - (b2Body *) body {
-    return _body;
+    return body_;
 }
 
 @end

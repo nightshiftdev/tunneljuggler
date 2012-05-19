@@ -13,8 +13,8 @@
 
 @implementation Paddle
 
-@synthesize horizontalForce;
-@synthesize decreaseHorizontalForceToZero;
+@synthesize horizontalForce = horizontalForce_;
+@synthesize decreaseHorizontalForceToZero = decreaseHorizontalForceToZero_;
 
 - (void)createBody {
     CGSize winSize = [CCDirector sharedDirector].winSize;
@@ -26,7 +26,7 @@
     paddleBodyDef.position.Set(startPosition/PTM_RATIO, winSize.height/2/PTM_RATIO);
     self.tag = 3;
     paddleBodyDef.userData = self;
-    _body = _world->CreateBody(&paddleBodyDef);
+    body_ = world_->CreateBody(&paddleBodyDef);
     
     // Create paddle shape
     b2PolygonShape paddleShape;
@@ -39,49 +39,49 @@
     paddleShapeDef.density = 0.0f;
     paddleShapeDef.friction = 0.1f;
     paddleShapeDef.restitution = 0.1f;
-    _body->CreateFixture(&paddleShapeDef);
+    body_->CreateFixture(&paddleShapeDef);
 }
 
 - (id)initWithWorld:(b2World *)world {
     if ((self = [super initWithSpriteFrameName:@"Paddle.png"])) {
-        _world = world;
+        world_ = world;
         [self createBody];
     }
     return self;
 }
 
-- (void)setDecreaseHorizontalForceToZero:(BOOL)decrease {
+- (void)setdecreasehorizontalForce_ToZero_:(BOOL)decrease {
     if (decrease) {
-        decreaseRate = fabs(horizontalForce/40);
+        decreaseRate_ = fabs(horizontalForce_/40);
     }
-    decreaseHorizontalForceToZero = decrease;
+    decreaseHorizontalForceToZero_ = decrease;
 }
 
 - (void)update:(ccTime)dt {
-    if(decreaseHorizontalForceToZero) {
-        if (horizontalForce > 0) {
-            horizontalForce -= decreaseRate;
+    if(decreaseHorizontalForceToZero_) {
+        if (horizontalForce_ > 0) {
+            horizontalForce_ -= decreaseRate_;
         } else {
-            horizontalForce += decreaseRate;
+            horizontalForce_ += decreaseRate_;
         }
-        if (fabs(horizontalForce) < decreaseRate) {
-            decreaseHorizontalForceToZero = NO;
-            horizontalForce = 0;
+        if (fabs(horizontalForce_) < decreaseRate_) {
+            decreaseHorizontalForceToZero_ = NO;
+            horizontalForce_ = 0;
         }
     }
     
     static float offset = 0;
     offset += 1;
-    _body->SetLinearVelocity(b2Vec2(-(_body->GetPosition().x*PTM_RATIO - offset), horizontalForce));
-    self.position = ccp(_body->GetPosition().x*PTM_RATIO, _body->GetPosition().y*PTM_RATIO);
+    body_->SetLinearVelocity(b2Vec2(-(body_->GetPosition().x*PTM_RATIO - offset), horizontalForce_));
+    self.position = ccp(body_->GetPosition().x*PTM_RATIO, body_->GetPosition().y*PTM_RATIO);
 }
 
 - (b2Body *) body {
-    return _body;
+    return body_;
 }
 
-- (void) setHorizontalForce:(float)force {
-    horizontalForce = force;
+- (void) sethorizontalForce_:(float)force {
+    horizontalForce_ = force;
 }
 
 @end

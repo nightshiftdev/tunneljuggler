@@ -18,7 +18,7 @@
     paddleBodyDef.position.Set(position.x/PTM_RATIO, position.y/PTM_RATIO);
     self.tag = 2;
     paddleBodyDef.userData = self;
-    _body = _world->CreateBody(&paddleBodyDef);
+    body_ = world_->CreateBody(&paddleBodyDef);
     
     // Create obstacle shape
     b2PolygonShape paddleShape;
@@ -31,12 +31,12 @@
     paddleShapeDef.density = 0.0f;
     paddleShapeDef.friction = 0.1f;
     paddleShapeDef.restitution = 0.1f;
-    _body->CreateFixture(&paddleShapeDef);
+    body_->CreateFixture(&paddleShapeDef);
 }
 
 - (id)initWithWorld:(b2World *)world position: (CGPoint) position {
     if ((self = [super initWithSpriteFrameName:@"Block.png"])) {
-        _world = world;
+        world_ = world;
         [self createBodyAtPosition:position];
     }
     return self;
@@ -46,12 +46,12 @@
     static float offset = 0;
     offset += 1;
     
-    _body->SetLinearVelocity(b2Vec2(0, 0));
-    self.position = ccp(_body->GetPosition().x*PTM_RATIO, _body->GetPosition().y*PTM_RATIO);
+    body_->SetLinearVelocity(b2Vec2(0, 0));
+    self.position = ccp(body_->GetPosition().x*PTM_RATIO, body_->GetPosition().y*PTM_RATIO);
 }
 
 - (b2Body *) body {
-    return _body;
+    return body_;
 }
 
 @end
