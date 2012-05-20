@@ -50,7 +50,7 @@
     return self;
 }
 
-- (void)setdecreasehorizontalForce_ToZero_:(BOOL)decrease {
+- (void)setDecreaseHorizontalForceToZero:(BOOL)decrease {
     if (decrease) {
         decreaseRate_ = fabs(horizontalForce_/40);
     }
