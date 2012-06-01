@@ -33,14 +33,18 @@ typedef enum
     NSMutableArray *obstacles_;
     NSMutableArray *ballBullets_;
     float addObstacleInterval_;
+    float addBonusBallInterval_;
     MyContactListener *contactListener_;
     GameState gameState_;
     HUD *hud_;
 }
 
 +(CCScene *) scene;
+- (void)setupWorld;
+- (void)genBackground;
+- (void)createBallBulletAtPosition:(CGPoint)position;
 
-@property (readonly,nonatomic) GameState gameState;
+@property (readwrite,nonatomic) GameState gameState;
 @property (readwrite, nonatomic, assign) HUD *hud;
 
 @end
