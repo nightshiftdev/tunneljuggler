@@ -268,12 +268,28 @@
     gameState_ = kGameStatePlaying;
 }
 
+- (BOOL) useNegativeSign {
+    int randomNumber = (arc4random() % (30 + 1));
+    if (randomNumber % 2) {
+        return YES;
+    }
+    return NO;
+}
+
 - (void)update:(ccTime)dt {
     if (self.gameState != kGameStatePaused) {
         CGSize winSize = [CCDirector sharedDirector].winSize;
         if ((addObstacleInterval_ -= dt) < 0) {
             addObstacleInterval_ = 5.0;
-            Obstacle *obstacle = [[[Obstacle alloc] initWithWorld: world_ position: CGPointMake(paddle_.position.x + winSize.width, winSize.height/2)] autorelease];
+            float randomizeObstaclePos = arc4random() % 100;
+            
+            if ([self useNegativeSign]) {
+                randomizeObstaclePos *= -1;
+            }
+            
+            Obstacle *obstacle = [[[Obstacle alloc] initWithWorld: world_ position: CGPointMake(paddle_.position.x + winSize.width, 
+                                                                                                (winSize.height/2) + randomizeObstaclePos)] 
+                                  autorelease];
             [obstacles_ addObject: obstacle];
             [terrain_.batchNode addChild: obstacle];
         }
