@@ -70,7 +70,6 @@
     [ballBullets_ addObject: bb];
 }
 
-
 - (BOOL) useNegativeSign {
     int randomNumber = (arc4random() % (30 + 1));
     if (randomNumber % 2) {
@@ -300,18 +299,19 @@
     glDisable(GL_TEXTURE_2D);
     glDisableClientState(GL_TEXTURE_COORD_ARRAY);
     
-    float gradientAlpha = 0.7;    
+    float gradientAlpha = 0.1;    
     CGPoint vertices[4];
     ccColor4F colors[4];
     int nVertices = 0;
     
+    float screenFactor = [CCDirector sharedDirector].contentScaleFactor;
     vertices[nVertices] = CGPointMake(0, 0);
     colors[nVertices++] = (ccColor4F){0, 0, 0, 0 };
-    vertices[nVertices] = CGPointMake(textureSize, 0);
+    vertices[nVertices] = CGPointMake(textureSize * screenFactor, 0);
     colors[nVertices++] = (ccColor4F){0, 0, 0, 0};
-    vertices[nVertices] = CGPointMake(0, textureSize);
+    vertices[nVertices] = CGPointMake(0, textureSize * screenFactor);
     colors[nVertices++] = (ccColor4F){0, 0, 0, gradientAlpha};
-    vertices[nVertices] = CGPointMake(textureSize, textureSize);
+    vertices[nVertices] = CGPointMake(textureSize * screenFactor, textureSize * screenFactor);
     colors[nVertices++] = (ccColor4F){0, 0, 0, gradientAlpha};
     
     glVertexPointer(2, GL_FLOAT, 0, vertices);
@@ -348,21 +348,25 @@
     glDisableClientState(GL_COLOR_ARRAY);
     
     CGPoint vertices[nStripes*6];
+    
+    float screenFactor = [CCDirector sharedDirector].contentScaleFactor;
+    
     int nVertices = 0;
-    float x1 = -textureSize;
+    float x1 = -textureSize * screenFactor;
     float x2;
-    float y1 = textureSize;
+    float y1 = textureSize * screenFactor;
     float y2 = 0;
-    float dx = textureSize / nStripes * 2;
+    float dx = (textureSize / nStripes * 2) * screenFactor;
     float stripeWidth = dx/2;
+
     for (int i=0; i<nStripes; i++) {
-        x2 = x1 + textureSize;
+        x2 = (x1 + textureSize) * screenFactor;
         vertices[nVertices++] = CGPointMake(x1, y1);
-        vertices[nVertices++] = CGPointMake(x1+stripeWidth, y1);
+        vertices[nVertices++] = CGPointMake((x1+stripeWidth), y1);
         vertices[nVertices++] = CGPointMake(x2, y2);
         vertices[nVertices++] = vertices[nVertices-2];
         vertices[nVertices++] = vertices[nVertices-2];
-        vertices[nVertices++] = CGPointMake(x2+stripeWidth, y2);
+        vertices[nVertices++] = CGPointMake((x2+stripeWidth), y2);
         x1 += dx;
     }
     
@@ -373,17 +377,17 @@
     // layer 2: gradient
     glEnableClientState(GL_COLOR_ARRAY);
     
-    float gradientAlpha = 0.7;    
+    float gradientAlpha = 0.6;    
     ccColor4F colors[4];
     nVertices = 0;
     
     vertices[nVertices] = CGPointMake(0, 0);
     colors[nVertices++] = (ccColor4F){0, 0, 0, 0 };
-    vertices[nVertices] = CGPointMake(textureSize, 0);
+    vertices[nVertices] = CGPointMake(textureSize * screenFactor, 0);
     colors[nVertices++] = (ccColor4F){0, 0, 0, 0};
-    vertices[nVertices] = CGPointMake(0, textureSize);
+    vertices[nVertices] = CGPointMake(0, textureSize * screenFactor);
     colors[nVertices++] = (ccColor4F){0, 0, 0, gradientAlpha};
-    vertices[nVertices] = CGPointMake(textureSize, textureSize);
+    vertices[nVertices] = CGPointMake(textureSize * screenFactor, textureSize * screenFactor);
     colors[nVertices++] = (ccColor4F){0, 0, 0, gradientAlpha};
     
     glVertexPointer(2, GL_FLOAT, 0, vertices);
@@ -392,17 +396,17 @@
     
     // layer 3: top highlight
     float borderWidth = textureSize/16;
-    float borderAlpha = 0.3f;
+    float borderAlpha = 0.5f;///screenFactor;
     nVertices = 0;
     
     vertices[nVertices] = CGPointMake(0, 0);
     colors[nVertices++] = (ccColor4F){1, 1, 1, borderAlpha};
-    vertices[nVertices] = CGPointMake(textureSize, 0);
+    vertices[nVertices] = CGPointMake(textureSize * screenFactor, 0);
     colors[nVertices++] = (ccColor4F){1, 1, 1, borderAlpha};
     
     vertices[nVertices] = CGPointMake(0, borderWidth);
     colors[nVertices++] = (ccColor4F){0, 0, 0, 0};
-    vertices[nVertices] = CGPointMake(textureSize, borderWidth);
+    vertices[nVertices] = CGPointMake(textureSize * screenFactor, borderWidth * screenFactor);
     colors[nVertices++] = (ccColor4F){0, 0, 0, 0};
     
     glVertexPointer(2, GL_FLOAT, 0, vertices);
@@ -458,7 +462,7 @@
     background_ = [self spriteWithColor:bgColor textureSize:512];
     
     CGSize winSize = [CCDirector sharedDirector].winSize;
-    background_.position = ccp(winSize.width/2, winSize.height/2);        
+    background_.position = ccp((winSize.width/2), (winSize.height/2));      
     ccTexParams tp = {GL_LINEAR, GL_LINEAR, GL_REPEAT, GL_REPEAT};
     [background_.texture setTexParameters:&tp];
     
@@ -480,7 +484,9 @@
              255);
         color4 = ccc4FFromccc4B(redColor);
     }
-    CCSprite *stripes = [self stripedSpriteWithColor1:color3 color2:color4 textureSize:512 stripes:4];
+
+    float screenFactor = [CCDirector sharedDirector].contentScaleFactor;
+    CCSprite *stripes = [self stripedSpriteWithColor1:color3 color2:color4 textureSize:512 stripes: 4 * screenFactor];
     ccTexParams tp2 = {GL_LINEAR, GL_LINEAR, GL_REPEAT, GL_CLAMP_TO_EDGE};
     [stripes.texture setTexParameters:&tp2];
     terrain_.stripes = stripes;

@@ -165,12 +165,17 @@
 		E53C62F11508288B0047EF66 /* GLES-Render.mm in Sources */ = {isa = PBXBuildFile; fileRef = E53C62F01508288B0047EF66 /* GLES-Render.mm */; };
 		E53C62F41508288B0047EF66 /* blocks.png in Resources */ = {isa = PBXBuildFile; fileRef = E53C62F31508288B0047EF66 /* blocks.png */; };
 		E53C62FD150829970047EF66 /* Terrain.mm in Sources */ = {isa = PBXBuildFile; fileRef = E53C62FC150829970047EF66 /* Terrain.mm */; };
-		E53C62FF15082AC70047EF66 /* Noise.png in Resources */ = {isa = PBXBuildFile; fileRef = E53C62FE15082AC70047EF66 /* Noise.png */; };
 		E54BBBD015445C900093A6CB /* MyContactListener.mm in Sources */ = {isa = PBXBuildFile; fileRef = E54BBBCF15445C900093A6CB /* MyContactListener.mm */; };
 		E55237D315461375005B05D3 /* BallBullet.mm in Sources */ = {isa = PBXBuildFile; fileRef = E55237D215461375005B05D3 /* BallBullet.mm */; };
 		E55237D71558A17A005B05D3 /* background-music-aac.caf in Resources */ = {isa = PBXBuildFile; fileRef = E55237D51558A17A005B05D3 /* background-music-aac.caf */; };
 		E55237D81558A17A005B05D3 /* blip.caf in Resources */ = {isa = PBXBuildFile; fileRef = E55237D61558A17A005B05D3 /* blip.caf */; };
 		E55237E515671693005B05D3 /* HUD.mm in Sources */ = {isa = PBXBuildFile; fileRef = E55237E415671693005B05D3 /* HUD.mm */; };
+		E598D4231579265300DF181A /* SoundMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = E598D4221579265200DF181A /* SoundMenuItem.m */; };
+		E598D42815792A0600DF181A /* buttons-hd.plist in Resources */ = {isa = PBXBuildFile; fileRef = E598D42415792A0600DF181A /* buttons-hd.plist */; };
+		E598D42915792A0600DF181A /* buttons-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E598D42515792A0600DF181A /* buttons-hd.png */; };
+		E598D42A15792A0600DF181A /* buttons.plist in Resources */ = {isa = PBXBuildFile; fileRef = E598D42615792A0600DF181A /* buttons.plist */; };
+		E598D42B15792A0600DF181A /* buttons.png in Resources */ = {isa = PBXBuildFile; fileRef = E598D42715792A0600DF181A /* buttons.png */; };
+		E598D433157934FC00DF181A /* Noise.png in Resources */ = {isa = PBXBuildFile; fileRef = E598D432157934FC00DF181A /* Noise.png */; };
 		E5A42E8B153B5033000CFFB2 /* Obstacle.mm in Sources */ = {isa = PBXBuildFile; fileRef = E5A42E8A153B5033000CFFB2 /* Obstacle.mm */; };
 		E5B7D72D152A647800407342 /* Paddle.mm in Sources */ = {isa = PBXBuildFile; fileRef = E5B7D72C152A647800407342 /* Paddle.mm */; };
 		E5B7D730152BB6D300407342 /* TunnelJoggler.plist in Resources */ = {isa = PBXBuildFile; fileRef = E5B7D72E152BB6D300407342 /* TunnelJoggler.plist */; };
@@ -492,7 +497,6 @@
 		E53C62F31508288B0047EF66 /* blocks.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = blocks.png; path = Resources/blocks.png; sourceTree = "<group>"; };
 		E53C62FB150829970047EF66 /* Terrain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Terrain.h; path = Objects/Terrain.h; sourceTree = "<group>"; };
 		E53C62FC150829970047EF66 /* Terrain.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Terrain.mm; path = Objects/Terrain.mm; sourceTree = "<group>"; };
-		E53C62FE15082AC70047EF66 /* Noise.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Noise.png; sourceTree = "<group>"; };
 		E54BBBCE15445C900093A6CB /* MyContactListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyContactListener.h; sourceTree = "<group>"; };
 		E54BBBCF15445C900093A6CB /* MyContactListener.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MyContactListener.mm; sourceTree = "<group>"; };
 		E55237D115461375005B05D3 /* BallBullet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BallBullet.h; path = Objects/BallBullet.h; sourceTree = "<group>"; };
@@ -501,6 +505,13 @@
 		E55237D61558A17A005B05D3 /* blip.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = blip.caf; path = Resources/blip.caf; sourceTree = "<group>"; };
 		E55237E315671692005B05D3 /* HUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUD.h; sourceTree = "<group>"; };
 		E55237E415671693005B05D3 /* HUD.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HUD.mm; sourceTree = "<group>"; };
+		E598D4211579265200DF181A /* SoundMenuItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoundMenuItem.h; sourceTree = "<group>"; };
+		E598D4221579265200DF181A /* SoundMenuItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SoundMenuItem.m; sourceTree = "<group>"; };
+		E598D42415792A0600DF181A /* buttons-hd.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "buttons-hd.plist"; path = "Resources/buttons/buttons-hd.plist"; sourceTree = "<group>"; };
+		E598D42515792A0600DF181A /* buttons-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "buttons-hd.png"; path = "Resources/buttons/buttons-hd.png"; sourceTree = "<group>"; };
+		E598D42615792A0600DF181A /* buttons.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = buttons.plist; path = Resources/buttons/buttons.plist; sourceTree = "<group>"; };
+		E598D42715792A0600DF181A /* buttons.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = buttons.png; path = Resources/buttons/buttons.png; sourceTree = "<group>"; };
+		E598D432157934FC00DF181A /* Noise.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Noise.png; path = Resources/Noise.png; sourceTree = "<group>"; };
 		E5A42E89153B5033000CFFB2 /* Obstacle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Obstacle.h; sourceTree = "<group>"; };
 		E5A42E8A153B5033000CFFB2 /* Obstacle.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Obstacle.mm; sourceTree = "<group>"; };
 		E5B7D72B152A647800407342 /* Paddle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Paddle.h; path = Objects/Paddle.h; sourceTree = "<group>"; };
@@ -583,6 +594,8 @@
 				E53C612F150828860047EF66 /* Resources */,
 				E53C62E91508288B0047EF66 /* RootViewController.h */,
 				E53C62EA1508288B0047EF66 /* RootViewController.m */,
+				E598D4211579265200DF181A /* SoundMenuItem.h */,
+				E598D4221579265200DF181A /* SoundMenuItem.m */,
 				E53C62E21508288B0047EF66 /* Supporting Files */,
 				E53C625D150828890047EF66 /* TouchJSON */,
 			);
@@ -592,6 +605,11 @@
 		E53C612F150828860047EF66 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				E598D432157934FC00DF181A /* Noise.png */,
+				E598D42415792A0600DF181A /* buttons-hd.plist */,
+				E598D42515792A0600DF181A /* buttons-hd.png */,
+				E598D42615792A0600DF181A /* buttons.plist */,
+				E598D42715792A0600DF181A /* buttons.png */,
 				E55237D51558A17A005B05D3 /* background-music-aac.caf */,
 				E55237D61558A17A005B05D3 /* blip.caf */,
 				E5B7D72E152BB6D300407342 /* TunnelJoggler.plist */,
@@ -599,7 +617,6 @@
 				E511A11E1519638800BE805E /* Ball.png */,
 				E511A11F1519638800BE805E /* Block.png */,
 				E511A1201519638800BE805E /* Paddle.png */,
-				E53C62FE15082AC70047EF66 /* Noise.png */,
 				E53C6130150828860047EF66 /* Default.png */,
 				E53C6132150828860047EF66 /* fps_images.png */,
 				E53C6134150828860047EF66 /* Icon-72.png */,
@@ -1019,7 +1036,6 @@
 				E53C613F150828860047EF66 /* Icon@2x.png in Resources */,
 				E53C6142150828860047EF66 /* iTunesArtwork in Resources */,
 				E53C62F41508288B0047EF66 /* blocks.png in Resources */,
-				E53C62FF15082AC70047EF66 /* Noise.png in Resources */,
 				E511A1211519638800BE805E /* Ball.png in Resources */,
 				E511A1221519638800BE805E /* Block.png in Resources */,
 				E511A1231519638800BE805E /* Paddle.png in Resources */,
@@ -1027,6 +1043,11 @@
 				E5B7D731152BB6D300407342 /* TunnelJoggler.png in Resources */,
 				E55237D71558A17A005B05D3 /* background-music-aac.caf in Resources */,
 				E55237D81558A17A005B05D3 /* blip.caf in Resources */,
+				E598D42815792A0600DF181A /* buttons-hd.plist in Resources */,
+				E598D42915792A0600DF181A /* buttons-hd.png in Resources */,
+				E598D42A15792A0600DF181A /* buttons.plist in Resources */,
+				E598D42B15792A0600DF181A /* buttons.png in Resources */,
+				E598D433157934FC00DF181A /* Noise.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1179,6 +1200,7 @@
 				E54BBBD015445C900093A6CB /* MyContactListener.mm in Sources */,
 				E55237D315461375005B05D3 /* BallBullet.mm in Sources */,
 				E55237E515671693005B05D3 /* HUD.mm in Sources */,
+				E598D4231579265300DF181A /* SoundMenuItem.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

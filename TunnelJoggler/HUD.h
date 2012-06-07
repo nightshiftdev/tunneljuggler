@@ -20,5 +20,6 @@
 -(id) initWithGameNode:(Game*)game;
 -(void) gameOver:(BOOL)didWin touchedFatalObject:(BOOL) fatalObjectTouched;
 -(void) onUpdateScore:(int)newScore;
+-(void) pause;
 
 @end
