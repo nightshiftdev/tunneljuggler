@@ -25,9 +25,9 @@
         [self generateHills];
         [self resetHillVertices];
         
-        _batchNode = [CCSpriteBatchNode batchNodeWithFile:@"TunnelJoggler.png"];
+        _batchNode = [CCSpriteBatchNode batchNodeWithFile:@"sprites.png"];
         [self addChild:_batchNode];
-        [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"TunnelJoggler.plist"];
+        [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"sprites.plist"];
     }
     return self;
 }

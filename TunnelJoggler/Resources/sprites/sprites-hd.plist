@@ -7,41 +7,41 @@
             <key>Ball.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,106},{10,10}}</string>
+                <string>{{2,206},{20,20}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{10,10}}</string>
+                <string>{{0,0},{20,20}}</string>
                 <key>sourceSize</key>
-                <string>{10,10}</string>
+                <string>{20,20}</string>
             </dict>
             <key>Block.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,74},{10,30}}</string>
+                <string>{{2,144},{20,60}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{10,30}}</string>
+                <string>{{0,0},{20,60}}</string>
                 <key>sourceSize</key>
-                <string>{10,30}</string>
+                <string>{20,60}</string>
             </dict>
             <key>Paddle.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,2},{10,70}}</string>
+                <string>{{2,2},{20,140}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{10,70}}</string>
+                <string>{{0,0},{20,140}}</string>
                 <key>sourceSize</key>
-                <string>{10,70}</string>
+                <string>{20,140}</string>
             </dict>
         </dict>
         <key>metadata</key>
@@ -49,13 +49,13 @@
             <key>format</key>
             <integer>2</integer>
             <key>realTextureFileName</key>
-            <string>TunnelJoggler.png</string>
+            <string>sprites-hd.png</string>
             <key>size</key>
-            <string>{16,128}</string>
+            <string>{32,256}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:dc32fab31ddfac236bc7da01dc85be00$</string>
+            <string>$TexturePacker:SmartUpdate:cfdb47a6a387e7e537bc680ec02838ba$</string>
             <key>textureFileName</key>
-            <string>TunnelJoggler.png</string>
+            <string>sprites-hd.png</string>
         </dict>
     </dict>
 </plist>
