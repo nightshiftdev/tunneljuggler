@@ -9,8 +9,15 @@
 #import "Box2D.h"
 #import "GLES-Render.h"
 
+#define IPAD NO
+//#define IPAD_SCREEN
+
 #define kMaxHillKeyPoints 3000
+#ifdef IPAD_SCREEN
+#define kHillSegmentWidth 8
+#else
 #define kHillSegmentWidth 5
+#endif
 
 #define kMaxHillVertices 800
 #define kMaxBorderVertices 800

@@ -166,6 +166,7 @@
 		E55237D71558A17A005B05D3 /* background-music-aac.caf in Resources */ = {isa = PBXBuildFile; fileRef = E55237D51558A17A005B05D3 /* background-music-aac.caf */; };
 		E55237D81558A17A005B05D3 /* blip.caf in Resources */ = {isa = PBXBuildFile; fileRef = E55237D61558A17A005B05D3 /* blip.caf */; };
 		E55237E515671693005B05D3 /* HUD.mm in Sources */ = {isa = PBXBuildFile; fileRef = E55237E415671693005B05D3 /* HUD.mm */; };
+		E57047321590AD1F009991B2 /* Noise_iPad.png in Resources */ = {isa = PBXBuildFile; fileRef = E57047311590AD1F009991B2 /* Noise_iPad.png */; };
 		E598D4231579265300DF181A /* SoundMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = E598D4221579265200DF181A /* SoundMenuItem.m */; };
 		E598D42815792A0600DF181A /* buttons-hd.plist in Resources */ = {isa = PBXBuildFile; fileRef = E598D42415792A0600DF181A /* buttons-hd.plist */; };
 		E598D42915792A0600DF181A /* buttons-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E598D42515792A0600DF181A /* buttons-hd.png */; };
@@ -499,6 +500,7 @@
 		E55237D61558A17A005B05D3 /* blip.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = blip.caf; path = Resources/blip.caf; sourceTree = "<group>"; };
 		E55237E315671692005B05D3 /* HUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUD.h; sourceTree = "<group>"; };
 		E55237E415671693005B05D3 /* HUD.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HUD.mm; sourceTree = "<group>"; };
+		E57047311590AD1F009991B2 /* Noise_iPad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Noise_iPad.png; path = Resources/Noise_iPad.png; sourceTree = "<group>"; };
 		E598D4211579265200DF181A /* SoundMenuItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoundMenuItem.h; sourceTree = "<group>"; };
 		E598D4221579265200DF181A /* SoundMenuItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SoundMenuItem.m; sourceTree = "<group>"; };
 		E598D42415792A0600DF181A /* buttons-hd.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "buttons-hd.plist"; path = "Resources/buttons/buttons-hd.plist"; sourceTree = "<group>"; };
@@ -618,6 +620,7 @@
 				E53C6140150828860047EF66 /* Info.plist */,
 				E53C6141150828860047EF66 /* iTunesArtwork */,
 				E598D432157934FC00DF181A /* Noise.png */,
+				E57047311590AD1F009991B2 /* Noise_iPad.png */,
 				E598D43615822F5500DF181A /* sprites-hd.plist */,
 				E598D43715822F5500DF181A /* sprites-hd.png */,
 				E598D43815822F5500DF181A /* sprites.plist */,
@@ -1040,6 +1043,7 @@
 				E598D43B15822F5500DF181A /* sprites-hd.png in Resources */,
 				E598D43C15822F5500DF181A /* sprites.plist in Resources */,
 				E598D43D15822F5500DF181A /* sprites.png in Resources */,
+				E57047321590AD1F009991B2 /* Noise_iPad.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1245,8 +1249,10 @@
 				GCC_PREFIX_HEADER = TunnelJoggler/Prefix.pch;
 				"GCC_THUMB_SUPPORT[arch=armv6]" = "";
 				INFOPLIST_FILE = TunnelJoggler/Resources/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_LDFLAGS = "-lz";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = TunnelJoggler/libs;
 				WRAPPER_EXTENSION = app;
 			};
@@ -1261,8 +1267,10 @@
 				GCC_PREFIX_HEADER = TunnelJoggler/Prefix.pch;
 				"GCC_THUMB_SUPPORT[arch=armv6]" = "";
 				INFOPLIST_FILE = TunnelJoggler/Resources/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_LDFLAGS = "-lz";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = TunnelJoggler/libs;
 				VALIDATE_PRODUCT = YES;
 				WRAPPER_EXTENSION = app;

@@ -322,6 +322,9 @@
     glEnable(GL_TEXTURE_2D);
     
     CCSprite *noise = [CCSprite spriteWithFile:@"Noise.png"];
+    if (IPAD) {
+        noise = [CCSprite spriteWithFile:@"Noise_iPad.png"];
+    }
     [noise setBlendFunc:(ccBlendFunc){GL_DST_COLOR, GL_ZERO}];
     noise.position = ccp(textureSize/2, textureSize/2);
     [noise visit];
@@ -420,6 +423,9 @@
     
     // Layer 2: Noise    
     CCSprite *noise = [CCSprite spriteWithFile:@"Noise.png"];
+    if (IPAD) {
+        noise = [CCSprite spriteWithFile:@"Noise_iPad.png"];
+    }
     [noise setBlendFunc:(ccBlendFunc){GL_DST_COLOR, GL_ZERO}];
     noise.position = ccp(textureSize/2, textureSize/2);
     [noise visit];        
@@ -459,7 +465,13 @@
              255);
         bgColor = ccc4FFromccc4B(redColor);
     }
-    background_ = [self spriteWithColor:bgColor textureSize:512];
+    
+    float textureSize = 512;
+    if (IPAD) {
+        textureSize = 1024;
+    }
+    
+    background_ = [self spriteWithColor:bgColor textureSize:textureSize];
     
     CGSize winSize = [CCDirector sharedDirector].winSize;
     background_.position = ccp((winSize.width/2), (winSize.height/2));      
