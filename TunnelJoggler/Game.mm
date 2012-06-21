@@ -332,7 +332,7 @@
     glEnable(GL_TEXTURE_2D);
     
     CCSprite *noise = [CCSprite spriteWithFile:@"Noise.png"];
-    if (IPAD) {
+    if (IPAD || [CCDirector sharedDirector].contentScaleFactor == 2) {
         noise = [CCSprite spriteWithFile:@"Noise_iPad.png"];
     }
     [noise setBlendFunc:(ccBlendFunc){GL_DST_COLOR, GL_ZERO}];
@@ -433,7 +433,7 @@
     
     // Layer 2: Noise    
     CCSprite *noise = [CCSprite spriteWithFile:@"Noise.png"];
-    if (IPAD) {
+    if (IPAD || [CCDirector sharedDirector].contentScaleFactor == 2) {
         noise = [CCSprite spriteWithFile:@"Noise_iPad.png"];
     }
     [noise setBlendFunc:(ccBlendFunc){GL_DST_COLOR, GL_ZERO}];
