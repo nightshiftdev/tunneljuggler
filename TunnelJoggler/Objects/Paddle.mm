@@ -80,7 +80,7 @@
     return body_;
 }
 
-- (void) sethorizontalForce_:(float)force {
+- (void) setHorizontalForce_:(float)force {
     horizontalForce_ = force;
 }
 

@@ -130,9 +130,11 @@
         for (int index = 0; index < [ballBullets_ count]; index++) {
             BallBullet *bb = [ballBullets_ objectAtIndex: index];
             float bulletXPos = bb.body->GetPosition().x * PTM_RATIO;
-            if (bulletXPos >= paddle_.position.x) {
+            if (bulletXPos >= paddle_.position.x - (2*PADDLE_SCREEN_POS_OFFSET)) {
                 [bb update: dt];
             } else {
+                CCSprite *sprite = (CCSprite *)bb.body->GetUserData();
+                sprite.visible = NO;
                 [terrain_ removeChild:bb cleanup:YES];
                 world_->DestroyBody(bb.body);
                 [ballBullets_ removeObject: bb];
@@ -153,9 +155,17 @@
             }
         }
         
-        float offset = paddle_.position.x - paddle_.contentSize.width;
+        
+        float offset = paddle_.position.x - paddle_.contentSize.height - PADDLE_SCREEN_POS_OFFSET;
+        if (offset < 0) {
+            offset = 0;
+            offset += dt;
+        }
+        
+//        NSLog(@"offset %f", offset);
         CGSize textureSize = background_.textureRect.size;
         [background_ setTextureRect:CGRectMake(offset, 0, textureSize.width, textureSize.height)];
+
         [terrain_ setOffsetX:offset];
         
         

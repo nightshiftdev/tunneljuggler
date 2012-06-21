@@ -14,6 +14,7 @@
 
 #define PTM_RATIO   32.0
 #define SOFTLAYER NO
+static const float PADDLE_SCREEN_POS_OFFSET = 88;
 
 // game state
 typedef enum
