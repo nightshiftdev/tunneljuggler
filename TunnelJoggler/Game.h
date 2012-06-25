@@ -14,7 +14,9 @@
 
 #define PTM_RATIO   32.0
 #define SOFTLAYER NO
-static const float PADDLE_SCREEN_POS_OFFSET = 88;
+static const float PADDLE_SCREEN_POS_OFFSET = 60;
+static const double UPDATE_INTERVAL = 1.0f/60.0f;
+static const double MAX_CYCLES_PER_FRAME = 5;
 
 // game state
 typedef enum
@@ -38,12 +40,14 @@ typedef enum
     MyContactListener *contactListener_;
     GameState gameState_;
     HUD *hud_;
+    double timeAccumulator_;
 }
 
 +(CCScene *) scene;
-- (void)setupWorld;
-- (void)genBackground;
-- (void)createBallBulletAtPosition:(CGPoint)position;
+-(void)setupWorld;
+-(void)genBackground;
+-(void)createBallBulletAtPosition:(CGPoint)position;
+-(void)resetGame;
 
 @property (readwrite,nonatomic) GameState gameState;
 @property (readwrite, nonatomic, assign) HUD *hud;

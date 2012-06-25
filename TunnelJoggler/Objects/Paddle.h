@@ -14,6 +14,7 @@
     float horizontalForce_;
     float decreaseRate_;
     BOOL decreaseHorizontalForceToZero_;
+    float offset_;
 }
 
 - (id)initWithWorld:(b2World *)world;
@@ -22,5 +23,6 @@
 
 @property (assign, nonatomic) float horizontalForce;
 @property (assign, nonatomic) BOOL decreaseHorizontalForceToZero;
+@property (nonatomic, assign) float offset;
 
 @end

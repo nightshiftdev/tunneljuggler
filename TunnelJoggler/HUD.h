@@ -13,7 +13,7 @@
 @interface HUD : CCLayer {
     Game *game_;
     CCLabelBMFont *score_;
-    CCMenu *pauseMenu_;
+    CCMenu *menu_;
 }
 
 +(id) HUDWithGameNode:(Game*)game;

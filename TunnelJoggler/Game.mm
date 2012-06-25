@@ -42,6 +42,7 @@
         
         addObstacleInterval_ = 5.0;
         addBonusBallInterval_ = 15.0;
+        timeAccumulator_ = 0;
         
         contactListener_ = new MyContactListener();
 		world_->SetContactListener(contactListener_);
@@ -51,6 +52,16 @@
         [self scheduleUpdate];
     }
     return self;
+}
+
+-(void)resetGame {
+    timeAccumulator_ = 0;
+    CGSize winSize = [CCDirector sharedDirector].winSize;
+    paddle_.position = CGPointMake(0, winSize.height/2/PTM_RATIO);
+    paddle_.offset = 0;
+    addObstacleInterval_ = 5.0;
+    addBonusBallInterval_ = 15.0;
+    [self createBallBulletAtPosition:ccp(winSize.width/2, winSize.height)];
 }
 
 - (void) onEnterTransitionDidFinish {
@@ -108,19 +119,15 @@
         [self addNextObstacle: dt];
         [self addNextBounusBall:dt];
         
-        static double UPDATE_INTERVAL = 1.0f/60.0f;
-        static double MAX_CYCLES_PER_FRAME = 5;
-        static double timeAccumulator = 0;
-        
-        timeAccumulator += dt;    
-        if (timeAccumulator > (MAX_CYCLES_PER_FRAME * UPDATE_INTERVAL)) {
-            timeAccumulator = UPDATE_INTERVAL;
+        timeAccumulator_ += dt;
+        if (timeAccumulator_ > (MAX_CYCLES_PER_FRAME * UPDATE_INTERVAL)) {
+            timeAccumulator_ = UPDATE_INTERVAL;
         }    
         
         int32 velocityIterations = 3;
         int32 positionIterations = 2;
-        while (timeAccumulator >= UPDATE_INTERVAL) {        
-            timeAccumulator -= UPDATE_INTERVAL;        
+        while (timeAccumulator_ >= UPDATE_INTERVAL) {        
+            timeAccumulator_ -= UPDATE_INTERVAL;
             world_->Step(UPDATE_INTERVAL, 
                          velocityIterations, positionIterations);        
             world_->ClearForces();
@@ -159,7 +166,7 @@
         float offset = paddle_.position.x - paddle_.contentSize.height - PADDLE_SCREEN_POS_OFFSET;
         if (offset < 0) {
             offset = 0;
-            offset += dt;
+            offset += 1;
         }
         
 //        NSLog(@"offset %f", offset);
@@ -214,14 +221,12 @@
                     if (std::find(toDestroy.begin(), toDestroy.end(), bodyA) == toDestroy.end()) {
                         toDestroy.push_back(bodyA); 
                         destroyPaddle = YES;
-//                        NSLog(@"GAME OVER paddle touched obstacle bodyB");
                     }
                 }
                 else if (spriteA.tag == 3 && spriteB.tag == 2) {
                     if (std::find(toDestroy.begin(), toDestroy.end(), bodyA) == toDestroy.end()) {
                         toDestroy.push_back(bodyA);
                         destroyPaddle = YES;
-//                        NSLog(@"GAME OVER paddle touched obstacle bodyA");
                     }
                 }
                 
@@ -254,6 +259,7 @@
             [terrain_ removeChild: paddle_ cleanup: YES];
             world_->DestroyBody(paddle_.body);
             self.gameState = kGameStatePaused;
+            [self.hud gameOver: NO touchedFatalObject: YES];
         }
         
     }

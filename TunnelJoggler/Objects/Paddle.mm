@@ -15,11 +15,12 @@
 
 @synthesize horizontalForce = horizontalForce_;
 @synthesize decreaseHorizontalForceToZero = decreaseHorizontalForceToZero_;
+@synthesize offset = offset_;
 
 - (void)createBody {
     CGSize winSize = [CCDirector sharedDirector].winSize;
     CGFloat startPosition = self.contentSize.width;
-    
+    self.offset = 0;
     // Create paddle body
     b2BodyDef paddleBodyDef;
     paddleBodyDef.type = b2_dynamicBody;
@@ -69,10 +70,8 @@
             horizontalForce_ = 0;
         }
     }
-    
-    static float offset = 0;
-    offset += 1;
-    body_->SetLinearVelocity(b2Vec2(-(body_->GetPosition().x*PTM_RATIO - offset), horizontalForce_));
+    self.offset += 1;
+    body_->SetLinearVelocity(b2Vec2(-(body_->GetPosition().x*PTM_RATIO - self.offset), horizontalForce_));
     self.position = ccp(body_->GetPosition().x*PTM_RATIO, body_->GetPosition().y*PTM_RATIO);
 }
 
