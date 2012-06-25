@@ -166,6 +166,10 @@
 		E55237D71558A17A005B05D3 /* background-music-aac.caf in Resources */ = {isa = PBXBuildFile; fileRef = E55237D51558A17A005B05D3 /* background-music-aac.caf */; };
 		E55237D81558A17A005B05D3 /* blip.caf in Resources */ = {isa = PBXBuildFile; fileRef = E55237D61558A17A005B05D3 /* blip.caf */; };
 		E55237E515671693005B05D3 /* HUD.mm in Sources */ = {isa = PBXBuildFile; fileRef = E55237E415671693005B05D3 /* HUD.mm */; };
+		E55E3D2F1598A39300CA5894 /* sticky-hd.fnt in Resources */ = {isa = PBXBuildFile; fileRef = E55E3D2B1598A39300CA5894 /* sticky-hd.fnt */; };
+		E55E3D301598A39300CA5894 /* sticky-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E55E3D2C1598A39300CA5894 /* sticky-hd.png */; };
+		E55E3D311598A39300CA5894 /* sticky.fnt in Resources */ = {isa = PBXBuildFile; fileRef = E55E3D2D1598A39300CA5894 /* sticky.fnt */; };
+		E55E3D321598A39300CA5894 /* sticky.png in Resources */ = {isa = PBXBuildFile; fileRef = E55E3D2E1598A39300CA5894 /* sticky.png */; };
 		E57047321590AD1F009991B2 /* Noise_iPad.png in Resources */ = {isa = PBXBuildFile; fileRef = E57047311590AD1F009991B2 /* Noise_iPad.png */; };
 		E598D4231579265300DF181A /* SoundMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = E598D4221579265200DF181A /* SoundMenuItem.m */; };
 		E598D42815792A0600DF181A /* buttons-hd.plist in Resources */ = {isa = PBXBuildFile; fileRef = E598D42415792A0600DF181A /* buttons-hd.plist */; };
@@ -500,6 +504,10 @@
 		E55237D61558A17A005B05D3 /* blip.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = blip.caf; path = Resources/blip.caf; sourceTree = "<group>"; };
 		E55237E315671692005B05D3 /* HUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HUD.h; sourceTree = "<group>"; };
 		E55237E415671693005B05D3 /* HUD.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HUD.mm; sourceTree = "<group>"; };
+		E55E3D2B1598A39300CA5894 /* sticky-hd.fnt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "sticky-hd.fnt"; path = "Resources/fonts/sticky-hd.fnt"; sourceTree = "<group>"; };
+		E55E3D2C1598A39300CA5894 /* sticky-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "sticky-hd.png"; path = "Resources/fonts/sticky-hd.png"; sourceTree = "<group>"; };
+		E55E3D2D1598A39300CA5894 /* sticky.fnt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = sticky.fnt; path = Resources/fonts/sticky.fnt; sourceTree = "<group>"; };
+		E55E3D2E1598A39300CA5894 /* sticky.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = sticky.png; path = Resources/fonts/sticky.png; sourceTree = "<group>"; };
 		E57047311590AD1F009991B2 /* Noise_iPad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Noise_iPad.png; path = Resources/Noise_iPad.png; sourceTree = "<group>"; };
 		E598D4211579265200DF181A /* SoundMenuItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoundMenuItem.h; sourceTree = "<group>"; };
 		E598D4221579265200DF181A /* SoundMenuItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SoundMenuItem.m; sourceTree = "<group>"; };
@@ -625,6 +633,10 @@
 				E598D43715822F5500DF181A /* sprites-hd.png */,
 				E598D43815822F5500DF181A /* sprites.plist */,
 				E598D43915822F5500DF181A /* sprites.png */,
+				E55E3D2B1598A39300CA5894 /* sticky-hd.fnt */,
+				E55E3D2C1598A39300CA5894 /* sticky-hd.png */,
+				E55E3D2D1598A39300CA5894 /* sticky.fnt */,
+				E55E3D2E1598A39300CA5894 /* sticky.png */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1044,6 +1056,10 @@
 				E598D43C15822F5500DF181A /* sprites.plist in Resources */,
 				E598D43D15822F5500DF181A /* sprites.png in Resources */,
 				E57047321590AD1F009991B2 /* Noise_iPad.png in Resources */,
+				E55E3D2F1598A39300CA5894 /* sticky-hd.fnt in Resources */,
+				E55E3D301598A39300CA5894 /* sticky-hd.png in Resources */,
+				E55E3D311598A39300CA5894 /* sticky.fnt in Resources */,
+				E55E3D321598A39300CA5894 /* sticky.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -240,6 +240,7 @@
                 CCSprite *sprite = (CCSprite *) body->GetUserData();
                 sprite.visible = NO;
                 [[SimpleAudioEngine sharedEngine] playEffect:@"blip.caf"];
+                [self.hud onUpdateScore:1];
                 [terrain_ removeChild:sprite cleanup:YES];
                 for (int index = 0; index < [obstacles_ count]; index++) {
                     Obstacle *o = [obstacles_ objectAtIndex: index];

@@ -12,11 +12,13 @@
 
 @interface HUD()
 @property (nonatomic, assign) BOOL isGameOver;
+@property (nonatomic, assign) int score;
 @end
 
 @implementation HUD
 
 @synthesize isGameOver;
+@synthesize score;
 
 +(id) HUDWithGameNode:(Game*)game {
 	return [[[self alloc] initWithGameNode:game] autorelease];
@@ -32,7 +34,7 @@
 		[[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"buttons.plist"];
 //		[[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"sprites.plist"];
 		
-		CCLayerColor *color = [CCLayerColor layerWithColor:ccc4(32,32,32,32) width:40 height:s.height];
+		CCLayerColor *color = [CCLayerColor layerWithColor:ccc4(0,0,0,0) width:40 height:s.height];
 		[color setPosition:ccp(s.width-40,0)];
 		[self addChild:color z:0];
         
@@ -42,6 +44,14 @@
 		[self addChild:menu z:1];
 		[menu setPosition:ccp(s.width-20, s.height-30)];
         self.isGameOver = NO;
+        
+        
+        // Score Points
+		scoreLabel_ = [CCLabelBMFont labelWithString:[NSString stringWithFormat:@"%d", self.score] fntFile:@"sticky.fnt"];
+		[scoreLabel_.texture setAliasTexParameters];
+		[self addChild:scoreLabel_ z:1];
+		[scoreLabel_ setPosition:ccp(s.width - 20, s.height/2)];
+        scoreLabel_.rotation = 90;
 	}
 	return self;
 }
@@ -59,7 +69,13 @@
 }
 
 -(void) onUpdateScore:(int)newScore {
-    
+	self.score++;
+	[scoreLabel_ setString: [NSString stringWithFormat:@"%d", self.score]];
+	[scoreLabel_ stopAllActions];
+	id scaleTo = [CCScaleTo actionWithDuration:0.1f scale:1.2f];
+	id scaleBack = [CCScaleTo actionWithDuration:0.1f scale:1];
+	id seq = [CCSequence actions:scaleTo, scaleBack, nil];
+	[scoreLabel_ runAction:seq];
 }
 
 -(void) pause {
