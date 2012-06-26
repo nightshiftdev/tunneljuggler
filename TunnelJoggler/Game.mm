@@ -59,6 +59,7 @@
     CGSize winSize = [CCDirector sharedDirector].winSize;
     paddle_.position = CGPointMake(0, winSize.height/2/PTM_RATIO);
     paddle_.offset = 0;
+    paddle_.paddleSpeed = MIN_PADDLE_SPEED;
     addObstacleInterval_ = 5.0;
     addBonusBallInterval_ = 15.0;
     [self createBallBulletAtPosition:ccp(winSize.width/2, winSize.height)];
@@ -92,6 +93,7 @@
 - (void) addNextObstacle:(ccTime)dt {
     CGSize winSize = [CCDirector sharedDirector].winSize;
     if ((addObstacleInterval_ -= dt) < 0) {
+        [paddle_ increasePaddleSpeed];
         addObstacleInterval_ = 5.0;
         float randomizeObstaclePos = arc4random() % 100;
         if ([self useNegativeSign]) {

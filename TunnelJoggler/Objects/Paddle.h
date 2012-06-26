@@ -7,6 +7,9 @@
 #import "cocos2d.h"
 #import "Box2D.h"
 
+static const float MAX_PADDLE_SPEED = 1.5;
+static const float MIN_PADDLE_SPEED = 0.5;
+
 @interface Paddle : CCSprite {
     b2World *world_;
     b2Body *body_;
@@ -20,9 +23,11 @@
 - (id)initWithWorld:(b2World *)world;
 - (void)update:(ccTime)dt;
 - (b2Body *) body;
+- (void)increasePaddleSpeed;
 
 @property (assign, nonatomic) float horizontalForce;
 @property (assign, nonatomic) BOOL decreaseHorizontalForceToZero;
 @property (nonatomic, assign) float offset;
+@property (nonatomic, assign) float paddleSpeed;
 
 @end

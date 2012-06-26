@@ -114,7 +114,6 @@
 	[[CCDirector sharedDirector] runWithScene: [Game scene]];
 }
 
-
 - (void)applicationWillResignActive:(UIApplication *)application {
 	[[CCDirector sharedDirector] pause];
 }
