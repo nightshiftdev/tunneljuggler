@@ -10,6 +10,7 @@
 
 @synthesize gameState = gameState_;
 @synthesize hud = _hud;
+@synthesize terrain = terrain_;
 
 +(CCScene *) scene {
 	CCScene *scene = [CCScene node];
@@ -77,7 +78,7 @@
 }
 
 - (void)createBallBulletAtPosition:(CGPoint)position {
-    BallBullet *bb = [[BallBullet alloc] initWithWorld: world_ position: position];
+    BallBullet *bb = [[[BallBullet alloc] initWithWorld: world_ position: position game: self] autorelease];
     [terrain_.batchNode addChild: bb];
     [ballBullets_ addObject: bb];
 }
@@ -142,6 +143,7 @@
             if (bulletXPos >= paddle_.position.x - (2*PADDLE_SCREEN_POS_OFFSET)) {
                 [bb update: dt];
             } else {
+                [bb resetEmitter];
                 CCSprite *sprite = (CCSprite *)bb.body->GetUserData();
                 sprite.visible = NO;
                 [terrain_ removeChild:bb cleanup:YES];
@@ -176,7 +178,6 @@
         [background_ setTextureRect:CGRectMake(offset, 0, textureSize.width, textureSize.height)];
 
         [terrain_ setOffsetX:offset];
-        
         
         std::vector<b2Body *>toDestroy;
         std::vector<MyContact>::iterator pos;

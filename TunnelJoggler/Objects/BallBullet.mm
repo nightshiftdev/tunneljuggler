@@ -11,7 +11,10 @@
 
 @implementation BallBullet
 
-- (void)createBodyAtPosition: (CGPoint) position {    
+@synthesize emitter;
+@synthesize game;
+
+- (void)createBodyAtPosition: (CGPoint) position {
     // Create obstacle body
     b2BodyDef ballBulletBodyDef;
     ballBulletBodyDef.type = b2_dynamicBody;
@@ -31,10 +34,17 @@
     ballBulletShapeDef.friction = 0.1f;
     ballBulletShapeDef.restitution = 1.0f;
     body_->CreateFixture(&ballBulletShapeDef);
+//  CCParticleExplosion CCParticleSun CCParticleGalaxy CCParticleSmoke CCParticleRain
+//  CCParticleFlower CCParticleFire CCParticleSpiral CCParticleSnow
+    self.emitter = [CCParticleFlower node];
+	[self.game addChild: emitter z:1];
+    self.emitter.scale = 0.2;
+    self.emitter.positionType = kCCPositionTypeRelative;
 }
 
-- (id)initWithWorld:(b2World *)world position: (CGPoint) position {
+- (id)initWithWorld:(b2World *)world position: (CGPoint) position game: (Game *) g {
     if ((self = [super initWithSpriteFrameName:@"Ball.png"])) {
+        self.game = g;
         world_ = world;
         [self createBodyAtPosition:position];
     }
@@ -43,10 +53,25 @@
 
 - (void)update:(ccTime)dt {
     self.position = ccp(body_->GetPosition().x*PTM_RATIO, body_->GetPosition().y*PTM_RATIO);
+    float x = self.position.x + self.game.terrain.position.x;
+    self.emitter.position = CGPointMake(x, self.position.y);
 }
 
 - (b2Body *) body {
     return body_;
+}
+
+- (void)resetEmitter
+{
+    [self.game removeChild:self.emitter cleanup:YES];
+}
+
+- (void) dealloc
+{
+	[emitter release];
+    [game release];
+	// don't forget to call "super dealloc"
+	[super dealloc];	
 }
 
 @end

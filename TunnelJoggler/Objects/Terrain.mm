@@ -21,7 +21,7 @@
 - (id)initWithWorld:(b2World *)world {
     if ((self = [super init])) {
         _world = world;
-        [self setupDebugDraw];
+//        [self setupDebugDraw];
         [self generateHills];
         [self resetHillVertices];
         

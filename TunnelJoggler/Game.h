@@ -51,5 +51,6 @@ typedef enum
 
 @property (readwrite,nonatomic) GameState gameState;
 @property (readwrite, nonatomic, assign) HUD *hud;
+@property (readonly, nonatomic) Terrain *terrain;
 
 @end
