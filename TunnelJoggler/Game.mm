@@ -220,20 +220,23 @@
                         toDestroy.push_back(bodyA);
 //                        NSLog(@"ball touched block bodyA");
                     }
-                }
-                else if (spriteA.tag == 2 && spriteB.tag == 3) {
+                } else if (spriteA.tag == 2 && spriteB.tag == 3) {
                     if (std::find(toDestroy.begin(), toDestroy.end(), bodyA) == toDestroy.end()) {
                         toDestroy.push_back(bodyA); 
                         destroyPaddle = YES;
                     }
-                }
-                else if (spriteA.tag == 3 && spriteB.tag == 2) {
+                } else if (spriteA.tag == 3 && spriteB.tag == 2) {
                     if (std::find(toDestroy.begin(), toDestroy.end(), bodyA) == toDestroy.end()) {
                         toDestroy.push_back(bodyA);
                         destroyPaddle = YES;
                     }
+                } else if (spriteA.tag == 1 && spriteB.tag == 3) {
+                    // ball touched paddle
+                    [self.hud onUpdateScore:1];
+                } else if (spriteA.tag == 3 && spriteB.tag == 1) {
+                    // ball touched paddle
+                    [self.hud onUpdateScore:1];
                 }
-                
             }                 
         }
         
@@ -244,7 +247,7 @@
                 CCSprite *sprite = (CCSprite *) body->GetUserData();
                 sprite.visible = NO;
                 [[SimpleAudioEngine sharedEngine] playEffect:@"blip.caf"];
-                [self.hud onUpdateScore:1];
+                [self.hud onUpdateScore:10];
                 [terrain_ removeChild:sprite cleanup:YES];
                 for (int index = 0; index < [obstacles_ count]; index++) {
                     Obstacle *o = [obstacles_ objectAtIndex: index];

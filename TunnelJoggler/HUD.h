@@ -19,7 +19,7 @@
 +(id) HUDWithGameNode:(Game*)game;
 -(id) initWithGameNode:(Game*)game;
 -(void) gameOver:(BOOL)didWin touchedFatalObject:(BOOL) fatalObjectTouched;
--(void) onUpdateScore:(int)newScore;
+-(void) onUpdateScore:(int)addScore;
 -(void) pause;
 
 @end

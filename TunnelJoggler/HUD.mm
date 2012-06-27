@@ -68,8 +68,8 @@
 	[self addChild:menu_ z:10];
 }
 
--(void) onUpdateScore:(int)newScore {
-	self.score++;
+-(void) onUpdateScore:(int)addScore {
+	self.score += addScore;
 	[scoreLabel_ setString: [NSString stringWithFormat:@"%d", self.score]];
 	[scoreLabel_ stopAllActions];
 	id scaleTo = [CCScaleTo actionWithDuration:0.1f scale:1.2f];
