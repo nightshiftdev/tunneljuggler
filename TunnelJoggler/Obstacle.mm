@@ -11,6 +11,9 @@
 
 @implementation Obstacle
 
+@synthesize emitter;
+@synthesize game;
+
 - (void)createBodyAtPosition: (CGPoint) position {    
     // Create obstacle body
     b2BodyDef paddleBodyDef;
@@ -34,8 +37,9 @@
     body_->CreateFixture(&paddleShapeDef);
 }
 
-- (id)initWithWorld:(b2World *)world position: (CGPoint) position {
+- (id)initWithWorld:(b2World *)world position: (CGPoint) position game: (Game *) g {
     if ((self = [super initWithSpriteFrameName:@"Block.png"])) {
+        self.game = g;
         world_ = world;
         [self createBodyAtPosition:position];
     }
@@ -43,15 +47,28 @@
 }
 
 - (void)update:(ccTime)dt {
-    static float offset = 0;
-    offset += 1;
-    
     body_->SetLinearVelocity(b2Vec2(0, 0));
     self.position = ccp(body_->GetPosition().x*PTM_RATIO, body_->GetPosition().y*PTM_RATIO);
 }
 
 - (b2Body *) body {
     return body_;
+}
+
+- (void)explode {
+    self.emitter = [CCParticleExplosion node];
+	[self.game addChild: emitter z:1];
+    self.emitter.scale = 0.5;
+    self.emitter.positionType = kCCPositionTypeRelative;
+    float x = self.position.x + self.game.terrain.position.x;
+    self.emitter.life = 0.1;
+    self.emitter.position = CGPointMake(x, self.position.y);
+}
+
+- (void) dealloc {
+	[emitter release];
+    [game release];
+	[super dealloc];	
 }
 
 @end

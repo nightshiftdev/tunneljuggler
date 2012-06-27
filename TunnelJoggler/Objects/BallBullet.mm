@@ -38,7 +38,7 @@
 //  CCParticleFlower CCParticleFire CCParticleSpiral CCParticleSnow
     self.emitter = [CCParticleFlower node];
 	[self.game addChild: emitter z:1];
-    self.emitter.scale = 0.2;
+    self.emitter.scale = 0.1;
     self.emitter.positionType = kCCPositionTypeRelative;
 }
 
@@ -61,16 +61,13 @@
     return body_;
 }
 
-- (void)resetEmitter
-{
+- (void)resetEmitter {
     [self.game removeChild:self.emitter cleanup:YES];
 }
 
-- (void) dealloc
-{
+- (void) dealloc {
 	[emitter release];
     [game release];
-	// don't forget to call "super dealloc"
 	[super dealloc];	
 }
 

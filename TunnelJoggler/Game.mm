@@ -100,8 +100,10 @@
         if ([self useNegativeSign]) {
             randomizeObstaclePos *= -1;
         }
-        Obstacle *obstacle = [[[Obstacle alloc] initWithWorld: world_ position: CGPointMake(paddle_.position.x + winSize.width, 
-                                                                                            (winSize.height/2) + randomizeObstaclePos)] 
+        Obstacle *obstacle = [[[Obstacle alloc] initWithWorld: world_
+                                                     position: CGPointMake(paddle_.position.x + winSize.width,
+                                                                           (winSize.height/2) + randomizeObstaclePos)
+                                                         game: self]
                               autorelease];
         [obstacles_ addObject: obstacle];
         [terrain_.batchNode addChild: obstacle];
@@ -158,8 +160,7 @@
             float obstacleXPos = o.body->GetPosition().x * PTM_RATIO;
             if (obstacleXPos >= paddle_.position.x) {
                 [o update:dt];
-            }
-            else {
+            } else {
                 [terrain_ removeChild:o cleanup:YES];
                 world_->DestroyBody(o.body);
                 [obstacles_ removeObject: o];
@@ -248,6 +249,7 @@
                 for (int index = 0; index < [obstacles_ count]; index++) {
                     Obstacle *o = [obstacles_ objectAtIndex: index];
                     if (o.body == body) {
+                        [o explode];
                         CGPoint createBonusBulletPosition = CGPointMake(o.body->GetPosition().x * PTM_RATIO, o.body->GetPosition().y * PTM_RATIO);
                         [self createBallBulletAtPosition: createBonusBulletPosition];
                         [obstacles_ removeObject: o];
