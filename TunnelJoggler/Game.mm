@@ -142,7 +142,7 @@
         for (int index = 0; index < [ballBullets_ count]; index++) {
             BallBullet *bb = [ballBullets_ objectAtIndex: index];
             float bulletXPos = bb.body->GetPosition().x * PTM_RATIO;
-            if (bulletXPos >= paddle_.position.x - (2*PADDLE_SCREEN_POS_OFFSET)) {
+            if (bulletXPos >= paddle_.position.x - (4*PADDLE_SCREEN_POS_OFFSET)) {
                 [bb update: dt];
             } else {
                 [bb resetEmitter];
@@ -158,9 +158,11 @@
         for (int index = 0; index < [obstacles_ count]; index++) {
             Obstacle *o = [obstacles_ objectAtIndex: index];
             float obstacleXPos = o.body->GetPosition().x * PTM_RATIO;
-            if (obstacleXPos >= paddle_.position.x) {
+            if (obstacleXPos >= paddle_.position.x - (4*PADDLE_SCREEN_POS_OFFSET)) {
                 [o update:dt];
             } else {
+                CCSprite *sprite = (CCSprite *)o.body->GetUserData();
+                sprite.visible = NO;
                 [terrain_ removeChild:o cleanup:YES];
                 world_->DestroyBody(o.body);
                 [obstacles_ removeObject: o];
