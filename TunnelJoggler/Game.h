@@ -14,7 +14,7 @@
 
 #define PTM_RATIO   32.0
 #define SOFTLAYER NO
-static const float PADDLE_SCREEN_POS_OFFSET = 60;
+static const float PADDLE_SCREEN_POS_OFFSET = 30;
 static const double UPDATE_INTERVAL = 1.0f/60.0f;
 static const double MAX_CYCLES_PER_FRAME = 5;
 
