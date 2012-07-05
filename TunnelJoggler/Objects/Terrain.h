@@ -8,11 +8,14 @@
 #import "cocos2d.h"
 #import "Box2D.h"
 #import "GLES-Render.h"
+#import "TerrainObserver.h"
 
 #define IPAD NO
 //#define IPAD_SCREEN
 
-#define kMaxHillKeyPoints 3000
+
+// controls the length of the level
+#define kMaxHillKeyPoints 300
 #ifdef IPAD_SCREEN
 #define kHillSegmentWidth 8
 #else
@@ -23,32 +26,35 @@
 #define kMaxBorderVertices 800
 
 @interface Terrain : CCNode {
+    @private
     int _offsetX;
     CGPoint _hillKeyPoints[kMaxHillKeyPoints];
     CCSprite *_stripes;
     int _fromKeyPointI;
     int _toKeyPointI;
-    
     int _nHillVertices;
     int _nOppositeHillVertices;
     CGPoint _hillVertices[kMaxHillVertices];
     CGPoint _hillTexCoords[kMaxHillVertices];
     CGPoint _oppositeHillVertices[kMaxHillVertices];
     CGPoint _oppositeHillTexCoords[kMaxHillVertices];
-    int _nBorderVertices;
-    int _nOppositeBorderVertices;
     CGPoint _borderVertices[kMaxBorderVertices];
     CGPoint _oppositeBorderVertices[kMaxBorderVertices];
     b2World *_world;
     b2Body *_body;
     GLESDebugDraw * _debugDraw;
     CCSpriteBatchNode * _batchNode;
+    int _nBorderVertices;
+    int _nOppositeBorderVertices;
 }
 
 @property (retain) CCSprite * stripes;
 @property (retain) CCSpriteBatchNode * batchNode;
-- (void) setOffsetX:(float)newOffsetX;
-- (void) generateHills;
+@property (nonatomic, retain) id<TerrainObserver> terrainObserver;
+//@property (nonatomic, assign) int nBorderVertices;
+//@property (nonatomic, assign) int nOppositeBorderVertices;
+- (void)setOffsetX:(float)newOffsetX;
+- (void)generateHills;
 - (void)resetHillVertices;
 - (id)initWithWorld:(b2World *)world;
 

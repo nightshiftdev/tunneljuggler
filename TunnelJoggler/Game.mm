@@ -31,6 +31,7 @@
         obstacles_ = [[NSMutableArray alloc] init];
         ballBullets_ = [[NSMutableArray alloc] init];
         terrain_ = [[[Terrain alloc] initWithWorld:world_] autorelease];
+        terrain_.terrainObserver = self;
         paddle_ = [[[Paddle alloc] initWithWorld:world_] autorelease];
         
         [self genBackground];
@@ -136,7 +137,6 @@
             world_->Step(UPDATE_INTERVAL, 
                          velocityIterations, positionIterations);        
             world_->ClearForces();
-            
         }
         
         for (int index = 0; index < [ballBullets_ count]; index++) {
@@ -272,7 +272,6 @@
             self.gameState = kGameStatePaused;
             [self.hud gameOver: NO touchedFatalObject: YES];
         }
-        
     }
 }
 
@@ -307,8 +306,9 @@
 }
 
 - (void)dealloc {
-    delete world_;
     [obstacles_ release];
+    [ballBullets_ release];
+    delete world_;
     delete contactListener_;
     [super dealloc];
 }
@@ -529,6 +529,12 @@
     ccTexParams tp2 = {GL_LINEAR, GL_LINEAR, GL_REPEAT, GL_CLAMP_TO_EDGE};
     [stripes.texture setTexParameters:&tp2];
     terrain_.stripes = stripes;
+}
+
+#pragma mark - TerrainObserver
+
+-(void)onTerrainEnd:(Terrain *)terrain {
+    [self.hud gameOver:YES touchedFatalObject:NO];
 }
 
 @end

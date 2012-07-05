@@ -11,8 +11,11 @@
 
 @synthesize stripes = _stripes;
 @synthesize batchNode = _batchNode;
+@synthesize terrainObserver;
+//@synthesize nBorderVertices = _nBorderVertices;
+//@synthesize nOppositeBorderVertices = _nOppositeBorderVertices;
 
-- (void)setupDebugDraw {    
+- (void)setupDebugDraw {
     _debugDraw = new GLESDebugDraw(PTM_RATIO*[[CCDirector sharedDirector] contentScaleFactor]);
     _world->SetDebugDraw(_debugDraw);
     _debugDraw->SetFlags(b2DebugDraw::e_shapeBit | b2DebugDraw::e_jointBit);
@@ -228,9 +231,15 @@
 }
 
 - (void) setOffsetX:(float)newOffsetX {
-    _offsetX = newOffsetX;
-    self.position = CGPointMake(-_offsetX, 0);
-    [self resetHillVertices];
+    if (self.terrainObserver && _toKeyPointI >= kMaxHillKeyPoints) {
+        [self.terrainObserver onTerrainEnd: self];
+        _toKeyPointI = 0;
+        _fromKeyPointI = 0;
+    } else {
+        _offsetX = newOffsetX;
+        self.position = CGPointMake(-_offsetX, 0);
+        [self resetHillVertices];
+    }
 }
 
 - (void)dealloc {

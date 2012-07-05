@@ -16,6 +16,7 @@
 @implementation AppDelegate
 
 @synthesize window;
+//@synthesize scene;
 
 - (void) removeStartupFlicker
 {
@@ -110,6 +111,7 @@
 	// Removes the startup flicker
 	[self removeStartupFlicker];
 	
+//    self.scene = [Game scene];
 	// Run the intro Scene
 	[[CCDirector sharedDirector] runWithScene: [Game scene]];
 }
@@ -151,6 +153,7 @@
 }
 
 - (void)dealloc {
+//    [scene release];
 	[[CCDirector sharedDirector] release];
 	[window release];
 	[super dealloc];

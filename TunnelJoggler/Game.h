@@ -26,7 +26,7 @@ typedef enum
 	kGameStateGameOver
 } GameState;
 
-@interface Game : CCLayer
+@interface Game : CCLayer <TerrainObserver>
 {
 	CCSprite *background_;
     Terrain *terrain_;

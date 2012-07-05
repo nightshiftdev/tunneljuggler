@@ -513,6 +513,7 @@
 		E55E3D40159A339400CA5894 /* fire.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = fire.png; path = Resources/particles/particles/fire.png; sourceTree = "<group>"; };
 		E55E3D43159A33A600CA5894 /* fire-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "fire-hd.png"; path = "Resources/particles/particles-hd/fire-hd.png"; sourceTree = "<group>"; };
 		E57047311590AD1F009991B2 /* Noise_iPad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Noise_iPad.png; path = Resources/Noise_iPad.png; sourceTree = "<group>"; };
+		E58431ED15A1D7DB00FBDE5A /* TerrainObserver.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TerrainObserver.h; path = Objects/TerrainObserver.h; sourceTree = "<group>"; };
 		E598D4211579265200DF181A /* SoundMenuItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoundMenuItem.h; sourceTree = "<group>"; };
 		E598D4221579265200DF181A /* SoundMenuItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SoundMenuItem.m; sourceTree = "<group>"; };
 		E598D42415792A0600DF181A /* buttons-hd.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "buttons-hd.plist"; path = "Resources/buttons/buttons-hd.plist"; sourceTree = "<group>"; };
@@ -987,6 +988,7 @@
 				E53C62FC150829970047EF66 /* Terrain.mm */,
 				E5A42E89153B5033000CFFB2 /* Obstacle.h */,
 				E5A42E8A153B5033000CFFB2 /* Obstacle.mm */,
+				E58431ED15A1D7DB00FBDE5A /* TerrainObserver.h */,
 			);
 			name = Objects;
 			sourceTree = "<group>";
