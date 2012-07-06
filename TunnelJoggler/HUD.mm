@@ -60,10 +60,17 @@
     if (!self.isGameOver) {
         self.isGameOver = YES;
         [[CCDirector sharedDirector] pause];
-        CGSize s = [[CCDirector sharedDirector] winSize];
         CCMenuItem *item1 = [SoundMenuItem itemFromNormalSpriteFrameName:@"btn-try-again-normal.png" selectedSpriteFrameName:@"btn-try-again-selected.png" target:self selector:@selector(onPlayAgainPressed:)];
         CCMenuItem *item0 = [SoundMenuItem itemFromNormalSpriteFrameName:@"btn-exit-normal.png" selectedSpriteFrameName:@"btn-exit-selected.png" target:self selector:@selector(onMainMenuPressed:)];
-        menu_ = [CCMenu menuWithItems:item0, item1, nil];
+        CCMenuItem *item2 = nil;
+        if (fatalObjectTouched) {
+            item2 = [SoundMenuItem itemFromNormalSpriteFrameName:@"info-level-failed.png" selectedSpriteFrameName:@"info-level-failed.png" target:nil selector:nil];
+        } else {
+            item2 = [SoundMenuItem itemFromNormalSpriteFrameName:@"info-level-passed.png" selectedSpriteFrameName:@"info-level-passed.png" target:nil selector:nil];
+        }
+        [item2 setIsEnabled:NO];
+        menu_ = [CCMenu menuWithItems:item0, item1, item2, nil];
+        CGSize s = [[CCDirector sharedDirector] winSize];
         [menu_ alignItemsHorizontallyWithPadding: 25.0];
         [menu_ setPosition:ccp(s.width/2, s.height/2)];
         [self addChild:menu_ z:10];
