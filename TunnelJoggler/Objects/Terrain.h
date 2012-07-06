@@ -2,7 +2,7 @@
 //  Terrain.h
 //
 //  Created by pawel on 2/28/12.
-//  Copyright (c) 2012 Ray Wenderlich. All rights reserved.
+//  Copyright (c) 2012 Pawel Kijowski. All rights reserved.
 //
 
 #import "cocos2d.h"

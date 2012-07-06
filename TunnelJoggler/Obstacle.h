@@ -3,7 +3,7 @@
 //  TunnelJoggler
 //
 //  Created by pawel on 4/15/12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//  Copyright (c) 2012 Pawel Kijowski. All rights reserved.
 //
 
 #import "Box2D.h"
