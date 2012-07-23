@@ -3,7 +3,7 @@
 //  TunnelJoggler
 //
 //  Created by pawel on 3/7/12.
-//  Copyright __MyCompanyName__ 2012. All rights reserved.
+//  Copyright __Pawel Kijowski__ 2012. All rights reserved.
 //
 
 //

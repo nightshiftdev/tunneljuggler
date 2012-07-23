@@ -5,6 +5,9 @@
 
 #import "Game.h"
 #import "SimpleAudioEngine.h"
+#import "Player.h"
+#import "GameController.h"
+#import "Level.h"
 
 @implementation Game
 
@@ -51,6 +54,35 @@
         
         [[SimpleAudioEngine sharedEngine] playBackgroundMusic:@"background-music-aac.caf"];
         
+        Player *player = [[GameController sharedController] player];
+        NSLog(@"player.currentLevel %@", player.currentLevel);
+        NSLog(@"player.name %@", player.name);
+        NSLog(@"player.picture %@", player.picture);
+        NSLog(@"player.score %@", player.score);
+        NSLog(@"player.experienceLevel %@", player.experienceLevel);
+        NSLog(@"player.recordUUID %@", player.recordUUID);
+        
+        
+        NSArray *levels = [[GameController sharedController] levels];
+        int i = 0;
+        for (Level *l in levels) {
+            NSLog(@"============Level %d===============", i);
+            NSLog(@"bonusItemFrequency %@", l.bonusItemFrequency);
+            NSLog(@"bonusBallFrequency %@", l.bonusBallFrequency);
+            NSLog(@"length %@", l.length);
+            NSLog(@"maxSpeed %@", l.maxSpeed);
+            NSLog(@"minSpeed %@", l.minSpeed);
+            NSLog(@"mustReachEndOfLevelToPass %@", l.mustReachEndOfLevelToPass);
+            NSLog(@"mustReachEndOfLevelToPass %@", l.mustReachEndOfLevelToPass);
+            NSLog(@"obstacleFrequency %@", l.obstacleFrequency);
+            NSLog(@"scoreToPass %@", l.scoreToPass);
+            NSLog(@"scoreToPass %@", l.scoreToPass);
+            NSLog(@"speedIncreaseInterval %@", l.speedIncreaseInterval);
+            NSLog(@"speedIncreaseValue %@", l.speedIncreaseValue);
+            NSLog(@"timeToSurviveToPass %@", l.timeToSurviveToPass);
+            NSLog(@"recordUUID %@", l.recordUUID);
+            NSLog(@"===================================");
+        }
         [self scheduleUpdate];
     }
     return self;

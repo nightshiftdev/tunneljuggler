@@ -3,7 +3,7 @@
 //  TunnelJoggler
 //
 //  Created by pawel on 3/7/12.
-//  Copyright __MyCompanyName__ 2012. All rights reserved.
+//  Copyright __Pawel Kijowski__ 2012. All rights reserved.
 //
 
 #import "cocos2d.h"
@@ -12,6 +12,7 @@
 #import "GameConfig.h"
 #import "Game.h"
 #import "RootViewController.h"
+#import "GameController.h"
 
 @implementation AppDelegate
 
@@ -97,6 +98,18 @@
 	// make the OpenGLView a child of the view controller
 	[viewController setView:glView];
 	
+    // TODO: Hook up those notifications to HUD or Game
+//    [[NSNotificationCenter defaultCenter] addObserver:rootViewController
+//                                             selector:@selector(reloadFetchedResults:)
+//                                                 name:NSPersistentStoreCoordinatorStoresDidChangeNotification
+//                                               object:appDelegate.coreDataController.psc];
+//    [[NSNotificationCenter defaultCenter] addObserver:rootViewController
+//                                             selector:@selector(reloadFetchedResults:)
+//                                                 name:NSPersistentStoreDidImportUbiquitousContentChangesNotification
+//                                               object:appDelegate.coreDataController.psc];
+    
+    [[GameController sharedController] loadPersistentStores];
+    
 	// make the View Controller a child of the main window
 	[window addSubview: viewController.view];
 	
@@ -122,6 +135,7 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
 	[[CCDirector sharedDirector] resume];
+    [[GameController sharedController] applicationResumed];
 }
 
 - (void)applicationDidReceiveMemoryWarning:(UIApplication *)application {
@@ -137,6 +151,17 @@
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
+    NSManagedObjectContext *mainThreadMOC = [[GameController sharedController] mainThreadContext];
+    [mainThreadMOC performBlock:^{
+        if ([mainThreadMOC hasChanges]) {
+            NSError *error = nil;
+            if (![mainThreadMOC save:&error]) {
+                NSLog(@"Error saving: %@", error);
+                abort();
+            }
+        }
+    }];
+    
 	CCDirector *director = [CCDirector sharedDirector];
 	
 	[[director openGLView] removeFromSuperview];
