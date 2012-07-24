@@ -10,7 +10,7 @@
 
 #import "AppDelegate.h"
 #import "GameConfig.h"
-#import "Game.h"
+#import "MainScene.h"
 #import "RootViewController.h"
 #import "GameController.h"
 
@@ -126,7 +126,7 @@
 	
 //    self.scene = [Game scene];
 	// Run the intro Scene
-	[[CCDirector sharedDirector] runWithScene: [Game scene]];
+	[[CCDirector sharedDirector] runWithScene: [MainScene scene]];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {

@@ -188,6 +188,9 @@
 		E59A440A15AC6E5C00BBD754 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E59A440915AC6E5C00BBD754 /* CoreData.framework */; };
 		E59A440D15AC6F3C00BBD754 /* GameController.mm in Sources */ = {isa = PBXBuildFile; fileRef = E59A440C15AC6F3C00BBD754 /* GameController.mm */; };
 		E5A42E8B153B5033000CFFB2 /* Obstacle.mm in Sources */ = {isa = PBXBuildFile; fileRef = E5A42E8A153B5033000CFFB2 /* Obstacle.mm */; };
+		E5AD299115BED2D100A43904 /* MainScene.mm in Sources */ = {isa = PBXBuildFile; fileRef = E5AD299015BED2D100A43904 /* MainScene.mm */; };
+		E5AD299415BED3C800A43904 /* main-scene-background.png in Resources */ = {isa = PBXBuildFile; fileRef = E5AD299315BED3C800A43904 /* main-scene-background.png */; };
+		E5AD299615BED3E000A43904 /* main-scene-background-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E5AD299515BED3E000A43904 /* main-scene-background-hd.png */; };
 		E5B3A14B15BD73D400667F70 /* GameData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E5B3A14915BD73D400667F70 /* GameData.xcdatamodeld */; };
 		E5B7D72D152A647800407342 /* Paddle.mm in Sources */ = {isa = PBXBuildFile; fileRef = E5B7D72C152A647800407342 /* Paddle.mm */; };
 		E5CB458D15B6F70900F1D056 /* ImageToDataTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = E5CB458C15B6F70900F1D056 /* ImageToDataTransformer.m */; };
@@ -541,6 +544,10 @@
 		E59A440C15AC6F3C00BBD754 /* GameController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = GameController.mm; path = LevelManager/GameController.mm; sourceTree = "<group>"; };
 		E5A42E89153B5033000CFFB2 /* Obstacle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Obstacle.h; sourceTree = "<group>"; };
 		E5A42E8A153B5033000CFFB2 /* Obstacle.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Obstacle.mm; sourceTree = "<group>"; };
+		E5AD298F15BED2D100A43904 /* MainScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainScene.h; sourceTree = "<group>"; };
+		E5AD299015BED2D100A43904 /* MainScene.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MainScene.mm; sourceTree = "<group>"; };
+		E5AD299315BED3C800A43904 /* main-scene-background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "main-scene-background.png"; path = "Resources/backgrounds/backgrounds/main-scene-background.png"; sourceTree = "<group>"; };
+		E5AD299515BED3E000A43904 /* main-scene-background-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "main-scene-background-hd.png"; path = "Resources/backgrounds/backgrounds-hd/main-scene-background-hd.png"; sourceTree = "<group>"; };
 		E5B3A14A15BD73D400667F70 /* GameData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = GameData.xcdatamodel; sourceTree = "<group>"; };
 		E5B7D72B152A647800407342 /* Paddle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Paddle.h; path = Objects/Paddle.h; sourceTree = "<group>"; };
 		E5B7D72C152A647800407342 /* Paddle.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Paddle.mm; path = Objects/Paddle.mm; sourceTree = "<group>"; };
@@ -627,6 +634,7 @@
 				E598D4211579265200DF181A /* SoundMenuItem.h */,
 				E598D4221579265200DF181A /* SoundMenuItem.m */,
 				E58431FD15AC5E4B00FBDE5A /* LevelManager */,
+				E5AD298E15BED2D100A43904 /* Scenes */,
 				E53C62FA1508297B0047EF66 /* Objects */,
 				E53C612F150828860047EF66 /* Resources */,
 				E53C6276150828890047EF66 /* Box2D */,
@@ -643,6 +651,8 @@
 		E53C612F150828860047EF66 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				E5AD299515BED3E000A43904 /* main-scene-background-hd.png */,
+				E5AD299315BED3C800A43904 /* main-scene-background.png */,
 				E55237D51558A17A005B05D3 /* background-music-aac.caf */,
 				E55237D61558A17A005B05D3 /* blip.caf */,
 				E598D42415792A0600DF181A /* buttons-hd.plist */,
@@ -1036,6 +1046,15 @@
 			name = LevelManager;
 			sourceTree = "<group>";
 		};
+		E5AD298E15BED2D100A43904 /* Scenes */ = {
+			isa = PBXGroup;
+			children = (
+				E5AD298F15BED2D100A43904 /* MainScene.h */,
+				E5AD299015BED2D100A43904 /* MainScene.mm */,
+			);
+			path = Scenes;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1114,6 +1133,8 @@
 				E55E3D41159A339400CA5894 /* fire.png in Resources */,
 				E55E3D44159A33A600CA5894 /* fire-hd.png in Resources */,
 				E587492215AF001500D22B51 /* ProgressHUD.xib in Resources */,
+				E5AD299415BED3C800A43904 /* main-scene-background.png in Resources */,
+				E5AD299615BED3E000A43904 /* main-scene-background-hd.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1273,6 +1294,7 @@
 				E5CB459015B6F8AD00F1D056 /* Level.m in Sources */,
 				E5CB459315B6F8AF00F1D056 /* Player.m in Sources */,
 				E5B3A14B15BD73D400667F70 /* GameData.xcdatamodeld in Sources */,
+				E5AD299115BED2D100A43904 /* MainScene.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

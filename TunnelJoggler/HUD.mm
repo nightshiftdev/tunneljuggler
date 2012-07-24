@@ -9,6 +9,7 @@
 #import "Game.h"
 #import "HUD.h"
 #import "SoundMenuItem.h"
+#import "MainScene.h"
 
 @interface HUD()
 @property (nonatomic, assign) BOOL isGameOver;
@@ -126,7 +127,10 @@
 }
 
 -(void) onMainMenuPressed:(id)sender {
-    
+	if ([[CCDirector sharedDirector] isPaused]) {
+		[[CCDirector sharedDirector] resume];
+	}
+    [[CCDirector sharedDirector] replaceScene:[CCTransitionFade transitionWithDuration:0.1f scene:[MainScene scene]]];
 }
 
 @end
