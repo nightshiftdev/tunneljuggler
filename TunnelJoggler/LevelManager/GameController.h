@@ -14,8 +14,6 @@
 @interface GameController : NSObject <NSFilePresenter>
 {
 @private
-    Player *_player;
-    NSArray *_levels;
     NSPersistentStoreCoordinator *_psc;
     NSManagedObjectContext *_mainThreadContext;
     NSPersistentStore *_playeriCloudStore;

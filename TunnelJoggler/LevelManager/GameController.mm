@@ -52,8 +52,8 @@ static NSOperationQueue *_presentedItemOperationQueue;
 
 @implementation GameController
 
-@synthesize player = _player;
-@synthesize levels = _levels;
+@synthesize player;
+@synthesize levels;
 @synthesize psc = _psc;
 @synthesize mainThreadContext = _mainThreadContext;
 @synthesize playeriCloudStore = _playeriCloudStore;
@@ -101,8 +101,6 @@ static NSOperationQueue *_presentedItemOperationQueue;
 }
 
 -(void)dealloc {
-    [_player release];
-    [_levels release];
     [_psc release];
     [_mainThreadContext release];
     [_playeriCloudStore release];
@@ -365,8 +363,8 @@ static NSOperationQueue *_presentedItemOperationQueue;
         NSManagedObjectContext *moc = [[[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType] autorelease];
         [moc setPersistentStoreCoordinator:_psc];
         NSUInteger i = 1;
-        for (Player *player in players) {
-            [self addPlayer:player toStore:store withContext:moc];
+        for (Player *p in players) {
+            [self addPlayer:p toStore:store withContext:moc];
             if (0 == (i % batchSize)) {
                 success = [moc save:&localError];
                 if (success) {
@@ -447,16 +445,16 @@ static NSOperationQueue *_presentedItemOperationQueue;
     }
 }
 
-- (void)addPlayer:(Player *)player toStore:(NSPersistentStore *)store withContext:(NSManagedObjectContext *)moc {
-    NSEntityDescription *entity = [player entity];
+- (void)addPlayer:(Player *)playerToBeAdded toStore:(NSPersistentStore *)store withContext:(NSManagedObjectContext *)moc {
+    NSEntityDescription *entity = [playerToBeAdded entity];
     Player *newPlayer = [[[Player alloc] initWithEntity:entity
                         insertIntoManagedObjectContext:moc] autorelease];
-    newPlayer.currentLevel = player.currentLevel;
-    newPlayer.name = player.name;
-    newPlayer.picture = player.picture;
-    newPlayer.score = player.score;
-    newPlayer.experienceLevel = player.experienceLevel;
-    newPlayer.recordUUID = (player.recordUUID == nil) ? [self UUIDString] : player.recordUUID;
+    newPlayer.currentLevel = playerToBeAdded.currentLevel;
+    newPlayer.name = playerToBeAdded.name;
+    newPlayer.picture = playerToBeAdded.picture;
+    newPlayer.score = playerToBeAdded.score;
+    newPlayer.experienceLevel = playerToBeAdded.experienceLevel;
+    newPlayer.recordUUID = (playerToBeAdded.recordUUID == nil) ? [self UUIDString] : playerToBeAdded.recordUUID;
     [moc assignObject:newPlayer toPersistentStore:store];
 }
 
@@ -672,20 +670,20 @@ static NSOperationQueue *_presentedItemOperationQueue;
     Player *prevPlayer = nil;
     
     NSUInteger i = 1;
-    for (Player *player in dupes) {
+    for (Player *p in dupes) {
         if (prevPlayer) {
-            if ([player.recordUUID isEqualToString:prevPlayer.recordUUID]) {
-                if (player.experienceLevel < prevPlayer.experienceLevel) {
+            if ([p.recordUUID isEqualToString:prevPlayer.recordUUID]) {
+                if (p.experienceLevel < prevPlayer.experienceLevel) {
                     [moc deleteObject:player];
                 } else {
                     [moc deleteObject:prevPlayer];
-                    prevPlayer = player;
+                    prevPlayer = p;
                 }
             } else {
-                prevPlayer = player;
+                prevPlayer = p;
             }
         } else {
-            prevPlayer = player;
+            prevPlayer = p;
         }
         
         if (0 == (i % batchSize)) {
@@ -719,26 +717,20 @@ static NSOperationQueue *_presentedItemOperationQueue;
 #pragma mark Managing the Game Data
 
 -(NSArray *)levels {
-    if (_levels == nil) {
-        if (_levels != nil) {
-            [_levels release];
-            _levels = nil;
-        }
-        NSFetchRequest *fetchRequest = [[[NSFetchRequest alloc] init] autorelease];
-        if (_levelsLocalStore != nil) {
-            [fetchRequest setAffectedStores: [NSArray arrayWithObjects:_levelsLocalStore, nil]];
-        }
-        NSEntityDescription *entity = [NSEntityDescription entityForName: @"Level" inManagedObjectContext: _mainThreadContext];
-        [fetchRequest setEntity:entity];
-        NSError *error = nil;
-        _levels = [_mainThreadContext executeFetchRequest:fetchRequest error:&error];
-        if ([_levels count] > gNumberOfLevels) {
-            if (DEBUG) {
-                NSLog(@"WARNING: Expected %d level(s), but fetched %d", gNumberOfLevels, [_levels count]);
-            }
+    NSFetchRequest *fetchRequest = [[[NSFetchRequest alloc] init] autorelease];
+    if (_levelsLocalStore != nil) {
+        [fetchRequest setAffectedStores: [NSArray arrayWithObjects:_levelsLocalStore, nil]];
+    }
+    NSEntityDescription *entity = [NSEntityDescription entityForName: @"Level" inManagedObjectContext: _mainThreadContext];
+    [fetchRequest setEntity:entity];
+    NSError *error = nil;
+    NSArray *fetchedLevel = [_mainThreadContext executeFetchRequest:fetchRequest error:&error];
+    if ([fetchedLevel count] > gNumberOfLevels) {
+        if (DEBUG) {
+            NSLog(@"WARNING: Expected %d level(s), but fetched %d", gNumberOfLevels, [fetchedLevel count]);
         }
     }
-    return _levels;
+    return fetchedLevel;
 }
 
 -(Player *)player {
@@ -746,22 +738,16 @@ static NSOperationQueue *_presentedItemOperationQueue;
     NSEntityDescription *entity = [NSEntityDescription entityForName: @"Player" inManagedObjectContext: _mainThreadContext];
     [fetchRequest setEntity:entity];
     NSError *error = nil;
-    NSArray *players = [_mainThreadContext executeFetchRequest:fetchRequest error:&error];
-    if ([players count] > 1) {
+    NSArray *fetchedPlayers = [_mainThreadContext executeFetchRequest:fetchRequest error:&error];
+    if ([fetchedPlayers count] > 1) {
         if (DEBUG) {
-            NSLog(@"WARNING: Expected only one player, but has %d", [players count]);
+            NSLog(@"WARNING: Expected only one player, but has %d", [fetchedPlayers count]);
         }
     }
-    _player = [players objectAtIndex: 0];
-    return _player;
+    return [fetchedPlayers objectAtIndex: 0];
 }
 
 -(void)setPlayer:(Player *)playerToBeSaved {
-    _player.currentLevel = playerToBeSaved.currentLevel;
-    _player.name = playerToBeSaved.name;
-    _player.picture = playerToBeSaved.picture;
-    _player.score = playerToBeSaved.score;
-    _player.experienceLevel = playerToBeSaved.experienceLevel;
     NSFetchRequest *fetchRequest = [[[NSFetchRequest alloc] init] autorelease];
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"Player" inManagedObjectContext: _mainThreadContext];
     [fetchRequest setEntity:entity];
@@ -773,11 +759,11 @@ static NSOperationQueue *_presentedItemOperationQueue;
         }
     }
     for (Player *p in players) {
-        p.currentLevel = _player.currentLevel;
-        p.name = _player.name;
-        p.picture = _player.picture;
-        p.score = _player.score;
-        p.experienceLevel = _player.experienceLevel;
+        p.currentLevel = playerToBeSaved.currentLevel;
+        p.name = playerToBeSaved.name;
+        p.picture = playerToBeSaved.picture;
+        p.score = playerToBeSaved.score;
+        p.experienceLevel = playerToBeSaved.experienceLevel;
     }
     
     BOOL success = [_mainThreadContext save: &error];
