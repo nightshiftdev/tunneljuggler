@@ -19,6 +19,7 @@
 @synthesize speed;
 @synthesize minSpeed;
 @synthesize maxSpeed;
+@synthesize speedIncreaseAmount;
 
 - (void)createBody {
     CGSize winSize = [CCDirector sharedDirector].winSize;
@@ -49,6 +50,7 @@
     self.maxSpeed = MAX_PADDLE_SPEED;
     self.minSpeed = MIN_PADDLE_SPEED;
     self.speed = self.minSpeed;
+    self.speedIncreaseAmount = 0.1;
 }
 
 - (id)initWithWorld:(b2World *)world {
@@ -103,7 +105,7 @@
 }
 
 - (void)increasePaddleSpeed {
-    self.speed += 0.1;
+    self.speed += self.speedIncreaseAmount;
 }
 
 @end

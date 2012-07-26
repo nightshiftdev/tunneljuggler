@@ -31,5 +31,6 @@ static const float MIN_PADDLE_SPEED = 1.0;
 @property (nonatomic, assign) float speed;
 @property (nonatomic, assign) float maxSpeed;
 @property (nonatomic, assign) float minSpeed;
+@property (nonatomic, assign) float speedIncreaseAmount;
 
 @end

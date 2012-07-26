@@ -32,6 +32,7 @@ static const double MAX_CYCLES_PER_FRAME = 5;
     NSMutableArray *ballBullets_;
     float addObstacleInterval_;
     float addBonusBallInterval_;
+    float increasePaddleSpeedInterval_;
     MyContactListener *contactListener_;
     HUD *hud_;
     Player *_player;

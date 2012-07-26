@@ -66,9 +66,11 @@
         
         addObstacleInterval_ = [_currentLevel.obstacleFrequency floatValue];
         addBonusBallInterval_ = [_currentLevel.bonusBallFrequency floatValue];
+        increasePaddleSpeedInterval_ = [_currentLevel.speedIncreaseInterval floatValue];
         paddle_.speed = [_currentLevel.minSpeed floatValue];
         paddle_.minSpeed = [_currentLevel.minSpeed floatValue];
         paddle_.maxSpeed = [_currentLevel.maxSpeed floatValue];
+        paddle_.speedIncreaseAmount = [_currentLevel.speedIncreaseValue floatValue];
         
         [self scheduleUpdate];
         [[ProgressHUD sharedProgressHUD] stopShowingProgress];
@@ -151,7 +153,6 @@
 - (void) addNextObstacle:(ccTime)dt {
     CGSize winSize = [CCDirector sharedDirector].winSize;
     if ((addObstacleInterval_ -= dt) < 0) {
-        [paddle_ increasePaddleSpeed];
         addObstacleInterval_ = [self.currentLevel.obstacleFrequency floatValue];
         float randomizeObstaclePos = arc4random() % 100;
         if ([self useNegativeSign]) {
@@ -176,9 +177,17 @@
     }
 }
 
+- (void) increasePaddleSpeed:(ccTime)dt {
+    if ((increasePaddleSpeedInterval_ -= dt) < 0) {
+        increasePaddleSpeedInterval_ = [self.currentLevel.speedIncreaseInterval floatValue];
+        [paddle_ increasePaddleSpeed];
+    }
+}
+
 - (void)update:(ccTime)dt {
     [self addNextObstacle: dt];
     [self addNextBounusBall:dt];
+    [self increasePaddleSpeed:dt];
     
     timeAccumulator_ += dt;
     if (timeAccumulator_ > (MAX_CYCLES_PER_FRAME * UPDATE_INTERVAL)) {
