@@ -18,13 +18,8 @@ static const float PADDLE_SCREEN_POS_OFFSET = 30;
 static const double UPDATE_INTERVAL = 1.0f/60.0f;
 static const double MAX_CYCLES_PER_FRAME = 5;
 
-// game state
-typedef enum
-{
-	kGameStatePaused,
-	kGameStatePlaying,
-	kGameStateGameOver
-} GameState;
+@class Player;
+@class Level;
 
 @interface Game : CCLayer <TerrainObserver>
 {
@@ -38,18 +33,17 @@ typedef enum
     float addObstacleInterval_;
     float addBonusBallInterval_;
     MyContactListener *contactListener_;
-    GameState gameState_;
     HUD *hud_;
+    Player *_player;
+    Level *_currentLevel;
     double timeAccumulator_;
 }
 
-+(CCScene *) scene;
++(CCScene *)scene;
 -(void)setupWorld;
 -(void)genBackground;
 -(void)createBallBulletAtPosition:(CGPoint)position;
--(void)resetGame;
 
-@property (readwrite,nonatomic) GameState gameState;
 @property (readwrite, nonatomic, assign) HUD *hud;
 @property (readonly, nonatomic) Terrain *terrain;
 

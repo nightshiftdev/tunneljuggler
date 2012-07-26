@@ -15,7 +15,7 @@
 
 
 // controls the length of the level
-#define kMaxHillKeyPoints 300
+#define kDefaultMaxHillKeyPoints 300
 #ifdef IPAD_SCREEN
 #define kHillSegmentWidth 8
 #else
@@ -28,7 +28,7 @@
 @interface Terrain : CCNode {
     @private
     int _offsetX;
-    CGPoint _hillKeyPoints[kMaxHillKeyPoints];
+//    CGPoint _hillKeyPoints[kMaxHillKeyPoints];
     CCSprite *_stripes;
     int _fromKeyPointI;
     int _toKeyPointI;
@@ -46,6 +46,7 @@
     CCSpriteBatchNode * _batchNode;
     int _nBorderVertices;
     int _nOppositeBorderVertices;
+    NSMutableArray *_hillKeyPoints;
 }
 
 @property (retain) CCSprite * stripes;
@@ -56,6 +57,6 @@
 - (void)setOffsetX:(float)newOffsetX;
 - (void)generateHills;
 - (void)resetHillVertices;
-- (id)initWithWorld:(b2World *)world;
+- (id)initWithWorld:(b2World *)world terrainLength:(int)terrainLength;
 
 @end

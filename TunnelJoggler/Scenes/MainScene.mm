@@ -6,11 +6,12 @@
 //  Copyright 2011 __etcApps__. All rights reserved.
 //
 
-
+#import <CoreData/CoreData.h>
 #import "MainScene.h"
 #import "SoundMenuItem.h"
 #import "Game.h"
 #import "SimpleAudioEngine.h"
+#import "GameController.h"
 
 @implementation MainScene
 
@@ -34,14 +35,25 @@
 		[self addChild:background z:-10];
 		
 		id scaleTo = [CCScaleTo actionWithDuration:0.5f scale:0.9f];
-		id scaleBack = [CCScaleTo actionWithDuration:0.5f scale:1];
-		id seq = [CCSequence actions:scaleTo, scaleBack, nil];
+		id scaleBack = [CCScaleTo actionWithDuration:0.5f scale:1.0f];
+        id rotateLeft = [CCRotateBy actionWithDuration:0.1f angle:5.0f];
+        id rotateRight = [CCRotateBy actionWithDuration:0.1f angle:-10.0f];
+		id seq = [CCSequence actions:scaleTo, scaleBack, rotateLeft, rotateRight, rotateLeft, nil];
         
 		CCMenuItem *itemPlay = [SoundMenuItem itemFromNormalSpriteFrameName:@"btn-play-normal.png" selectedSpriteFrameName:@"btn-play-selected.png" target:self selector:@selector(playGame:)];
 		CCMenu *menuPlay = [CCMenu menuWithItems: itemPlay, nil];
-		menuPlay.position = ccp(s.width/2, s.height/2);
+		menuPlay.position = ccp(s.width/8, s.height/2);
         [itemPlay runAction:[CCRepeatForever actionWithAction:seq]];
 		[self addChild:menuPlay];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(reloadGameData:)
+                                                     name:NSPersistentStoreCoordinatorStoresDidChangeNotification
+                                                   object:[GameController sharedController].psc];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(reloadGameData:)
+                                                     name:NSPersistentStoreDidImportUbiquitousContentChangesNotification
+                                                   object:[GameController sharedController].psc];
 		
 //		CCMenuItem *itemCredits = [SoundMenuItem itemFromNormalSpriteFrameName:@"btn-credits-normal.png" selectedSpriteFrameName:@"btn-credits-selected.png" target:self selector:@selector(showCredits:)];
 //		CCMenu *menuCredits = [CCMenu menuWithItems: itemCredits, nil];
@@ -87,6 +99,11 @@
 	return self;
 }
 
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver: self];
+    [super dealloc];
+}
+
 -(void) onEnter {
 	[super onEnter];
 	self.emitter = [CCParticleGalaxy node];
@@ -99,6 +116,10 @@
 
 -(void) playGame:(id)sender {
 	[[CCDirector sharedDirector] replaceScene:[CCTransitionFade transitionWithDuration:0.1f scene:[Game scene]]];
+}
+
+-(void)reloadGameData:(id)sender {
+    NSLog(@"reloadGameData called.");
 }
 
 //-(void) soundOnOff:(id)sender {

@@ -28,6 +28,8 @@ static const float MIN_PADDLE_SPEED = 1.0;
 @property (assign, nonatomic) float horizontalForce;
 @property (assign, nonatomic) BOOL decreaseHorizontalForceToZero;
 @property (nonatomic, assign) float offset;
-@property (nonatomic, assign) float paddleSpeed;
+@property (nonatomic, assign) float speed;
+@property (nonatomic, assign) float maxSpeed;
+@property (nonatomic, assign) float minSpeed;
 
 @end

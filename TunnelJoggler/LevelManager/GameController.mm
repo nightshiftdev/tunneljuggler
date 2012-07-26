@@ -434,6 +434,7 @@ static NSOperationQueue *_presentedItemOperationQueue;
     defaultPlayer.picture = nil;
     defaultPlayer.score = [NSNumber numberWithInt: 0];
     defaultPlayer.experienceLevel = [NSNumber numberWithInt: 0];
+    defaultPlayer.bonusItems = [NSNumber numberWithInt: 0];
     defaultPlayer.recordUUID = [self UUIDString];
     [moc assignObject:defaultPlayer toPersistentStore:store];
     NSError *error = nil;
@@ -454,6 +455,7 @@ static NSOperationQueue *_presentedItemOperationQueue;
     newPlayer.picture = playerToBeAdded.picture;
     newPlayer.score = playerToBeAdded.score;
     newPlayer.experienceLevel = playerToBeAdded.experienceLevel;
+    newPlayer.bonusItems = playerToBeAdded.bonusItems;
     newPlayer.recordUUID = (playerToBeAdded.recordUUID == nil) ? [self UUIDString] : playerToBeAdded.recordUUID;
     [moc assignObject:newPlayer toPersistentStore:store];
 }
@@ -764,6 +766,7 @@ static NSOperationQueue *_presentedItemOperationQueue;
         p.picture = playerToBeSaved.picture;
         p.score = playerToBeSaved.score;
         p.experienceLevel = playerToBeSaved.experienceLevel;
+        p.bonusItems = playerToBeSaved.bonusItems;
     }
     
     BOOL success = [_mainThreadContext save: &error];

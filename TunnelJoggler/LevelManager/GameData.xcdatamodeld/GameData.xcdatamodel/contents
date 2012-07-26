@@ -15,6 +15,7 @@
         <attribute name="timeToSurviveToPass" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
     </entity>
     <entity name="Player" representedClassName="Player" syncable="YES">
+        <attribute name="bonusItems" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="currentLevel" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="experienceLevel" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
@@ -29,7 +30,7 @@
         <memberEntity name="Level"/>
     </configuration>
     <elements>
-        <element name="Level" positionX="160" positionY="192" width="128" height="225"/>
-        <element name="Player" positionX="160" positionY="192" width="128" height="135"/>
+        <element name="Level" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Player" positionX="0" positionY="0" width="0" height="0"/>
     </elements>
 </model>

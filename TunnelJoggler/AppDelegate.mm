@@ -17,7 +17,6 @@
 @implementation AppDelegate
 
 @synthesize window;
-//@synthesize scene;
 
 - (void) removeStartupFlicker
 {
@@ -97,16 +96,6 @@
 	
 	// make the OpenGLView a child of the view controller
 	[viewController setView:glView];
-	
-    // TODO: Hook up those notifications to HUD or Game
-//    [[NSNotificationCenter defaultCenter] addObserver:rootViewController
-//                                             selector:@selector(reloadFetchedResults:)
-//                                                 name:NSPersistentStoreCoordinatorStoresDidChangeNotification
-//                                               object:appDelegate.coreDataController.psc];
-//    [[NSNotificationCenter defaultCenter] addObserver:rootViewController
-//                                             selector:@selector(reloadFetchedResults:)
-//                                                 name:NSPersistentStoreDidImportUbiquitousContentChangesNotification
-//                                               object:appDelegate.coreDataController.psc];
     
     [[GameController sharedController] loadPersistentStores];
     
@@ -124,7 +113,6 @@
 	// Removes the startup flicker
 	[self removeStartupFlicker];
 	
-//    self.scene = [Game scene];
 	// Run the intro Scene
 	[[CCDirector sharedDirector] runWithScene: [MainScene scene]];
 }
@@ -178,7 +166,6 @@
 }
 
 - (void)dealloc {
-//    [scene release];
 	[[CCDirector sharedDirector] release];
 	[window release];
 	[super dealloc];

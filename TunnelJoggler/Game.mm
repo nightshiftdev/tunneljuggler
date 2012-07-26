@@ -8,12 +8,23 @@
 #import "Player.h"
 #import "GameController.h"
 #import "Level.h"
+#import "Player.h"
+#import "ProgressHUD.h"
+
+@interface Game ()
+@property (readwrite, nonatomic, retain) Player *player;
+@property (readwrite, nonatomic, retain) NSArray *levels;
+@property (readwrite, nonatomic, retain) Level *currentLevel;
+-(void)setupGamePlay;
+@end
 
 @implementation Game
 
-@synthesize gameState = gameState_;
 @synthesize hud = _hud;
 @synthesize terrain = terrain_;
+@synthesize player = _player;
+@synthesize levels;
+@synthesize currentLevel = _currentLevel;
 
 +(CCScene *) scene {
 	CCScene *scene = [CCScene node];
@@ -27,13 +38,14 @@
 
 -(id) init {
     if((self=[super init])) {
-        [self setupWorld];
+        [[ProgressHUD sharedProgressHUD] showProgress];
+        [self setupGamePlay];
         
-        gameState_ = kGameStatePaused;
+        [self setupWorld];
         
         obstacles_ = [[NSMutableArray alloc] init];
         ballBullets_ = [[NSMutableArray alloc] init];
-        terrain_ = [[[Terrain alloc] initWithWorld:world_] autorelease];
+        terrain_ = [[Terrain alloc] initWithWorld:world_ terrainLength:[self.currentLevel.length integerValue]];
         terrain_.terrainObserver = self;
         paddle_ = [[[Paddle alloc] initWithWorld:world_] autorelease];
         
@@ -45,8 +57,6 @@
         CGSize winSize = [CCDirector sharedDirector].winSize;
         [self createBallBulletAtPosition:ccp(winSize.width/2, winSize.height/2)];
         
-        addObstacleInterval_ = 5.0;
-        addBonusBallInterval_ = 15.0;
         timeAccumulator_ = 0;
         
         contactListener_ = new MyContactListener();
@@ -54,25 +64,46 @@
         
         [[SimpleAudioEngine sharedEngine] playBackgroundMusic:@"background-music-aac.caf"];
         
-        Player *player = [[GameController sharedController] player];
-        NSLog(@"player.currentLevel %@", player.currentLevel);
-        NSLog(@"player.name %@", player.name);
-        NSLog(@"player.picture %@", player.picture);
-        NSLog(@"player.score %@", player.score);
-        NSLog(@"player.experienceLevel %@", player.experienceLevel);
-        NSLog(@"player.recordUUID %@", player.recordUUID);
+        addObstacleInterval_ = [_currentLevel.obstacleFrequency floatValue];
+        addBonusBallInterval_ = [_currentLevel.bonusBallFrequency floatValue];
+        paddle_.speed = [_currentLevel.minSpeed floatValue];
+        paddle_.minSpeed = [_currentLevel.minSpeed floatValue];
+        paddle_.maxSpeed = [_currentLevel.maxSpeed floatValue];
         
-        
-        NSArray *levels = [[GameController sharedController] levels];
+        [self scheduleUpdate];
+        [[ProgressHUD sharedProgressHUD] stopShowingProgress];
+    }
+    return self;
+}
+- (void)setupWorld {    
+    b2Vec2 gravity = b2Vec2(-7.0f, 0.0f);
+    bool doSleep = true;
+    world_ = new b2World(gravity, doSleep);            
+}
+
+- (void)setupGamePlay {
+    self.player = [[GameController sharedController] player];
+    if (DEBUG) {
+        NSLog(@"============Player===============");
+        NSLog(@"player.currentLevel %@", self.player.currentLevel);
+        NSLog(@"player.name %@", self.player.name);
+        NSLog(@"player.picture %@", self.player.picture);
+        NSLog(@"player.score %@", self.player.score);
+        NSLog(@"player.bonusItems %@", self.player.bonusItems);
+        NSLog(@"player.experienceLevel %@", self.player.experienceLevel);
+        NSLog(@"player.recordUUID %@", self.player.recordUUID);
+        NSLog(@"===================================");
+    }
+    self.levels = [[GameController sharedController] levels];
+    if (DEBUG) {
         int i = 0;
-        for (Level *l in levels) {
+        for (Level *l in self.levels) {
             NSLog(@"============Level %d===============", i);
             NSLog(@"bonusItemFrequency %@", l.bonusItemFrequency);
             NSLog(@"bonusBallFrequency %@", l.bonusBallFrequency);
             NSLog(@"length %@", l.length);
             NSLog(@"maxSpeed %@", l.maxSpeed);
             NSLog(@"minSpeed %@", l.minSpeed);
-            NSLog(@"mustReachEndOfLevelToPass %@", l.mustReachEndOfLevelToPass);
             NSLog(@"mustReachEndOfLevelToPass %@", l.mustReachEndOfLevelToPass);
             NSLog(@"obstacleFrequency %@", l.obstacleFrequency);
             NSLog(@"scoreToPass %@", l.scoreToPass);
@@ -83,31 +114,24 @@
             NSLog(@"recordUUID %@", l.recordUUID);
             NSLog(@"===================================");
         }
-        [self scheduleUpdate];
     }
-    return self;
-}
-
--(void)resetGame {
-    timeAccumulator_ = 0;
-    CGSize winSize = [CCDirector sharedDirector].winSize;
-    paddle_.position = CGPointMake(0, winSize.height/2/PTM_RATIO);
-    paddle_.offset = 0;
-    paddle_.paddleSpeed = MIN_PADDLE_SPEED;
-    addObstacleInterval_ = 5.0;
-    addBonusBallInterval_ = 15.0;
-    [self createBallBulletAtPosition:ccp(winSize.width/2, winSize.height)];
-}
-
-- (void) onEnterTransitionDidFinish {
-    [super onEnterTransitionDidFinish];
-    gameState_ = kGameStatePlaying;
-}
-
-- (void)setupWorld {    
-    b2Vec2 gravity = b2Vec2(-7.0f, 0.0f);
-    bool doSleep = true;
-    world_ = new b2World(gravity, doSleep);            
+    self.currentLevel = [self.levels objectAtIndex: [self.player.currentLevel intValue]];
+    if (DEBUG) {
+        NSLog(@"============Current Level %d===============", [self.player.currentLevel intValue]);
+        NSLog(@"bonusItemFrequency %@", self.currentLevel.bonusItemFrequency);
+        NSLog(@"bonusBallFrequency %@", self.currentLevel.bonusBallFrequency);
+        NSLog(@"length %@", self.currentLevel.length);
+        NSLog(@"maxSpeed %@", self.currentLevel.maxSpeed);
+        NSLog(@"minSpeed %@", self.currentLevel.minSpeed);
+        NSLog(@"mustReachEndOfLevelToPass %@", self.currentLevel.mustReachEndOfLevelToPass);
+        NSLog(@"obstacleFrequency %@", self.currentLevel.obstacleFrequency);
+        NSLog(@"scoreToPass %@", self.currentLevel.scoreToPass);
+        NSLog(@"speedIncreaseInterval %@", self.currentLevel.speedIncreaseInterval);
+        NSLog(@"speedIncreaseValue %@", self.currentLevel.speedIncreaseValue);
+        NSLog(@"timeToSurviveToPass %@", self.currentLevel.timeToSurviveToPass);
+        NSLog(@"recordUUID %@", self.currentLevel.recordUUID);
+        NSLog(@"===================================");
+    }
 }
 
 - (void)createBallBulletAtPosition:(CGPoint)position {
@@ -128,7 +152,7 @@
     CGSize winSize = [CCDirector sharedDirector].winSize;
     if ((addObstacleInterval_ -= dt) < 0) {
         [paddle_ increasePaddleSpeed];
-        addObstacleInterval_ = 5.0;
+        addObstacleInterval_ = [self.currentLevel.obstacleFrequency floatValue];
         float randomizeObstaclePos = arc4random() % 100;
         if ([self useNegativeSign]) {
             randomizeObstaclePos *= -1;
@@ -146,164 +170,161 @@
 - (void) addNextBounusBall:(ccTime)dt {
     CGSize winSize = [CCDirector sharedDirector].winSize;
     if ((addBonusBallInterval_ -= dt) < 0) {
-        addBonusBallInterval_ = 15.0;
+        addBonusBallInterval_ = [self.currentLevel.bonusBallFrequency floatValue];
         [self createBallBulletAtPosition: CGPointMake(paddle_.position.x + winSize.width, 
                                                       (winSize.height/2))];
     }
 }
 
 - (void)update:(ccTime)dt {
-    if (self.gameState != kGameStatePaused) {
-        [self addNextObstacle: dt];
-        [self addNextBounusBall:dt];
-        
-        timeAccumulator_ += dt;
-        if (timeAccumulator_ > (MAX_CYCLES_PER_FRAME * UPDATE_INTERVAL)) {
-            timeAccumulator_ = UPDATE_INTERVAL;
-        }    
-        
-        int32 velocityIterations = 3;
-        int32 positionIterations = 2;
-        while (timeAccumulator_ >= UPDATE_INTERVAL) {        
-            timeAccumulator_ -= UPDATE_INTERVAL;
-            world_->Step(UPDATE_INTERVAL, 
-                         velocityIterations, positionIterations);        
-            world_->ClearForces();
+    [self addNextObstacle: dt];
+    [self addNextBounusBall:dt];
+    
+    timeAccumulator_ += dt;
+    if (timeAccumulator_ > (MAX_CYCLES_PER_FRAME * UPDATE_INTERVAL)) {
+        timeAccumulator_ = UPDATE_INTERVAL;
+    }    
+    
+    int32 velocityIterations = 3;
+    int32 positionIterations = 2;
+    while (timeAccumulator_ >= UPDATE_INTERVAL) {        
+        timeAccumulator_ -= UPDATE_INTERVAL;
+        world_->Step(UPDATE_INTERVAL, 
+                     velocityIterations, positionIterations);        
+        world_->ClearForces();
+    }
+    
+    for (int index = 0; index < [ballBullets_ count]; index++) {
+        BallBullet *bb = [ballBullets_ objectAtIndex: index];
+        float bulletXPos = bb.body->GetPosition().x * PTM_RATIO;
+        if (bulletXPos >= paddle_.position.x - (4*PADDLE_SCREEN_POS_OFFSET)) {
+            [bb update: dt];
+        } else {
+            [bb resetEmitter];
+            CCSprite *sprite = (CCSprite *)bb.body->GetUserData();
+            sprite.visible = NO;
+            [terrain_ removeChild:bb cleanup:YES];
+            world_->DestroyBody(bb.body);
+            [ballBullets_ removeObject: bb];
         }
-        
-        for (int index = 0; index < [ballBullets_ count]; index++) {
-            BallBullet *bb = [ballBullets_ objectAtIndex: index];
-            float bulletXPos = bb.body->GetPosition().x * PTM_RATIO;
-            if (bulletXPos >= paddle_.position.x - (4*PADDLE_SCREEN_POS_OFFSET)) {
-                [bb update: dt];
-            } else {
-                [bb resetEmitter];
-                CCSprite *sprite = (CCSprite *)bb.body->GetUserData();
-                sprite.visible = NO;
-                [terrain_ removeChild:bb cleanup:YES];
-                world_->DestroyBody(bb.body);
-                [ballBullets_ removeObject: bb];
-            }
+    }
+    
+    [paddle_ update: dt];
+    for (int index = 0; index < [obstacles_ count]; index++) {
+        Obstacle *o = [obstacles_ objectAtIndex: index];
+        float obstacleXPos = o.body->GetPosition().x * PTM_RATIO;
+        if (obstacleXPos >= paddle_.position.x - (4*PADDLE_SCREEN_POS_OFFSET)) {
+            [o update:dt];
+        } else {
+            CCSprite *sprite = (CCSprite *)o.body->GetUserData();
+            sprite.visible = NO;
+            [terrain_ removeChild:o cleanup:YES];
+            world_->DestroyBody(o.body);
+            [obstacles_ removeObject: o];
         }
+    }
+    
+    
+    float offset = paddle_.position.x - paddle_.contentSize.height - PADDLE_SCREEN_POS_OFFSET;
+    if (offset < 0) {
+        offset = 0;
+        offset += 1;
+    }
+    
+    //        NSLog(@"offset %f", offset);
+    CGSize textureSize = background_.textureRect.size;
+    [background_ setTextureRect:CGRectMake(offset, 0, textureSize.width, textureSize.height)];
+    
+    [terrain_ setOffsetX:offset];
+    
+    std::vector<b2Body *>toDestroy;
+    std::vector<MyContact>::iterator pos;
+    BOOL destroyPaddle = NO;
+    for(pos = contactListener_->_contacts.begin(); pos != contactListener_->_contacts.end(); ++pos) {
+        //            NSLog(@"inside contact listener loop");
+        MyContact contact = *pos;
         
-        [paddle_ update: dt];
-        for (int index = 0; index < [obstacles_ count]; index++) {
-            Obstacle *o = [obstacles_ objectAtIndex: index];
-            float obstacleXPos = o.body->GetPosition().x * PTM_RATIO;
-            if (obstacleXPos >= paddle_.position.x - (4*PADDLE_SCREEN_POS_OFFSET)) {
-                [o update:dt];
-            } else {
-                CCSprite *sprite = (CCSprite *)o.body->GetUserData();
-                sprite.visible = NO;
-                [terrain_ removeChild:o cleanup:YES];
-                world_->DestroyBody(o.body);
-                [obstacles_ removeObject: o];
-            }
-        }
+        //        if ((contact.fixtureA == _bottomFixture && contact.fixtureB == _ballFixture) ||
+        //            (contact.fixtureA == _ballFixture && contact.fixtureB == _bottomFixture)) {
+        //            GameOverScene *gameOverScene = [GameOverScene node];
+        //            [gameOverScene.layer.label setString:@"You Lose :["];
+        //            [[CCDirector sharedDirector] replaceScene:gameOverScene];
+        //        } 
         
+        b2Body *bodyA = contact.fixtureA->GetBody();
+        b2Body *bodyB = contact.fixtureB->GetBody();
         
-        float offset = paddle_.position.x - paddle_.contentSize.height - PADDLE_SCREEN_POS_OFFSET;
-        if (offset < 0) {
-            offset = 0;
-            offset += 1;
-        }
+        //            NSLog(@"bodyA data %@", bodyA->GetUserData());
+        //            NSLog(@"bodyB data %@", bodyB->GetUserData());
         
-//        NSLog(@"offset %f", offset);
-        CGSize textureSize = background_.textureRect.size;
-        [background_ setTextureRect:CGRectMake(offset, 0, textureSize.width, textureSize.height)];
-
-        [terrain_ setOffsetX:offset];
-        
-        std::vector<b2Body *>toDestroy;
-        std::vector<MyContact>::iterator pos;
-        BOOL destroyPaddle = NO;
-        for(pos = contactListener_->_contacts.begin(); pos != contactListener_->_contacts.end(); ++pos) {
-//            NSLog(@"inside contact listener loop");
-            MyContact contact = *pos;
+        if (bodyA->GetUserData() != NULL && bodyB->GetUserData() != NULL) {
+            CCSprite *spriteA = (CCSprite *) bodyA->GetUserData();
+            CCSprite *spriteB = (CCSprite *) bodyB->GetUserData();
             
-            //        if ((contact.fixtureA == _bottomFixture && contact.fixtureB == _ballFixture) ||
-            //            (contact.fixtureA == _ballFixture && contact.fixtureB == _bottomFixture)) {
-            //            GameOverScene *gameOverScene = [GameOverScene node];
-            //            [gameOverScene.layer.label setString:@"You Lose :["];
-            //            [[CCDirector sharedDirector] replaceScene:gameOverScene];
-            //        } 
+            //                NSLog(@"A tag %d", spriteA.tag);
+            //                NSLog(@"B tag %d", spriteB.tag);
             
-            b2Body *bodyA = contact.fixtureA->GetBody();
-            b2Body *bodyB = contact.fixtureB->GetBody();
-            
-//            NSLog(@"bodyA data %@", bodyA->GetUserData());
-//            NSLog(@"bodyB data %@", bodyB->GetUserData());
-            
-            if (bodyA->GetUserData() != NULL && bodyB->GetUserData() != NULL) {
-                CCSprite *spriteA = (CCSprite *) bodyA->GetUserData();
-                CCSprite *spriteB = (CCSprite *) bodyB->GetUserData();
-                
-//                NSLog(@"A tag %d", spriteA.tag);
-//                NSLog(@"B tag %d", spriteB.tag);
-                
-                // Sprite A = ball, Sprite B = Block
-                if (spriteA.tag == 1 && spriteB.tag == 2) {
-                    if (std::find(toDestroy.begin(), toDestroy.end(), bodyB) == toDestroy.end()) {
-                        toDestroy.push_back(bodyB);
-//                        NSLog(@"ball touched block bodyB");
-                    }
+            // Sprite A = ball, Sprite B = Block
+            if (spriteA.tag == 1 && spriteB.tag == 2) {
+                if (std::find(toDestroy.begin(), toDestroy.end(), bodyB) == toDestroy.end()) {
+                    toDestroy.push_back(bodyB);
+                    //                        NSLog(@"ball touched block bodyB");
                 }
-                // Sprite B = block, Sprite A = ball
-                else if (spriteA.tag == 2 && spriteB.tag == 1) {
-                    if (std::find(toDestroy.begin(), toDestroy.end(), bodyA) == toDestroy.end()) {
-                        toDestroy.push_back(bodyA);
-//                        NSLog(@"ball touched block bodyA");
-                    }
-                } else if (spriteA.tag == 2 && spriteB.tag == 3) {
-                    if (std::find(toDestroy.begin(), toDestroy.end(), bodyA) == toDestroy.end()) {
-                        toDestroy.push_back(bodyA); 
-                        destroyPaddle = YES;
-                    }
-                } else if (spriteA.tag == 3 && spriteB.tag == 2) {
-                    if (std::find(toDestroy.begin(), toDestroy.end(), bodyA) == toDestroy.end()) {
-                        toDestroy.push_back(bodyA);
-                        destroyPaddle = YES;
-                    }
-                } else if (spriteA.tag == 1 && spriteB.tag == 3) {
-                    // ball touched paddle
-                    [self.hud onUpdateScore:1];
-                } else if (spriteA.tag == 3 && spriteB.tag == 1) {
-                    // ball touched paddle
-                    [self.hud onUpdateScore:1];
+            }
+            // Sprite B = block, Sprite A = ball
+            else if (spriteA.tag == 2 && spriteB.tag == 1) {
+                if (std::find(toDestroy.begin(), toDestroy.end(), bodyA) == toDestroy.end()) {
+                    toDestroy.push_back(bodyA);
+                    //                        NSLog(@"ball touched block bodyA");
                 }
-            }                 
-        }
-        
-        std::vector<b2Body *>::iterator pos2;
-        for(pos2 = toDestroy.begin(); pos2 != toDestroy.end(); ++pos2) {
-            b2Body *body = *pos2;     
-            if (body->GetUserData() != NULL) {
-                CCSprite *sprite = (CCSprite *) body->GetUserData();
-                sprite.visible = NO;
-                [[SimpleAudioEngine sharedEngine] playEffect:@"blip.caf"];
-                [self.hud onUpdateScore:10];
-                [terrain_ removeChild:sprite cleanup:YES];
-                for (int index = 0; index < [obstacles_ count]; index++) {
-                    Obstacle *o = [obstacles_ objectAtIndex: index];
-                    if (o.body == body) {
-                        [o explode];
-                        CGPoint createBonusBulletPosition = CGPointMake(o.body->GetPosition().x * PTM_RATIO, o.body->GetPosition().y * PTM_RATIO);
-                        [self createBallBulletAtPosition: createBonusBulletPosition];
-                        [obstacles_ removeObject: o];
-                        world_->DestroyBody(body);
-                    }
+            } else if (spriteA.tag == 2 && spriteB.tag == 3) {
+                if (std::find(toDestroy.begin(), toDestroy.end(), bodyA) == toDestroy.end()) {
+                    toDestroy.push_back(bodyA); 
+                    destroyPaddle = YES;
+                }
+            } else if (spriteA.tag == 3 && spriteB.tag == 2) {
+                if (std::find(toDestroy.begin(), toDestroy.end(), bodyA) == toDestroy.end()) {
+                    toDestroy.push_back(bodyA);
+                    destroyPaddle = YES;
+                }
+            } else if (spriteA.tag == 1 && spriteB.tag == 3) {
+                // ball touched paddle
+                [self.hud onUpdateScore:1];
+            } else if (spriteA.tag == 3 && spriteB.tag == 1) {
+                // ball touched paddle
+                [self.hud onUpdateScore:1];
+            }
+        }                 
+    }
+    
+    std::vector<b2Body *>::iterator pos2;
+    for(pos2 = toDestroy.begin(); pos2 != toDestroy.end(); ++pos2) {
+        b2Body *body = *pos2;     
+        if (body->GetUserData() != NULL) {
+            CCSprite *sprite = (CCSprite *) body->GetUserData();
+            sprite.visible = NO;
+            [[SimpleAudioEngine sharedEngine] playEffect:@"blip.caf"];
+            [self.hud onUpdateScore:10];
+            [terrain_ removeChild:sprite cleanup:YES];
+            for (int index = 0; index < [obstacles_ count]; index++) {
+                Obstacle *o = [obstacles_ objectAtIndex: index];
+                if (o.body == body) {
+                    [o explode];
+                    CGPoint createBonusBulletPosition = CGPointMake(o.body->GetPosition().x * PTM_RATIO, o.body->GetPosition().y * PTM_RATIO);
+                    [self createBallBulletAtPosition: createBonusBulletPosition];
+                    [obstacles_ removeObject: o];
+                    world_->DestroyBody(body);
                 }
             }
         }
-        
-        if (destroyPaddle) {
-            CCSprite *paddleSprite = (CCSprite *)paddle_.body->GetUserData();
-            paddleSprite.visible = NO;
-            [terrain_ removeChild: paddle_ cleanup: YES];
-            world_->DestroyBody(paddle_.body);
-            self.gameState = kGameStatePaused;
-            [self.hud gameOver: NO touchedFatalObject: YES];
-        }
+    }
+    
+    if (destroyPaddle) {
+        CCSprite *paddleSprite = (CCSprite *)paddle_.body->GetUserData();
+        paddleSprite.visible = NO;
+        [terrain_ removeChild: paddle_ cleanup: YES];
+        world_->DestroyBody(paddle_.body);
+        [self.hud gameOver: NO touchedFatalObject: YES];
     }
 }
 
@@ -338,8 +359,13 @@
 }
 
 - (void)dealloc {
+    self.player = nil;
+    self.levels = nil;
+    [_currentLevel release];
     [obstacles_ release];
     [ballBullets_ release];
+    [terrain_ release];
+    terrain_ = nil;
     delete world_;
     delete contactListener_;
     [super dealloc];

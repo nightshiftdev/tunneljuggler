@@ -2,7 +2,7 @@
 //  Player.m
 //  TunnelJoggler
 //
-//  Created by pawel on 7/18/12.
+//  Created by pawel on 7/25/12.
 //
 //
 
@@ -12,10 +12,11 @@
 @implementation Player
 
 @dynamic currentLevel;
+@dynamic experienceLevel;
 @dynamic name;
 @dynamic picture;
-@dynamic score;
-@dynamic experienceLevel;
 @dynamic recordUUID;
+@dynamic score;
+@dynamic bonusItems;
 
 @end

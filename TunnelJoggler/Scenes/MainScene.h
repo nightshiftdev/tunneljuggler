@@ -15,6 +15,7 @@
 }
 @property (readwrite,retain) CCParticleSystem *emitter;
 +(id) scene;
+-(void)reloadGameData:(id)sender;
 //-(void) toggleSoundOnOffBtn;
 //-(CCMenuItem*) itemSoundOnOff;
 

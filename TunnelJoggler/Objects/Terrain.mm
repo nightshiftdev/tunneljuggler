@@ -7,13 +7,16 @@
 #import "Terrain.h"
 #import "Game.h"
 
+@interface Terrain()
+@property (nonatomic, assign, readwrite) int maxHillKeyPoints;
+@end
+
 @implementation Terrain
 
 @synthesize stripes = _stripes;
 @synthesize batchNode = _batchNode;
 @synthesize terrainObserver;
-//@synthesize nBorderVertices = _nBorderVertices;
-//@synthesize nOppositeBorderVertices = _nOppositeBorderVertices;
+@synthesize maxHillKeyPoints;
 
 - (void)setupDebugDraw {
     _debugDraw = new GLESDebugDraw(PTM_RATIO*[[CCDirector sharedDirector] contentScaleFactor]);
@@ -21,8 +24,10 @@
     _debugDraw->SetFlags(b2DebugDraw::e_shapeBit | b2DebugDraw::e_jointBit);
 }
 
-- (id)initWithWorld:(b2World *)world {
+- (id)initWithWorld:(b2World *)world terrainLength:(int)terrainLength {
     if ((self = [super init])) {
+        _hillKeyPoints = [[NSMutableArray alloc] init];
+        self.maxHillKeyPoints = terrainLength + 1;
         _world = world;
 //        [self setupDebugDraw];
         [self generateHills];
@@ -75,10 +80,10 @@
     static int prevToKeyPointI = -1;
     
     // key points interval for drawing
-    while ((_fromKeyPointI+1 < kMaxHillKeyPoints) && (_hillKeyPoints[_fromKeyPointI+1].x < _offsetX-winSize.width/8)) {
+    while ((_fromKeyPointI+1 < self.maxHillKeyPoints) && ([[_hillKeyPoints objectAtIndex:_fromKeyPointI+1] CGPointValue].x < _offsetX-winSize.width/8)) {
         _fromKeyPointI++;
     }
-    while ((_toKeyPointI < kMaxHillKeyPoints) && (_hillKeyPoints[_toKeyPointI].x < _offsetX+winSize.width*9/8)) {
+    while ((_toKeyPointI+1 < self.maxHillKeyPoints) && ([[_hillKeyPoints objectAtIndex: _toKeyPointI] CGPointValue].x < _offsetX+winSize.width*9/8)) {
         _toKeyPointI++;
     }
     
@@ -91,15 +96,15 @@
         _nOppositeBorderVertices = 0;
         CGPoint p0, p1, pt0, pt1;
         CGPoint o0, o1, ot0, ot1;
-        o0 = _hillKeyPoints[_fromKeyPointI];
-        o0.y = winSize.height - _hillKeyPoints[_fromKeyPointI].y;
-        p0 = _hillKeyPoints[_fromKeyPointI];
+        o0 = [[_hillKeyPoints objectAtIndex: _fromKeyPointI] CGPointValue];
+        o0.y = winSize.height - [[_hillKeyPoints objectAtIndex: _fromKeyPointI] CGPointValue].y;
+        p0 = [[_hillKeyPoints objectAtIndex: _fromKeyPointI] CGPointValue];
 //        NSLog(@"p0.x %f, p0.y %f", p0.x, p0.y);
 //        NSLog(@"o0.x %f, o0.y %f", o0.x, o0.y);
         for (int i=_fromKeyPointI+1; i<_toKeyPointI+1; i++) {
-            p1 = _hillKeyPoints[i];
-            o1 = _hillKeyPoints[i];
-            o1.y = winSize.height - _hillKeyPoints[i].y; 
+            p1 = [[_hillKeyPoints objectAtIndex: i] CGPointValue];
+            o1 = [[_hillKeyPoints objectAtIndex: i] CGPointValue];
+            o1.y = winSize.height - [[_hillKeyPoints objectAtIndex: i] CGPointValue].y;
 //            NSLog(@"p1.x %f, p1.y %f", p1.x, p1.y);
 //            NSLog(@"o1.x %f, o1.y %f", o1.x, o1.y);
             // triangle strip between p0 and p1
@@ -184,8 +189,8 @@
     float sign = 1; // +1 - going up, -1 - going  down
     float paddingBottom = 5;
     
-    for (int i=0; i<kMaxHillKeyPoints; i++) {
-        _hillKeyPoints[i] = CGPointMake(x, y);
+    for (int i=0; i< self.maxHillKeyPoints; i++) {
+        [_hillKeyPoints addObject: [NSValue valueWithCGPoint: CGPointMake(x, y)]];
         if (i == 0) {
             x = 0;
             y = winSize.height/divider;
@@ -231,7 +236,7 @@
 }
 
 - (void) setOffsetX:(float)newOffsetX {
-    if (self.terrainObserver && _toKeyPointI >= kMaxHillKeyPoints) {
+    if (self.terrainObserver && _toKeyPointI+1 >= self.maxHillKeyPoints) {
         [self.terrainObserver onTerrainEnd: self];
         _toKeyPointI = 0;
         _fromKeyPointI = 0;
@@ -243,6 +248,8 @@
 }
 
 - (void)dealloc {
+    [_hillKeyPoints release];
+    _hillKeyPoints = nil;
     [_stripes release];
     _stripes = NULL;
     [super dealloc];

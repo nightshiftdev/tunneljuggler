@@ -10,6 +10,7 @@
 #import "HUD.h"
 #import "SoundMenuItem.h"
 #import "MainScene.h"
+#import "GameController.h"
 
 @interface HUD()
 @property (nonatomic, assign) BOOL isGameOver;
@@ -61,12 +62,13 @@
     if (!self.isGameOver) {
         self.isGameOver = YES;
         [[CCDirector sharedDirector] pause];
-        CCMenuItem *item1 = [SoundMenuItem itemFromNormalSpriteFrameName:@"btn-try-again-normal.png" selectedSpriteFrameName:@"btn-try-again-selected.png" target:self selector:@selector(onPlayAgainPressed:)];
         CCMenuItem *item0 = [SoundMenuItem itemFromNormalSpriteFrameName:@"btn-exit-normal.png" selectedSpriteFrameName:@"btn-exit-selected.png" target:self selector:@selector(onMainMenuPressed:)];
-        CCMenuItem *item2 = nil;
+        CCMenuItem *item2, *item1 = nil;
         if (fatalObjectTouched) {
+            item1 = [SoundMenuItem itemFromNormalSpriteFrameName:@"btn-try-again-normal.png" selectedSpriteFrameName:@"btn-try-again-selected.png" target:self selector:@selector(onPlayAgainPressed:)];
             item2 = [SoundMenuItem itemFromNormalSpriteFrameName:@"info-level-failed.png" selectedSpriteFrameName:@"info-level-failed.png" target:nil selector:nil];
         } else {
+            item1 = [SoundMenuItem itemFromNormalSpriteFrameName:@"btn-small-play-normal.png" selectedSpriteFrameName:@"btn-small-play-selected.png" target:self selector:@selector(onNextLevelPressed:)];
             item2 = [SoundMenuItem itemFromNormalSpriteFrameName:@"info-level-passed.png" selectedSpriteFrameName:@"info-level-passed.png" target:nil selector:nil];
         }
         [item2 setIsEnabled:NO];
@@ -122,7 +124,6 @@
     if ([[CCDirector sharedDirector] isPaused]) {
 		[[CCDirector sharedDirector] resume];
 	}
-    [game_ resetGame];
 	[[CCDirector sharedDirector] replaceScene: [CCTransitionFade transitionWithDuration:0.1f scene:[[game_ class] scene]]];
 }
 
@@ -131,6 +132,24 @@
 		[[CCDirector sharedDirector] resume];
 	}
     [[CCDirector sharedDirector] replaceScene:[CCTransitionFade transitionWithDuration:0.1f scene:[MainScene scene]]];
+}
+
+-(void) onNextLevelPressed:(id)sender {
+    if ([[CCDirector sharedDirector] isPaused]) {
+		[[CCDirector sharedDirector] resume];
+	}
+    Player *player = [[GameController sharedController] player];
+    int nextLevel = [player.currentLevel intValue] + 1;
+    int experienceLevel = [player.experienceLevel intValue] + 1;
+    NSArray *levels = [[GameController sharedController] levels];
+    if (nextLevel >= [levels count]) {
+        nextLevel = 0;
+        experienceLevel += 100;
+    }
+    player.currentLevel = [NSNumber numberWithInt: nextLevel];
+    player.experienceLevel =  [NSNumber numberWithInt: experienceLevel];
+    [GameController sharedController].player = player;
+    [[CCDirector sharedDirector] replaceScene: [CCTransitionFade transitionWithDuration:0.1f scene:[[game_ class] scene]]];
 }
 
 @end
