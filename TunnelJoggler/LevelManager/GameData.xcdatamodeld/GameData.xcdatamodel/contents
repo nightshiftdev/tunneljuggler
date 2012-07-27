@@ -3,6 +3,7 @@
     <entity name="Level" representedClassName="Level" syncable="YES">
         <attribute name="bonusBallFrequency" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="bonusItemFrequency" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="haveMovingObstacles" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="length" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="maxSpeed" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="minSpeed" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
@@ -30,7 +31,7 @@
         <memberEntity name="Level"/>
     </configuration>
     <elements>
-        <element name="Level" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Level" positionX="0" positionY="0" width="0" height="240"/>
         <element name="Player" positionX="0" positionY="0" width="0" height="0"/>
     </elements>
 </model>

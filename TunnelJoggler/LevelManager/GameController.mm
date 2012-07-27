@@ -507,6 +507,7 @@ static NSOperationQueue *_presentedItemOperationQueue;
     l1.obstacleFrequency = [NSNumber numberWithFloat:1.0f];
     l1.bonusBallFrequency = [NSNumber numberWithFloat:2.0f];
     l1.bonusItemFrequency = [NSNumber numberWithFloat:5.0f];
+    l1.haveMovingObstacles = [NSNumber numberWithBool:NO];
     l1.recordUUID = [self UUIDString];
     
     [levelsMOC assignObject:l1 toPersistentStore: _levelsLocalStore];

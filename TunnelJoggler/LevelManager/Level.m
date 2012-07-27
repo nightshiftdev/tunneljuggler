@@ -2,7 +2,7 @@
 //  Level.m
 //  TunnelJoggler
 //
-//  Created by pawel on 7/18/12.
+//  Created by pawel on 7/27/12.
 //
 //
 
@@ -18,10 +18,11 @@
 @dynamic minSpeed;
 @dynamic mustReachEndOfLevelToPass;
 @dynamic obstacleFrequency;
+@dynamic recordUUID;
 @dynamic scoreToPass;
 @dynamic speedIncreaseInterval;
 @dynamic speedIncreaseValue;
 @dynamic timeToSurviveToPass;
-@dynamic recordUUID;
+@dynamic haveMovingObstacles;
 
 @end

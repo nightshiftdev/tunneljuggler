@@ -142,7 +142,7 @@
     [ballBullets_ addObject: bb];
 }
 
-- (BOOL) useNegativeSign {
+- (BOOL) randomize {
     int randomNumber = (arc4random() % (30 + 1));
     if (randomNumber % 2) {
         return YES;
@@ -155,14 +155,35 @@
     if ((addObstacleInterval_ -= dt) < 0) {
         addObstacleInterval_ = [self.currentLevel.obstacleFrequency floatValue];
         float randomizeObstaclePos = arc4random() % 100;
-        if ([self useNegativeSign]) {
+        if ([self randomize]) {
             randomizeObstaclePos *= -1;
         }
-        Obstacle *obstacle = [[[Obstacle alloc] initWithWorld: world_
-                                                     position: CGPointMake(paddle_.position.x + winSize.width,
-                                                                           (winSize.height/2) + randomizeObstaclePos)
-                                                         game: self]
-                              autorelease];
+        Obstacle *obstacle = nil;
+        if ([self.currentLevel.haveMovingObstacles boolValue]) {
+            if ([self randomize]) {
+                obstacle = [[[Obstacle alloc] initWithWorld: world_
+                                                   position: CGPointMake(paddle_.position.x + winSize.width,
+                                                                         (winSize.height/2))
+                                                       game: self]
+                            autorelease];
+                obstacle.isMoving = YES;
+                obstacle.changeDirectionTimeIterval = 1.0;
+                obstacle.horizontalForce = 1.0;
+            } else {
+                obstacle = [[[Obstacle alloc] initWithWorld: world_
+                                                   position: CGPointMake(paddle_.position.x + winSize.width,
+                                                                         (winSize.height/2) + randomizeObstaclePos)
+                                                       game: self]
+                            autorelease];
+            }
+        } else {
+            obstacle = [[[Obstacle alloc] initWithWorld: world_
+                                               position: CGPointMake(paddle_.position.x + winSize.width,
+                                                                     (winSize.height/2) + randomizeObstaclePos)
+                                                   game: self]
+                        autorelease];
+        }
+        
         [obstacles_ addObject: obstacle];
         [terrain_.batchNode addChild: obstacle];
     }

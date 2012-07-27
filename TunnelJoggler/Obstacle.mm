@@ -9,12 +9,19 @@
 #import "Game.h"
 #import "Obstacle.h"
 
+@interface Obstacle()
+float _currentChangeDirectionTimeIterval;
+@end
+
 @implementation Obstacle
 
 @synthesize emitter;
 @synthesize game;
+@synthesize isMoving;
+@synthesize horizontalForce;
+@synthesize changeDirectionTimeIterval;
 
-- (void)createBodyAtPosition: (CGPoint) position {    
+- (void)createBodyAtPosition: (CGPoint) position {
     // Create obstacle body
     b2BodyDef paddleBodyDef;
     paddleBodyDef.type = b2_kinematicBody;
@@ -40,14 +47,35 @@
 - (id)initWithWorld:(b2World *)world position: (CGPoint) position game: (Game *) g {
     if ((self = [super initWithSpriteFrameName:@"Block.png"])) {
         self.game = g;
+        self.isMoving = NO;
+        self.horizontalForce = 0.0;
+        self.changeDirectionTimeIterval = 0.0;
         world_ = world;
         [self createBodyAtPosition:position];
     }
     return self;
 }
 
+- (void)setChangeDirectionTimeIterval:(float)newChangeDirectionTimeIterval {
+    changeDirectionTimeIterval = newChangeDirectionTimeIterval;
+    _currentChangeDirectionTimeIterval = changeDirectionTimeIterval;
+}
+
 - (void)update:(ccTime)dt {
-    body_->SetLinearVelocity(b2Vec2(0, 0));
+    if (self.isMoving) {
+        if ((_currentChangeDirectionTimeIterval -= dt) < 0) {
+            _currentChangeDirectionTimeIterval = self.changeDirectionTimeIterval;
+            static int directionChangeCounter = 0;
+            directionChangeCounter++;
+            if (directionChangeCounter % 2) {
+                body_->SetLinearVelocity(b2Vec2(0, self.horizontalForce));
+            } else {
+                body_->SetLinearVelocity(b2Vec2(0, -self.horizontalForce));
+            }
+        }
+    } else {
+        body_->SetLinearVelocity(b2Vec2(0, 0));
+    }
     self.position = ccp(body_->GetPosition().x*PTM_RATIO, body_->GetPosition().y*PTM_RATIO);
 }
 
