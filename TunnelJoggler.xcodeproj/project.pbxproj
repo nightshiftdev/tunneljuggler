@@ -189,12 +189,11 @@
 		E59A440D15AC6F3C00BBD754 /* GameController.mm in Sources */ = {isa = PBXBuildFile; fileRef = E59A440C15AC6F3C00BBD754 /* GameController.mm */; };
 		E5A42E8B153B5033000CFFB2 /* Obstacle.mm in Sources */ = {isa = PBXBuildFile; fileRef = E5A42E8A153B5033000CFFB2 /* Obstacle.mm */; };
 		E5AD299115BED2D100A43904 /* MainScene.mm in Sources */ = {isa = PBXBuildFile; fileRef = E5AD299015BED2D100A43904 /* MainScene.mm */; };
-		E5AD299415BED3C800A43904 /* main-scene-background.png in Resources */ = {isa = PBXBuildFile; fileRef = E5AD299315BED3C800A43904 /* main-scene-background.png */; };
-		E5AD299615BED3E000A43904 /* main-scene-background-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E5AD299515BED3E000A43904 /* main-scene-background-hd.png */; };
 		E5AD299D15C01A2300A43904 /* Player.m in Sources */ = {isa = PBXBuildFile; fileRef = E5AD299C15C01A2300A43904 /* Player.m */; };
 		E5B3A14B15BD73D400667F70 /* GameData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E5B3A14915BD73D400667F70 /* GameData.xcdatamodeld */; };
 		E5B4870F15C2E6930067CE1B /* Level.m in Sources */ = {isa = PBXBuildFile; fileRef = E5B4870E15C2E6930067CE1B /* Level.m */; };
 		E5B7D72D152A647800407342 /* Paddle.mm in Sources */ = {isa = PBXBuildFile; fileRef = E5B7D72C152A647800407342 /* Paddle.mm */; };
+		E5C3584B15C5B71E00788E1B /* BackgroundUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = E5C3584A15C5B71D00788E1B /* BackgroundUtils.mm */; };
 		E5CB458D15B6F70900F1D056 /* ImageToDataTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = E5CB458C15B6F70900F1D056 /* ImageToDataTransformer.m */; };
 /* End PBXBuildFile section */
 
@@ -546,8 +545,6 @@
 		E5A42E8A153B5033000CFFB2 /* Obstacle.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Obstacle.mm; sourceTree = "<group>"; };
 		E5AD298F15BED2D100A43904 /* MainScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainScene.h; sourceTree = "<group>"; };
 		E5AD299015BED2D100A43904 /* MainScene.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MainScene.mm; sourceTree = "<group>"; };
-		E5AD299315BED3C800A43904 /* main-scene-background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "main-scene-background.png"; path = "Resources/backgrounds/backgrounds/main-scene-background.png"; sourceTree = "<group>"; };
-		E5AD299515BED3E000A43904 /* main-scene-background-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "main-scene-background-hd.png"; path = "Resources/backgrounds/backgrounds-hd/main-scene-background-hd.png"; sourceTree = "<group>"; };
 		E5AD299B15C01A2300A43904 /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Player.h; path = LevelManager/Player.h; sourceTree = "<group>"; };
 		E5AD299C15C01A2300A43904 /* Player.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Player.m; path = LevelManager/Player.m; sourceTree = "<group>"; };
 		E5B3A14A15BD73D400667F70 /* GameData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = GameData.xcdatamodel; sourceTree = "<group>"; };
@@ -555,6 +552,8 @@
 		E5B4870E15C2E6930067CE1B /* Level.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Level.m; path = LevelManager/Level.m; sourceTree = "<group>"; };
 		E5B7D72B152A647800407342 /* Paddle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Paddle.h; path = Objects/Paddle.h; sourceTree = "<group>"; };
 		E5B7D72C152A647800407342 /* Paddle.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Paddle.mm; path = Objects/Paddle.mm; sourceTree = "<group>"; };
+		E5C3584915C5B71D00788E1B /* BackgroundUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BackgroundUtils.h; sourceTree = "<group>"; };
+		E5C3584A15C5B71D00788E1B /* BackgroundUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BackgroundUtils.mm; sourceTree = "<group>"; };
 		E5CB458B15B6F70900F1D056 /* ImageToDataTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ImageToDataTransformer.h; path = LevelManager/ImageToDataTransformer.h; sourceTree = "<group>"; };
 		E5CB458C15B6F70900F1D056 /* ImageToDataTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ImageToDataTransformer.m; path = LevelManager/ImageToDataTransformer.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -633,6 +632,8 @@
 				E53C62EA1508288B0047EF66 /* RootViewController.m */,
 				E598D4211579265200DF181A /* SoundMenuItem.h */,
 				E598D4221579265200DF181A /* SoundMenuItem.m */,
+				E5C3584915C5B71D00788E1B /* BackgroundUtils.h */,
+				E5C3584A15C5B71D00788E1B /* BackgroundUtils.mm */,
 				E58431FD15AC5E4B00FBDE5A /* LevelManager */,
 				E5AD298E15BED2D100A43904 /* Scenes */,
 				E53C62FA1508297B0047EF66 /* Objects */,
@@ -651,8 +652,6 @@
 		E53C612F150828860047EF66 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				E5AD299515BED3E000A43904 /* main-scene-background-hd.png */,
-				E5AD299315BED3C800A43904 /* main-scene-background.png */,
 				E55237D51558A17A005B05D3 /* background-music-aac.caf */,
 				E55237D61558A17A005B05D3 /* blip.caf */,
 				E598D42415792A0600DF181A /* buttons-hd.plist */,
@@ -1133,8 +1132,6 @@
 				E55E3D41159A339400CA5894 /* fire.png in Resources */,
 				E55E3D44159A33A600CA5894 /* fire-hd.png in Resources */,
 				E587492215AF001500D22B51 /* ProgressHUD.xib in Resources */,
-				E5AD299415BED3C800A43904 /* main-scene-background.png in Resources */,
-				E5AD299615BED3E000A43904 /* main-scene-background-hd.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1295,6 +1292,7 @@
 				E5AD299115BED2D100A43904 /* MainScene.mm in Sources */,
 				E5AD299D15C01A2300A43904 /* Player.m in Sources */,
 				E5B4870F15C2E6930067CE1B /* Level.m in Sources */,
+				E5C3584B15C5B71E00788E1B /* BackgroundUtils.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

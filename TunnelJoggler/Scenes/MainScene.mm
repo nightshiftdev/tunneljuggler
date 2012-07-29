@@ -12,6 +12,12 @@
 #import "Game.h"
 #import "SimpleAudioEngine.h"
 #import "GameController.h"
+#import "BackgroundUtils.h"
+
+@interface MainScene()
+- (CCSprite *)genBackground;
+@end
+
 
 @implementation MainScene
 
@@ -30,7 +36,7 @@
 		[[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"buttons.plist"];
 		
 		CGSize s = [[CCDirector sharedDirector] winSize];
-		CCSprite *background = [CCSprite spriteWithFile:@"main-scene-background.png"];
+		CCSprite *background = [self genBackground];
 		background.position = ccp(s.width/2, s.height/2);
 		[self addChild:background z:-10];
 		
@@ -106,12 +112,12 @@
 
 -(void) onEnter {
 	[super onEnter];
-	self.emitter = [CCParticleGalaxy node];
-	[self addChild: emitter z:-5];
-	if(CGPointEqualToPoint( emitter.sourcePosition, CGPointZero)) {
-        CGSize s = [[CCDirector sharedDirector] winSize];
-		emitter.position = ccp(s.width/2, s.height/2);
-    }
+//	self.emitter = [CCParticleGalaxy node];
+//	[self addChild: emitter z:-5];
+//	if(CGPointEqualToPoint( emitter.sourcePosition, CGPointZero)) {
+//        CGSize s = [[CCDirector sharedDirector] winSize];
+//		emitter.position = ccp(s.width/2, s.height/2);
+//    }
 }
 
 -(void) playGame:(id)sender {
@@ -160,5 +166,31 @@
 //	NSURL *url = [NSURL URLWithString:stringURL];
 //	[[UIApplication sharedApplication] openURL:url];
 //}
+
+- (CCSprite *)genBackground {
+    ccColor4F color1 = [BackgroundUtils randomBrightColor];
+    ccColor4F color2 = [BackgroundUtils randomBrightColor];
+    
+    if (SOFTLAYER) {
+        ccColor4B blackColor = 
+        ccc4(1,
+             1, 
+             1, 
+             255);
+        color1 = ccc4FFromccc4B(blackColor);
+        ccColor4B redColor = 
+        ccc4(255,
+             0, 
+             0, 
+             255);
+        color2 = ccc4FFromccc4B(redColor);
+    }
+    
+    float screenFactor = [CCDirector sharedDirector].contentScaleFactor;
+    CCSprite *stripes = [BackgroundUtils stripedSpriteWithColor1:color1 color2:color2 textureSize:512 stripes: 6 * screenFactor];
+    ccTexParams tp2 = {GL_LINEAR, GL_LINEAR, GL_REPEAT, GL_CLAMP_TO_EDGE};
+    [stripes.texture setTexParameters:&tp2];
+    return stripes;
+}
 
 @end
