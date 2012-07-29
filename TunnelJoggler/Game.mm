@@ -62,8 +62,6 @@
         contactListener_ = new MyContactListener();
 		world_->SetContactListener(contactListener_);
         
-        [[SimpleAudioEngine sharedEngine] playBackgroundMusic:@"background-music-aac.caf"];
-        
         addObstacleInterval_ = [_currentLevel.obstacleFrequency floatValue];
         addBonusBallInterval_ = [_currentLevel.bonusBallFrequency floatValue];
         increasePaddleSpeedInterval_ = [_currentLevel.speedIncreaseInterval floatValue];

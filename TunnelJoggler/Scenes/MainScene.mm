@@ -60,6 +60,8 @@
                                                  selector:@selector(reloadGameData:)
                                                      name:NSPersistentStoreDidImportUbiquitousContentChangesNotification
                                                    object:[GameController sharedController].psc];
+        
+        [[SimpleAudioEngine sharedEngine] playBackgroundMusic:@"background-music-aac.caf"];
 		
 //		CCMenuItem *itemCredits = [SoundMenuItem itemFromNormalSpriteFrameName:@"btn-credits-normal.png" selectedSpriteFrameName:@"btn-credits-selected.png" target:self selector:@selector(showCredits:)];
 //		CCMenu *menuCredits = [CCMenu menuWithItems: itemCredits, nil];
