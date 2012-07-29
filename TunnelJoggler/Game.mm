@@ -85,7 +85,7 @@
 
 - (void)setupGamePlay {
     self.player = [[GameController sharedController] player];
-    if (DEBUG) {
+    if (DEBUG_LOG) {
         NSLog(@"============Player===============");
         NSLog(@"player.currentLevel %@", self.player.currentLevel);
         NSLog(@"player.name %@", self.player.name);
@@ -97,7 +97,7 @@
         NSLog(@"===================================");
     }
     self.levels = [[GameController sharedController] levels];
-    if (DEBUG) {
+    if (DEBUG_LOG) {
         int i = 0;
         for (Level *l in self.levels) {
             NSLog(@"============Level %d===============", i);
@@ -118,7 +118,7 @@
         }
     }
     self.currentLevel = [self.levels objectAtIndex: [self.player.currentLevel intValue]];
-    if (DEBUG) {
+    if (DEBUG_LOG) {
         NSLog(@"============Current Level %d===============", [self.player.currentLevel intValue]);
         NSLog(@"bonusItemFrequency %@", self.currentLevel.bonusItemFrequency);
         NSLog(@"bonusBallFrequency %@", self.currentLevel.bonusBallFrequency);

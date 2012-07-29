@@ -10,6 +10,7 @@
 #import "Level.h"
 #import "Paddle.h"
 #import "ProgressHUD.h"
+#import "Game.h"
 
 NSString * kPlayeriCloudPersistentStoreFilename = @"PlayeriCloudStore.sqlite";
 NSString * kPlayerFallbackPersistentStoreFilename = @"PlayerFallbackStore.sqlite"; //used when iCloud is not available
@@ -253,11 +254,11 @@ static NSOperationQueue *_presentedItemOperationQueue;
 - (void)asyncLoadPersistentStores {
     NSError *error = nil;
     if ([self loadLevelsLocalPersistentStore:&error]) {
-        if (DEBUG) {
+        if (DEBUG_LOG) {
             NSLog(@"Added local store");
         }
     } else {
-        if (DEBUG) {
+        if (DEBUG_LOG) {
             NSLog(@"Unable to add local persistent store: %@", error);
         }
     }
@@ -267,7 +268,7 @@ static NSOperationQueue *_presentedItemOperationQueue;
     BOOL useFallbackStore = NO;
     if ([self isiCloudAvailable]) {
         if ([self loadPlayeriCloudStore:&error]) {
-            if (DEBUG) {
+            if (DEBUG_LOG) {
                 NSLog(@"Added iCloud Store");
             }
             
@@ -292,11 +293,11 @@ static NSOperationQueue *_presentedItemOperationQueue;
                               withPersistentStoreAtURL:[self playerFallbackStoreURL]
                                                  error:&blockError];
                     if (seedSuccess) {
-                        if (DEBUG) {
+                        if (DEBUG_LOG) {
                             NSLog(@"Successfully seeded iCloud Store from Fallback Store");
                         }
                     } else {
-                        if (DEBUG) {
+                        if (DEBUG_LOG) {
                             NSLog(@"Error seeding iCloud Store from fallback store: %@", error);
                         }
                         abort();
@@ -305,7 +306,7 @@ static NSOperationQueue *_presentedItemOperationQueue;
             }
             [fm release];
         } else {
-            if (DEBUG) {
+            if (DEBUG_LOG) {
                 NSLog(@"Unable to add iCloud store: %@", error);
             }
             useFallbackStore = YES;
@@ -316,7 +317,7 @@ static NSOperationQueue *_presentedItemOperationQueue;
     
     if (useFallbackStore) {
         if ([self loadPlayerFallbackStore:&error]) {
-            if (DEBUG) {
+            if (DEBUG_LOG) {
                 NSLog(@"Added fallback store: %@", self.playerFallbackStore);
             }
             //check to see if we need to seed data
@@ -328,7 +329,7 @@ static NSOperationQueue *_presentedItemOperationQueue;
                 [self deDupe:nil];
             }
         } else {
-            if (DEBUG) {
+            if (DEBUG_LOG) {
                 NSLog(@"Unable to add fallback store: %@", error);
             }
             abort();
@@ -376,7 +377,7 @@ static NSOperationQueue *_presentedItemOperationQueue;
                      */
                     [moc reset];
                 } else {
-                    if (DEBUG) {
+                    if (DEBUG_LOG) {
                         NSLog(@"Error saving during seed: %@", localError);
                     }
                     break;
@@ -393,7 +394,7 @@ static NSOperationQueue *_presentedItemOperationQueue;
         }
     } else {
         success = NO;
-        if (DEBUG) {
+        if (DEBUG_LOG) {
             NSLog(@"Error adding seed store: %@", localError);
         }
     }
@@ -440,7 +441,7 @@ static NSOperationQueue *_presentedItemOperationQueue;
     NSError *error = nil;
     BOOL success = [moc save: &error];
     if (success != YES || error != nil) {
-        if (DEBUG) {
+        if (DEBUG_LOG) {
             NSLog(@"Error saving player");
         }
     }
@@ -465,12 +466,12 @@ static NSOperationQueue *_presentedItemOperationQueue;
     
     if (_playerFallbackStore) {
         if ([_psc removePersistentStore:_playerFallbackStore error:&error]) {
-            if (DEBUG) {
+            if (DEBUG_LOG) {
                 NSLog(@"Removed fallback store");
             }
             _playerFallbackStore = nil;
         } else {
-            if (DEBUG) {
+            if (DEBUG_LOG) {
                 NSLog(@"Error removing fallback store: %@", error);
             }
         }
@@ -480,12 +481,12 @@ static NSOperationQueue *_presentedItemOperationQueue;
         _presentedItemURL = nil;
         [NSFileCoordinator removeFilePresenter:self];
         if ([_psc removePersistentStore:_playeriCloudStore error:&error]) {
-            if (DEBUG) {
+            if (DEBUG_LOG) {
                 NSLog(@"Removed iCloud Store");
             }
             _playeriCloudStore = nil;
         } else {
-            if (DEBUG) {
+            if (DEBUG_LOG) {
                 NSLog(@"Error removing iCloud Store: %@", error);
             }
         }
@@ -515,7 +516,7 @@ static NSOperationQueue *_presentedItemOperationQueue;
     NSError *createLevelsError = nil;
     BOOL success = [levelsMOC save: &createLevelsError];
     if (createLevelsError != nil) {
-        if (DEBUG) {
+        if (DEBUG_LOG) {
             NSLog(@"Error creating levels.");
         }
     }
@@ -539,7 +540,7 @@ static NSOperationQueue *_presentedItemOperationQueue;
                                            attributes:nil
                                                 error:&error];
         if (createSuccess == NO) {
-            if (DEBUG) {
+            if (DEBUG_LOG) {
                 NSLog(@"Unable to create application sandbox stores directory: %@\n\tError: %@", storesDirectory, error);
             }
         }
@@ -584,7 +585,7 @@ static NSOperationQueue *_presentedItemOperationQueue;
         NSError *error = nil;
         BOOL createSuccess = [fm createDirectoryAtURL:iCloudStoreURL withIntermediateDirectories:YES attributes:nil error:&error];
         if (NO == createSuccess) {
-            if (DEBUG) {
+            if (DEBUG_LOG) {
                 NSLog(@"Unable to create iCloud store directory: %@", error);
             }
         }
@@ -651,7 +652,7 @@ static NSOperationQueue *_presentedItemOperationQueue;
         }
     }
     
-    if (DEBUG) {
+    if (DEBUG_LOG) {
         NSLog(@"recordUUIDs with dupes: %@", recordUUIDsWithDupes);
     }
     
@@ -692,11 +693,11 @@ static NSOperationQueue *_presentedItemOperationQueue;
         if (0 == (i % batchSize)) {
             //save the changes after each batch, this helps control memory pressure by turning previously examined objects back in to faults
             if ([moc save:&error]) {
-                if (DEBUG) {
+                if (DEBUG_LOG) {
                     NSLog(@"Saved successfully after uniquing");
                 }
             } else {
-                if (DEBUG) {
+                if (DEBUG_LOG) {
                     NSLog(@"Error saving unique results: %@", error);
                 }
             }
@@ -706,11 +707,11 @@ static NSOperationQueue *_presentedItemOperationQueue;
     }
     
     if ([moc save:&error]) {
-        if (DEBUG) {
+        if (DEBUG_LOG) {
             NSLog(@"Saved successfully after uniquing");
         }
     } else {
-        if (DEBUG) {
+        if (DEBUG_LOG) {
             NSLog(@"Error saving unique results: %@", error);
         }
     }
@@ -729,7 +730,7 @@ static NSOperationQueue *_presentedItemOperationQueue;
     NSError *error = nil;
     NSArray *fetchedLevel = [_mainThreadContext executeFetchRequest:fetchRequest error:&error];
     if ([fetchedLevel count] > gNumberOfLevels) {
-        if (DEBUG) {
+        if (DEBUG_LOG) {
             NSLog(@"WARNING: Expected %d level(s), but fetched %d", gNumberOfLevels, [fetchedLevel count]);
         }
     }
@@ -743,7 +744,7 @@ static NSOperationQueue *_presentedItemOperationQueue;
     NSError *error = nil;
     NSArray *fetchedPlayers = [_mainThreadContext executeFetchRequest:fetchRequest error:&error];
     if ([fetchedPlayers count] > 1) {
-        if (DEBUG) {
+        if (DEBUG_LOG) {
             NSLog(@"WARNING: Expected only one player, but has %d", [fetchedPlayers count]);
         }
     }
@@ -757,7 +758,7 @@ static NSOperationQueue *_presentedItemOperationQueue;
     NSError *error = nil;
     NSArray *players = [_mainThreadContext executeFetchRequest:fetchRequest error:&error];
     if (error || [players count] > 1) {
-        if (DEBUG) {
+        if (DEBUG_LOG) {
             NSLog(@"Could not fetch player with error %@. Fetch player count %d", error, [players count]);
         }
     }
@@ -772,7 +773,7 @@ static NSOperationQueue *_presentedItemOperationQueue;
     
     BOOL success = [_mainThreadContext save: &error];
     if (error || !success) {
-        if (DEBUG) {
+        if (DEBUG_LOG) {
             NSLog(@"Could not save player data.");
         }
     }
@@ -787,7 +788,7 @@ static NSOperationQueue *_presentedItemOperationQueue;
 }
 
 #pragma mark -
-#pragma mark Debugging Helpers
+#pragma mark DEBUG_LOGging Helpers
 - (void)copyContainerToSandbox {
     NSAutoreleasePool *autoreleasepool = [[NSAutoreleasePool alloc] init];
     
@@ -797,7 +798,7 @@ static NSOperationQueue *_presentedItemOperationQueue;
     NSString *sandboxPath = [[self applicationDocumentsDirectory] stringByAppendingPathComponent:[self.ubiquityURL lastPathComponent]];
     
     if ([fm createDirectoryAtPath:sandboxPath withIntermediateDirectories:YES attributes:nil error:&error]) {
-        if (DEBUG) {
+        if (DEBUG_LOG) {
             NSLog(@"Created container directory in sandbox: %@", sandboxPath);
         }
     } else {
@@ -806,17 +807,17 @@ static NSOperationQueue *_presentedItemOperationQueue;
                 //delete the existing directory
                 error = nil;
                 if ([fm removeItemAtPath:sandboxPath error:&error]) {
-                    if (DEBUG) {
+                    if (DEBUG_LOG) {
                         NSLog(@"Removed old sandbox container copy");
                     }
                 } else {
-                    if (DEBUG) {
+                    if (DEBUG_LOG) {
                         NSLog(@"Error trying to remove old sandbox container copy: %@", error);
                     }
                 }
             }
         } else {
-            if (DEBUG) {
+            if (DEBUG_LOG) {
                 NSLog(@"Error attempting to create sandbox container copy: %@", error);
             }
             return;
@@ -838,7 +839,7 @@ static NSOperationQueue *_presentedItemOperationQueue;
                 if (createSuccess) {
                     //yay
                 } else {
-                    if (DEBUG) {
+                    if (DEBUG_LOG) {
                         NSLog(@"Error creating directory in sandbox: %@", error);
                     }
                 }
@@ -850,13 +851,13 @@ static NSOperationQueue *_presentedItemOperationQueue;
                 if (copySuccess) {
                     //yay
                 } else {
-                    if (DEBUG) {
+                    if (DEBUG_LOG) {
                         NSLog(@"Error copying item at path: %@\nTo path: %@\nError: %@", fullPath, fullSandboxPath, error);
                     }
                 }
             }
         } else {
-            if (DEBUG) {
+            if (DEBUG_LOG) {
                 NSLog(@"Got subpath but there is no file at the full path: %@", fullPath);
             }
         }
@@ -889,11 +890,11 @@ static NSOperationQueue *_presentedItemOperationQueue;
                             byAccessor:^(NSURL *newURL) {
                                 NSError *blockError = nil;
                                 if ([fm removeItemAtURL:newURL error:&blockError]) {
-                                    if (DEBUG) {
+                                    if (DEBUG_LOG) {
                                         NSLog(@"Deleted file: %@", newURL);
                                     }
                                 } else {
-                                    if (DEBUG) {
+                                    if (DEBUG_LOG) {
                                         NSLog(@"Error deleting file: %@\nError: %@", newURL, blockError);
                                     }
                                 }
