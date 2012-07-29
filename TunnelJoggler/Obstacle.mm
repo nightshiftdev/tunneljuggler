@@ -9,10 +9,6 @@
 #import "Game.h"
 #import "Obstacle.h"
 
-@interface Obstacle()
-float _currentChangeDirectionTimeIterval;
-@end
-
 @implementation Obstacle
 
 @synthesize emitter;

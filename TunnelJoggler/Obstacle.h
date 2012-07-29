@@ -15,6 +15,7 @@
     b2World *world_;
     b2Body *body_;
     CCParticleSystem *emitter;
+    float _currentChangeDirectionTimeIterval;
 }
 
 - (id)initWithWorld:(b2World *)world position: (CGPoint) position game: (Game *) g;
