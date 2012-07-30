@@ -370,6 +370,7 @@
 	CGPoint currPT = [myTouch locationInView:myTouch.view];
     
     float force = fabs(prevPT.y - currPT.y);
+    force *= 2.0;
     if (currPT.y > prevPT.y) {
         sign = 1;
     }
