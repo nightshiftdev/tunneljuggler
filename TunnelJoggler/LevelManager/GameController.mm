@@ -501,13 +501,13 @@ static NSOperationQueue *_presentedItemOperationQueue;
     l1.mustReachEndOfLevelToPass = [NSNumber numberWithBool:YES];
     l1.timeToSurviveToPass = [NSNumber numberWithFloat:0.0f];
     l1.scoreToPass = [NSNumber numberWithInt:0];
-    l1.maxSpeed = [NSNumber numberWithFloat:MAX_PADDLE_SPEED/2];
+    l1.maxSpeed = [NSNumber numberWithFloat:MAX_PADDLE_SPEED/4];
     l1.minSpeed = [NSNumber numberWithFloat:MIN_PADDLE_SPEED];
-    l1.speedIncreaseInterval = [NSNumber numberWithFloat:1.0f];
+    l1.speedIncreaseInterval = [NSNumber numberWithFloat:2.0f];
     l1.speedIncreaseValue = [NSNumber numberWithFloat:0.1f];
-    l1.obstacleFrequency = [NSNumber numberWithFloat:1.0f];
+    l1.obstacleFrequency = [NSNumber numberWithFloat:2.5f];
     l1.bonusBallFrequency = [NSNumber numberWithFloat:2.0f];
-    l1.bonusItemFrequency = [NSNumber numberWithFloat:5.0f];
+    l1.bonusItemFrequency = [NSNumber numberWithFloat:10.0f];
     l1.haveMovingObstacles = [NSNumber numberWithBool:NO];
     l1.recordUUID = [self UUIDString];
     

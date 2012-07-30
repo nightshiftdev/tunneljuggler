@@ -190,9 +190,13 @@
 - (void) addNextBounusBall:(ccTime)dt {
     CGSize winSize = [CCDirector sharedDirector].winSize;
     if ((addBonusBallInterval_ -= dt) < 0) {
+        float randomizeBulletPos = arc4random() % 100;
+        if ([self randomize]) {
+            randomizeBulletPos *= -1;
+        }
         addBonusBallInterval_ = [self.currentLevel.bonusBallFrequency floatValue];
         [self createBallBulletAtPosition: CGPointMake(paddle_.position.x + winSize.width, 
-                                                      (winSize.height/2))];
+                                                      (winSize.height/2) + randomizeBulletPos)];
     }
 }
 
@@ -370,7 +374,7 @@
 	CGPoint currPT = [myTouch locationInView:myTouch.view];
     
     float force = fabs(prevPT.y - currPT.y);
-    force *= 2.0;
+    force *= 1.5;
     if (currPT.y > prevPT.y) {
         sign = 1;
     }
