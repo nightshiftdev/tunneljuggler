@@ -134,6 +134,19 @@
                 <key>sourceSize</key>
                 <string>{88,210}</string>
             </dict>
+            <key>finger.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{310,650},{127,79}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{127,79}}</string>
+                <key>sourceSize</key>
+                <string>{127,79}</string>
+            </dict>
             <key>info-level-failed.png</key>
             <dict>
                 <key>frame</key>
@@ -170,7 +183,7 @@
             <key>size</key>
             <string>{512,1024}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:50e0a87012c21403c01939d36e30bceb$</string>
+            <string>$TexturePacker:SmartUpdate:89649807cca67416ffed0c0f9031c48f$</string>
             <key>textureFileName</key>
             <string>buttons-hd.png</string>
         </dict>

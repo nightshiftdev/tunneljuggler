@@ -15,12 +15,14 @@
 @interface HUD()
 @property (nonatomic, assign) BOOL isGameOver;
 @property (nonatomic, assign) int score;
+@property (assign, nonatomic, readwrite) BOOL isShowingHowToPlay;
 @end
 
 @implementation HUD
 
 @synthesize isGameOver;
 @synthesize score;
+@synthesize isShowingHowToPlay;
 
 +(id) HUDWithGameNode:(Game*)game {
 	return [[[self alloc] initWithGameNode:game] autorelease];
@@ -105,6 +107,28 @@
 -(void)resume {
     [self removeChild:menu_ cleanup: YES];
     [[CCDirector sharedDirector] resume];
+}
+
+-(void) showHowToPlay {
+    self.isShowingHowToPlay = YES;
+	CGSize s = [[CCDirector sharedDirector] winSize];
+    id moveRight = [CCMoveBy actionWithDuration:1.0 position:CGPointMake(0, -50.0)];
+    id moveLeft = [CCMoveBy actionWithDuration:2.0 position:CGPointMake(0, 100.0)];
+    id seq = [CCSequence actions:moveRight, moveLeft, moveRight, nil];
+	CCMenuItem *item0 = [SoundMenuItem itemFromNormalSpriteFrameName:@"finger.png" selectedSpriteFrameName:@"finger.png" target:nil selector:nil];
+    item0.isEnabled = NO;
+	menu_ = [CCMenu menuWithItems:item0, nil];
+    [item0 runAction:[CCRepeatForever actionWithAction:seq]];
+	[menu_ alignItemsHorizontallyWithPadding: 25.0];
+	[menu_ setPosition:ccp(20.0, s.height/2)];
+	[self addChild:menu_ z:10];
+}
+
+-(void) dismissHowToPlay:(id)sender {
+    if (self.isShowingHowToPlay) {
+        self.isShowingHowToPlay = NO;
+    }
+    [self resume];
 }
 
 -(void) onButtonPausePressed:(id)sender {

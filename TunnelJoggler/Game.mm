@@ -261,6 +261,15 @@
     if (offset < 0) {
         offset = 0;
         offset += 1;
+    } else {
+        static dispatch_once_t onceToken;
+        dispatch_once(&onceToken, ^{
+            if ([self.player.currentLevel intValue] == 0 &&
+                !self.hud.isShowingHowToPlay) {
+                [self.hud showHowToPlay];
+            }
+            
+        });
     }
     
     //        NSLog(@"offset %f", offset);
@@ -357,6 +366,12 @@
         [terrain_ removeChild: paddle_ cleanup: YES];
         world_->DestroyBody(paddle_.body);
         [self.hud gameOver: NO touchedFatalObject: YES];
+    }
+}
+
+-(void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    if (self.hud.isShowingHowToPlay) {
+        [self.hud dismissHowToPlay:self];
     }
 }
 
