@@ -347,6 +347,7 @@
             [[SimpleAudioEngine sharedEngine] playEffect:@"blip.caf"];
             [self.hud onUpdateScore:10];
             [terrain_ removeChild:sprite cleanup:YES];
+            world_->DestroyBody(body);
             for (int index = 0; index < [obstacles_ count]; index++) {
                 Obstacle *o = [obstacles_ objectAtIndex: index];
                 if (o.body == body) {
@@ -354,7 +355,6 @@
                     CGPoint createBonusBulletPosition = CGPointMake(o.body->GetPosition().x * PTM_RATIO, o.body->GetPosition().y * PTM_RATIO);
                     [self createBallBulletAtPosition: createBonusBulletPosition];
                     [obstacles_ removeObject: o];
-                    world_->DestroyBody(body);
                 }
             }
         }
