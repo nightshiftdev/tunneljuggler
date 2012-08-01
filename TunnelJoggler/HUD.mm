@@ -51,6 +51,7 @@
         
         
         // Score Points
+        self.score = [[[GameController sharedController] player].score intValue];
 		scoreLabel_ = [CCLabelBMFont labelWithString:[NSString stringWithFormat:@"%d", self.score] fntFile:@"sticky.fnt"];
 		[scoreLabel_.texture setAliasTexParameters];
 		[self addChild:scoreLabel_ z:1];
@@ -58,6 +59,31 @@
         scoreLabel_.rotation = 90;
 	}
 	return self;
+}
+
+-(void) savePlayerScoreAndIncreaseExperienceLevel {
+    Player *player = [[GameController sharedController] player];
+    int nextLevel = [player.currentLevel intValue] + 1;
+    int experienceLevel = [player.experienceLevel intValue] + 1;
+    NSArray *levels = [[GameController sharedController] levels];
+    if (nextLevel >= [levels count]) {
+        nextLevel = 0;
+        experienceLevel += 100;
+    }
+    player.experienceLevel =  [NSNumber numberWithInt: experienceLevel];
+    player.score = [NSNumber numberWithInt: self.score];
+    [GameController sharedController].player = player;
+}
+
+-(void) advancePlayerToNextLevel {
+    Player *player = [[GameController sharedController] player];
+    int nextLevel = [player.currentLevel intValue] + 1;
+    NSArray *levels = [[GameController sharedController] levels];
+    if (nextLevel >= [levels count]) {
+        nextLevel = 0;
+    }
+    player.currentLevel = [NSNumber numberWithInt: nextLevel];
+    [GameController sharedController].player = player;
 }
 
 -(void) gameOver:(BOOL)didWin touchedFatalObject:(BOOL) fatalObjectTouched {
@@ -73,6 +99,11 @@
             item1 = [SoundMenuItem itemFromNormalSpriteFrameName:@"btn-small-play-normal.png" selectedSpriteFrameName:@"btn-small-play-selected.png" target:self selector:@selector(onNextLevelPressed:)];
             item2 = [SoundMenuItem itemFromNormalSpriteFrameName:@"info-level-passed.png" selectedSpriteFrameName:@"info-level-passed.png" target:nil selector:nil];
         }
+        
+        if (!fatalObjectTouched && didWin) {
+            [self savePlayerScoreAndIncreaseExperienceLevel];
+        }
+        
         [item2 setIsEnabled:NO];
         menu_ = [CCMenu menuWithItems:item0, item1, item2, nil];
         CGSize s = [[CCDirector sharedDirector] winSize];
@@ -162,17 +193,7 @@
     if ([[CCDirector sharedDirector] isPaused]) {
 		[[CCDirector sharedDirector] resume];
 	}
-    Player *player = [[GameController sharedController] player];
-    int nextLevel = [player.currentLevel intValue] + 1;
-    int experienceLevel = [player.experienceLevel intValue] + 1;
-    NSArray *levels = [[GameController sharedController] levels];
-    if (nextLevel >= [levels count]) {
-        nextLevel = 0;
-        experienceLevel += 100;
-    }
-    player.currentLevel = [NSNumber numberWithInt: nextLevel];
-    player.experienceLevel =  [NSNumber numberWithInt: experienceLevel];
-    [GameController sharedController].player = player;
+    [self advancePlayerToNextLevel];
     [[CCDirector sharedDirector] replaceScene: [CCTransitionFade transitionWithDuration:0.1f scene:[[game_ class] scene]]];
 }
 
