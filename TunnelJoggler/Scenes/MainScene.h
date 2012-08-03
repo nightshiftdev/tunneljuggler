@@ -13,6 +13,9 @@
 //	CCMenu *menuSoundOnOff_;
 	CCParticleSystem *emitter;
     CCMenu *_playerPictureMenu;
+    CCLabelBMFont *_scoreLabel;
+    CCLabelBMFont *_experienceLabel;
+    CCLabelBMFont *_currentLevelLabel;
 }
 @property (readwrite,retain) CCParticleSystem *emitter;
 +(id) scene;

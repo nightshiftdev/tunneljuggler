@@ -55,8 +55,8 @@
         id rotateRight = [CCRotateBy actionWithDuration:0.4f angle:10.0f];
         
         id seq = [CCSequence actions:rotateLeft, rotateRight, rotateLeft, nil];
-        
-        UIImage *playerPicture = [[GameController sharedController] player].picture;
+        Player *p = [[GameController sharedController] player];
+        UIImage *playerPicture = p.picture;
         CCMenuItem *itemUserPicture = nil;
         if (playerPicture != nil) {
             CCSprite *spriteFromImageNormal = [CCSprite spriteWithCGImage: playerPicture.CGImage key:nil];
@@ -81,6 +81,28 @@
 		menuPlay.position = ccp(s.width/8, s.height/2);
         [itemPlay runAction:[CCRepeatForever actionWithAction:seq]];
 		[self addChild:menuPlay];
+        
+        // Score
+		_scoreLabel = [CCLabelBMFont labelWithString:[NSString stringWithFormat:@"H I G H  S C O R E:  %d", [p.score intValue]] fntFile:@"sticky.fnt"];
+		[_scoreLabel.texture setAliasTexParameters];
+		[self addChild:_scoreLabel z:1];
+		[_scoreLabel setPosition:ccp(s.width/2 - 40, s.height/2)];
+        _scoreLabel.rotation = 90;
+        
+        
+        // Expirience
+		_experienceLabel = [CCLabelBMFont labelWithString:[NSString stringWithFormat:@"E X P E R I E N C E  L E V E L:  %d", [p.experienceLevel intValue]] fntFile:@"sticky.fnt"];
+		[_experienceLabel.texture setAliasTexParameters];
+		[self addChild:_experienceLabel z:1];
+		[_experienceLabel setPosition:ccp(s.width/2 - 80, s.height/2)];
+        _experienceLabel.rotation = 90;
+        
+        // Current level
+		_currentLevelLabel = [CCLabelBMFont labelWithString:[NSString stringWithFormat:@"C U R R E N T  L E V E L:  %d", [p.currentLevel intValue]] fntFile:@"sticky.fnt"];
+		[_currentLevelLabel.texture setAliasTexParameters];
+		[self addChild:_currentLevelLabel z:1];
+		[_currentLevelLabel setPosition:ccp(s.width/2 - 120, s.height/2)];
+        _currentLevelLabel.rotation = 90;
         
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(reloadGameData:)
