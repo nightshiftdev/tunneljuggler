@@ -194,6 +194,7 @@
 		E5B4870F15C2E6930067CE1B /* Level.m in Sources */ = {isa = PBXBuildFile; fileRef = E5B4870E15C2E6930067CE1B /* Level.m */; };
 		E5B7D72D152A647800407342 /* Paddle.mm in Sources */ = {isa = PBXBuildFile; fileRef = E5B7D72C152A647800407342 /* Paddle.mm */; };
 		E5C3584B15C5B71E00788E1B /* BackgroundUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = E5C3584A15C5B71D00788E1B /* BackgroundUtils.mm */; };
+		E5C3585215CC05AB00788E1B /* UIImage+WithScaleToSize.m in Sources */ = {isa = PBXBuildFile; fileRef = E5C3585115CC05A900788E1B /* UIImage+WithScaleToSize.m */; };
 		E5CB458D15B6F70900F1D056 /* ImageToDataTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = E5CB458C15B6F70900F1D056 /* ImageToDataTransformer.m */; };
 /* End PBXBuildFile section */
 
@@ -554,6 +555,8 @@
 		E5B7D72C152A647800407342 /* Paddle.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Paddle.mm; path = Objects/Paddle.mm; sourceTree = "<group>"; };
 		E5C3584915C5B71D00788E1B /* BackgroundUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BackgroundUtils.h; sourceTree = "<group>"; };
 		E5C3584A15C5B71D00788E1B /* BackgroundUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BackgroundUtils.mm; sourceTree = "<group>"; };
+		E5C3585015CC05A700788E1B /* UIImage+WithScaleToSize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+WithScaleToSize.h"; sourceTree = "<group>"; };
+		E5C3585115CC05A900788E1B /* UIImage+WithScaleToSize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+WithScaleToSize.m"; sourceTree = "<group>"; };
 		E5CB458B15B6F70900F1D056 /* ImageToDataTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ImageToDataTransformer.h; path = LevelManager/ImageToDataTransformer.h; sourceTree = "<group>"; };
 		E5CB458C15B6F70900F1D056 /* ImageToDataTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ImageToDataTransformer.m; path = LevelManager/ImageToDataTransformer.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -634,6 +637,8 @@
 				E598D4221579265200DF181A /* SoundMenuItem.m */,
 				E5C3584915C5B71D00788E1B /* BackgroundUtils.h */,
 				E5C3584A15C5B71D00788E1B /* BackgroundUtils.mm */,
+				E5C3585015CC05A700788E1B /* UIImage+WithScaleToSize.h */,
+				E5C3585115CC05A900788E1B /* UIImage+WithScaleToSize.m */,
 				E58431FD15AC5E4B00FBDE5A /* LevelManager */,
 				E5AD298E15BED2D100A43904 /* Scenes */,
 				E53C62FA1508297B0047EF66 /* Objects */,
@@ -1293,6 +1298,7 @@
 				E5AD299D15C01A2300A43904 /* Player.m in Sources */,
 				E5B4870F15C2E6930067CE1B /* Level.m in Sources */,
 				E5C3584B15C5B71E00788E1B /* BackgroundUtils.mm in Sources */,
+				E5C3585215CC05AB00788E1B /* UIImage+WithScaleToSize.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

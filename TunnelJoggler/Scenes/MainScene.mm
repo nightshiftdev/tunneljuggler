@@ -13,9 +13,12 @@
 #import "SimpleAudioEngine.h"
 #import "GameController.h"
 #import "BackgroundUtils.h"
+#import "UIImage+WithScaleToSize.h"
+
 
 @interface MainScene()
 - (CCSprite *)genBackground;
+- (void)showImagePicker:(BOOL)hasCamera;
 @end
 
 
@@ -39,12 +42,30 @@
 		CCSprite *background = [self genBackground];
 		background.position = ccp(s.width/2, s.height/2);
 		[self addChild:background z:-10];
-		
-		id scaleTo = [CCScaleTo actionWithDuration:0.5f scale:0.9f];
+
+        CCMenuItem *itemUserPictureFrame = [SoundMenuItem itemFromNormalSpriteFrameName:@"player-picture-frame.png" selectedSpriteFrameName:@"player-picture-frame.png" target:nil selector:nil];
+        itemUserPictureFrame.isEnabled = NO;
+		CCMenu *menuUserPictureFrame = [CCMenu menuWithItems: itemUserPictureFrame, nil];
+		menuUserPictureFrame.position = ccp(s.width/2 + 50, s.height/2);
+		[self addChild:menuUserPictureFrame z:5];
+        
+        id scaleTo = [CCScaleTo actionWithDuration:0.5f scale:0.9f];
 		id scaleBack = [CCScaleTo actionWithDuration:0.5f scale:1.0f];
-        id rotateLeft = [CCRotateBy actionWithDuration:0.1f angle:5.0f];
-        id rotateRight = [CCRotateBy actionWithDuration:0.1f angle:-10.0f];
-		id seq = [CCSequence actions:scaleTo, scaleBack, rotateLeft, rotateRight, rotateLeft, nil];
+        id rotateLeft = [CCRotateBy actionWithDuration:0.2f angle:-5.0f];
+        id rotateRight = [CCRotateBy actionWithDuration:0.4f angle:10.0f];
+        
+        id seq = [CCSequence actions:rotateLeft, rotateRight, rotateLeft, nil];
+        
+        CCMenuItem *itemUserPicture = [SoundMenuItem itemFromNormalSpriteFrameName:@"player-picture-default.png" selectedSpriteFrameName:@"player-picture-default.png" target:self selector:@selector(changePicture:)];
+		_playerPictureMenu = [CCMenu menuWithItems: itemUserPicture, nil];
+        _playerPictureMenu.position = ccp(s.width/2 + 50, s.height/2);
+        [itemUserPicture runAction:[CCRepeatForever actionWithAction:seq]];
+		[self addChild:_playerPictureMenu z:10];
+
+        rotateLeft = [CCRotateBy actionWithDuration:0.1f angle:5.0f];
+        rotateRight = [CCRotateBy actionWithDuration:0.2f angle:-10.0f];
+        
+		seq = [CCSequence actions:scaleTo, scaleBack, rotateLeft, rotateRight, rotateLeft, nil];
         
 		CCMenuItem *itemPlay = [SoundMenuItem itemFromNormalSpriteFrameName:@"btn-play-normal.png" selectedSpriteFrameName:@"btn-play-selected.png" target:self selector:@selector(playGame:)];
 		CCMenu *menuPlay = [CCMenu menuWithItems: itemPlay, nil];
@@ -126,6 +147,29 @@
 	[[CCDirector sharedDirector] replaceScene:[CCTransitionFade transitionWithDuration:0.1f scene:[Game scene]]];
 }
 
+-(void) changePicture:(id)sender {
+    [self showImagePicker: NO];
+//    BOOL hasCamera = [UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera];
+//    
+//    UIActionSheet *as = [[UIActionSheet alloc] initWithTitle:nil
+//                                                    delegate:self
+//                                           cancelButtonTitle:nil
+//                                      destructiveButtonTitle:nil
+//                                           otherButtonTitles:nil];
+//    
+//    if (hasCamera) {
+//        [as addButtonWithTitle:@"Take Photo"];
+//    }
+//    
+//    [as addButtonWithTitle:@"Choose Existing Photo"];
+//    [as addButtonWithTitle:@"Cancel"];
+//    as.cancelButtonIndex = [as numberOfButtons] - 1;
+//    
+//    [as showInView:[[UIApplication sharedApplication] delegate].window];
+    
+    //[self pickPhoto: UIImagePickerControllerSourceTypePhotoLibrary];
+}
+
 -(void)reloadGameData:(id)sender {
     NSLog(@"reloadGameData called.");
 }
@@ -193,6 +237,80 @@
     ccTexParams tp2 = {GL_LINEAR, GL_LINEAR, GL_REPEAT, GL_CLAMP_TO_EDGE};
     [stripes.texture setTexParameters:&tp2];
     return stripes;
+}
+
+#pragma mark -
+#pragma mark UIActionSheetDelegate
+
+- (void) actionSheet:(UIActionSheet *)as clickedButtonAtIndex:(NSInteger)buttonIndex {
+	if (as.cancelButtonIndex == buttonIndex) {
+        return;
+    }
+   	
+    NSString *title = [as buttonTitleAtIndex:buttonIndex];
+    if ([title isEqualToString:@"Take Photo"]) {
+        [self showImagePicker:true];
+    }	
+    else {
+		[self showImagePicker:false];
+    }
+}
+
+- (void) showImagePicker:(BOOL)hasCamera {
+    UIImagePickerController *picker	= [[UIImagePickerController alloc]init];
+	picker.delegate = self;
+    if (hasCamera) {
+		picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+	}
+	picker.wantsFullScreenLayout = YES;
+    picker.view.transform = CGAffineTransformMakeRotation(-M_PI/2);
+    picker.view.frame = CGRectMake(0.0, 0.0, 480.0, 320.0);
+	[[[UIApplication sharedApplication] delegate].window.rootViewController presentModalViewController:picker animated:YES];
+    
+	[[[CCDirector sharedDirector] openGLView] addSubview:picker.view];
+    
+	// Pause the Directore to speed up image picker (maybe it's better to put it before adding the view??)
+	[[CCDirector sharedDirector] pause];
+	[[CCDirector sharedDirector] stopAnimation];
+}
+
+#pragma mark -
+#pragma mark UIImagePickerControllerDelegate protocol methods
+
+-(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+    [self removeChild: _playerPictureMenu cleanup: YES];
+	UIImage *newImage = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
+    UIImage *scaledImage = [newImage scaleToSize: CGSizeMake(100, 100)];
+    scaledImage = [UIImage makeRoundCornerImage: scaledImage :10 : 10];
+    CCSprite *spriteFromImageNormal = [CCSprite spriteWithCGImage: scaledImage.CGImage key:nil];
+    CCSprite *spriteFromImageSelected = [CCSprite spriteWithCGImage: scaledImage.CGImage key:nil];
+    
+    id rotateLeft = [CCRotateBy actionWithDuration:0.2f angle:-5.0f];
+    id rotateRight = [CCRotateBy actionWithDuration:0.4f angle:10.0f];
+    
+    id seq = [CCSequence actions:rotateLeft, rotateRight, rotateLeft, nil];
+    
+    CGSize s = [[CCDirector sharedDirector] winSize];
+    CCMenuItem *itemUserPicture = [SoundMenuItem itemFromNormalSprite: spriteFromImageNormal selectedSprite: spriteFromImageSelected target:self selector:@selector(changePicture:)];
+    _playerPictureMenu = [CCMenu menuWithItems: itemUserPicture, nil];
+    _playerPictureMenu.position = ccp(s.width/2 + 50, s.height/2);
+    [itemUserPicture runAction:[CCRepeatForever actionWithAction:seq]];
+    [self addChild:_playerPictureMenu z:10];
+    
+	[picker dismissModalViewControllerAnimated:YES];
+	[picker.view removeFromSuperview];
+	[picker	release];
+    
+	[[CCDirector sharedDirector] startAnimation];
+	[[CCDirector sharedDirector] resume];
+}
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
+	[picker dismissModalViewControllerAnimated:YES];
+	[picker.view removeFromSuperview];
+	[picker	release];
+    [[CCDirector sharedDirector] startAnimation];
+	[[CCDirector sharedDirector] resume];
 }
 
 @end

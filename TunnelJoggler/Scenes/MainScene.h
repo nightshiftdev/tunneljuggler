@@ -9,9 +9,10 @@
 #import <Foundation/Foundation.h>
 #import "cocos2d.h"
 
-@interface MainScene : CCLayer {
+@interface MainScene : CCLayer <UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIActionSheetDelegate> {
 //	CCMenu *menuSoundOnOff_;
 	CCParticleSystem *emitter;
+    CCMenu *_playerPictureMenu;
 }
 @property (readwrite,retain) CCParticleSystem *emitter;
 +(id) scene;

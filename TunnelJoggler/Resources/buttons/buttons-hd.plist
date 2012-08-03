@@ -85,7 +85,7 @@
             <key>btn-small-play-normal.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{272,754},{88,208}}</string>
+                <string>{{92,844},{88,208}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -98,11 +98,11 @@
             <key>btn-small-play-selected.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{182,754},{88,208}}</string>
+                <string>{{302,794},{88,208}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
                 <string>{{0,0},{88,208}}</string>
                 <key>sourceSize</key>
@@ -115,7 +115,7 @@
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
                 <string>{{0,1},{88,208}}</string>
                 <key>sourceSize</key>
@@ -124,7 +124,7 @@
             <key>btn-try-again-selected.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,754},{88,208}}</string>
+                <string>{{2,794},{88,208}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -137,7 +137,7 @@
             <key>finger.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{310,650},{127,79}}</string>
+                <string>{{92,934},{127,79}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -173,6 +173,32 @@
                 <key>sourceSize</key>
                 <string>{240,440}</string>
             </dict>
+            <key>player-picture-default.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{310,650},{149,142}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{149,142}}</string>
+                <key>sourceSize</key>
+                <string>{149,142}</string>
+            </dict>
+            <key>player-picture-frame.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{2,2},{234,432}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <true/>
+                <key>sourceColorRect</key>
+                <string>{{3,4},{234,432}}</string>
+                <key>sourceSize</key>
+                <string>{240,440}</string>
+            </dict>
         </dict>
         <key>metadata</key>
         <dict>
@@ -183,7 +209,7 @@
             <key>size</key>
             <string>{512,1024}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:89649807cca67416ffed0c0f9031c48f$</string>
+            <string>$TexturePacker:SmartUpdate:dfba39cde0a9bd0f60abd3da883d0386$</string>
             <key>textureFileName</key>
             <string>buttons-hd.png</string>
         </dict>
