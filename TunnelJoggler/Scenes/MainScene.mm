@@ -148,26 +148,23 @@
 }
 
 -(void) changePicture:(id)sender {
-    [self showImagePicker: NO];
-//    BOOL hasCamera = [UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera];
-//    
-//    UIActionSheet *as = [[UIActionSheet alloc] initWithTitle:nil
-//                                                    delegate:self
-//                                           cancelButtonTitle:nil
-//                                      destructiveButtonTitle:nil
-//                                           otherButtonTitles:nil];
-//    
-//    if (hasCamera) {
-//        [as addButtonWithTitle:@"Take Photo"];
-//    }
-//    
-//    [as addButtonWithTitle:@"Choose Existing Photo"];
-//    [as addButtonWithTitle:@"Cancel"];
-//    as.cancelButtonIndex = [as numberOfButtons] - 1;
-//    
-//    [as showInView:[[UIApplication sharedApplication] delegate].window];
+    BOOL hasCamera = [UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera];
     
-    //[self pickPhoto: UIImagePickerControllerSourceTypePhotoLibrary];
+    UIActionSheet *as = [[UIActionSheet alloc] initWithTitle:nil
+                                                    delegate:self
+                                           cancelButtonTitle:nil
+                                      destructiveButtonTitle:nil
+                                           otherButtonTitles:nil];
+    
+    if (hasCamera) {
+        [as addButtonWithTitle:@"Take Photo"];
+    }
+    
+    [as addButtonWithTitle:@"Choose Existing Photo"];
+    [as addButtonWithTitle:@"Cancel"];
+    as.cancelButtonIndex = [as numberOfButtons] - 1;
+    
+    [as showInView:[[UIApplication sharedApplication] delegate].window];
 }
 
 -(void)reloadGameData:(id)sender {
@@ -257,6 +254,7 @@
 }
 
 - (void) showImagePicker:(BOOL)hasCamera {
+    _playerPictureMenu.isTouchEnabled = NO;
     UIImagePickerController *picker	= [[UIImagePickerController alloc]init];
 	picker.delegate = self;
     if (hasCamera) {
@@ -281,7 +279,7 @@
     [self removeChild: _playerPictureMenu cleanup: YES];
 	UIImage *newImage = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
     UIImage *scaledImage = [newImage scaleToSize: CGSizeMake(100, 100)];
-    scaledImage = [UIImage makeRoundCornerImage: scaledImage :10 : 10];
+    scaledImage = [UIImage makeRoundCornerImage: scaledImage :25 : 25];
     CCSprite *spriteFromImageNormal = [CCSprite spriteWithCGImage: scaledImage.CGImage key:nil];
     CCSprite *spriteFromImageSelected = [CCSprite spriteWithCGImage: scaledImage.CGImage key:nil];
     
@@ -294,6 +292,7 @@
     CCMenuItem *itemUserPicture = [SoundMenuItem itemFromNormalSprite: spriteFromImageNormal selectedSprite: spriteFromImageSelected target:self selector:@selector(changePicture:)];
     _playerPictureMenu = [CCMenu menuWithItems: itemUserPicture, nil];
     _playerPictureMenu.position = ccp(s.width/2 + 50, s.height/2);
+    _playerPictureMenu.isTouchEnabled = YES;
     [itemUserPicture runAction:[CCRepeatForever actionWithAction:seq]];
     [self addChild:_playerPictureMenu z:10];
     
@@ -306,6 +305,7 @@
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
+    _playerPictureMenu.isTouchEnabled = YES;
 	[picker dismissModalViewControllerAnimated:YES];
 	[picker.view removeFromSuperview];
 	[picker	release];

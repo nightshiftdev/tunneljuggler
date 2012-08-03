@@ -81,6 +81,16 @@ static void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWi
         CGContextTranslateCTM(context, -size.height, 0.0f);
         CGContextDrawImage(context, CGRectMake(0, 0, size.width, size.height), self.CGImage);
     }
+    else if (self.imageOrientation == UIImageOrientationDown)
+    {
+        CGContextRotateCTM(context, -M_PI_2);
+        CGContextTranslateCTM(context, -size.height, 0.0f);
+        CGContextRotateCTM(context, -M_PI_2);
+        CGContextTranslateCTM(context, -size.height, 0.0f);
+        CGContextRotateCTM(context, -M_PI_2);
+        CGContextTranslateCTM(context, -size.height, 0.0f);
+        CGContextDrawImage(context, CGRectMake(0, 0, size.width, size.height), self.CGImage);
+    }
     else
     {
         CGContextRotateCTM(context, -M_PI_2);
