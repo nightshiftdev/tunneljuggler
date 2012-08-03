@@ -72,7 +72,6 @@ static void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWi
     CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
     CGContextRef context = CGBitmapContextCreate(NULL, size.width, size.height, 8, 0, colorSpace, kCGImageAlphaPremultipliedLast);
     CGContextClearRect(context, CGRectMake(0, 0, size.width, size.height));
-    NSLog(@"image orientation: %d", self.imageOrientation);
     if(self.imageOrientation == UIImageOrientationRight)
     {
         CGContextRotateCTM(context, -M_PI_2);

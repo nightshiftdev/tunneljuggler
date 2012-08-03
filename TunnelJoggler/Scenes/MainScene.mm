@@ -46,7 +46,7 @@
         CCMenuItem *itemUserPictureFrame = [SoundMenuItem itemFromNormalSpriteFrameName:@"player-picture-frame.png" selectedSpriteFrameName:@"player-picture-frame.png" target:nil selector:nil];
         itemUserPictureFrame.isEnabled = NO;
 		CCMenu *menuUserPictureFrame = [CCMenu menuWithItems: itemUserPictureFrame, nil];
-		menuUserPictureFrame.position = ccp(s.width/2 + 50, s.height/2);
+		menuUserPictureFrame.position = ccp(s.width/2 + 100, s.height/2);
 		[self addChild:menuUserPictureFrame z:5];
         
         id scaleTo = [CCScaleTo actionWithDuration:0.5f scale:0.9f];
@@ -56,9 +56,18 @@
         
         id seq = [CCSequence actions:rotateLeft, rotateRight, rotateLeft, nil];
         
-        CCMenuItem *itemUserPicture = [SoundMenuItem itemFromNormalSpriteFrameName:@"player-picture-default.png" selectedSpriteFrameName:@"player-picture-default.png" target:self selector:@selector(changePicture:)];
+        UIImage *playerPicture = [[GameController sharedController] player].picture;
+        CCMenuItem *itemUserPicture = nil;
+        if (playerPicture != nil) {
+            CCSprite *spriteFromImageNormal = [CCSprite spriteWithCGImage: playerPicture.CGImage key:nil];
+            CCSprite *spriteFromImageSelected = [CCSprite spriteWithCGImage: playerPicture.CGImage key:nil];
+            itemUserPicture = [SoundMenuItem itemFromNormalSprite: spriteFromImageNormal selectedSprite: spriteFromImageSelected target:self selector:@selector(changePicture:)];
+        } else {
+            itemUserPicture = [SoundMenuItem itemFromNormalSpriteFrameName:@"player-picture-default.png" selectedSpriteFrameName:@"player-picture-default.png" target:self selector:@selector(changePicture:)];
+        }
+        
 		_playerPictureMenu = [CCMenu menuWithItems: itemUserPicture, nil];
-        _playerPictureMenu.position = ccp(s.width/2 + 50, s.height/2);
+        _playerPictureMenu.position = ccp(s.width/2 + 100, s.height/2);
         [itemUserPicture runAction:[CCRepeatForever actionWithAction:seq]];
 		[self addChild:_playerPictureMenu z:10];
 
@@ -278,8 +287,13 @@
 -(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
     [self removeChild: _playerPictureMenu cleanup: YES];
 	UIImage *newImage = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
-    UIImage *scaledImage = [newImage scaleToSize: CGSizeMake(100, 100)];
+    UIImage *scaledImage = [newImage scaleToSize: CGSizeMake(200, 200)];
     scaledImage = [UIImage makeRoundCornerImage: scaledImage :25 : 25];
+    
+    Player *p = [[GameController sharedController] player];
+    p.picture = scaledImage;
+    [[GameController sharedController] setPlayer: p];
+    
     CCSprite *spriteFromImageNormal = [CCSprite spriteWithCGImage: scaledImage.CGImage key:nil];
     CCSprite *spriteFromImageSelected = [CCSprite spriteWithCGImage: scaledImage.CGImage key:nil];
     
@@ -291,7 +305,7 @@
     CGSize s = [[CCDirector sharedDirector] winSize];
     CCMenuItem *itemUserPicture = [SoundMenuItem itemFromNormalSprite: spriteFromImageNormal selectedSprite: spriteFromImageSelected target:self selector:@selector(changePicture:)];
     _playerPictureMenu = [CCMenu menuWithItems: itemUserPicture, nil];
-    _playerPictureMenu.position = ccp(s.width/2 + 50, s.height/2);
+    _playerPictureMenu.position = ccp(s.width/2 + 100, s.height/2);
     _playerPictureMenu.isTouchEnabled = YES;
     [itemUserPicture runAction:[CCRepeatForever actionWithAction:seq]];
     [self addChild:_playerPictureMenu z:10];
