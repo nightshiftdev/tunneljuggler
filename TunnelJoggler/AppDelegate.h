@@ -18,4 +18,6 @@
 
 @property (nonatomic, retain) UIWindow *window;
 
+- (BOOL) shouldAdjustViewRotation;
+
 @end

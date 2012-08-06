@@ -388,14 +388,14 @@
     CGPoint prevPT = [myTouch previousLocationInView:myTouch.view];
 	CGPoint currPT = [myTouch locationInView:myTouch.view];
     
-    float force = fabs(prevPT.y - currPT.y);
+    float force = fabs(prevPT.x - currPT.x);
     force *= 1.5;
-    if (currPT.y > prevPT.y) {
+    if (currPT.x < prevPT.x) {
         sign = 1;
     }
     
-    b2Vec2 paddleTouchForce = b2Vec2(0.0, sign * force);
-    paddle_.horizontalForce = paddleTouchForce.y;
+    b2Vec2 paddleTouchForce = b2Vec2(sign * force, 0.0);
+    paddle_.horizontalForce = paddleTouchForce.x;
 }
 
 -(void)ccTouchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event {

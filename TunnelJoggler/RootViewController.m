@@ -41,6 +41,9 @@
  }
  */
 
+- (NSUInteger)supportedInterfaceOrientations {
+    return UIInterfaceOrientationPortraitMask;
+}
 
 // Override to allow orientations other than the default portrait orientation.
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
@@ -59,7 +62,7 @@
 	// Since this method should return YES in at least 1 orientation, 
 	// we return YES only in the Portrait orientation
 	//
-	return ( interfaceOrientation == UIInterfaceOrientationPortrait );
+	return (interfaceOrientation == UIInterfaceOrientationPortrait);
 	
 #elif GAME_AUTOROTATION==kGameAutorotationCCDirector
 	//
@@ -85,7 +88,7 @@
 	//
 	// return YES for the supported orientations
 	
-	return (interfaceOrientation == UIInterfaceOrientationLandscapeRight);
+	return (interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown);
 	
 #else
 #error Unknown value in GAME_AUTOROTATION

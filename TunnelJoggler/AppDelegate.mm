@@ -85,11 +85,11 @@
 	// Edit the RootViewController.m file to edit the supported orientations.
 	//
 #if GAME_AUTOROTATION == kGameAutorotationUIViewController
-	[director setDeviceOrientation:kCCDeviceOrientationPortraitUpsideDown];
+    [director setDeviceOrientation:kCCDeviceOrientationPortraitUpsideDown];
 #else
-	[director setDeviceOrientation:kCCDeviceOrientationLandscapeLeft];
+    [director setDeviceOrientation:kCCDeviceOrientationLandscapeRight];
 #endif
-	
+    
 	[director setAnimationInterval:1.0/60];
 	[director setDisplayFPS:YES];
 	
@@ -100,8 +100,8 @@
     [[GameController sharedController] loadPersistentStores];
     
 	// make the View Controller a child of the main window
-	[window addSubview: viewController.view];
-	
+    [window setRootViewController: viewController];
+    
 	[window makeKeyAndVisible];
 	
 	// Default texture format for PNG/BMP/TIFF/JPEG/GIF images
@@ -169,6 +169,11 @@
 	[[CCDirector sharedDirector] release];
 	[window release];
 	[super dealloc];
+}
+
+- (BOOL) shouldAdjustViewRotation {
+    NSLog(@"system version %f", [[[UIDevice currentDevice] systemVersion] floatValue]);
+    return ([[[UIDevice currentDevice] systemVersion] floatValue] >= 6.0);
 }
 
 @end
