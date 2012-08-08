@@ -260,8 +260,7 @@
         color2 = ccc4FFromccc4B(redColor);
     }
     
-    float screenFactor = [CCDirector sharedDirector].contentScaleFactor;
-    CCSprite *stripes = [BackgroundUtils stripedSpriteWithColor1:color1 color2:color2 textureSize:512 stripes: 6 * screenFactor];
+    CCSprite *stripes = [BackgroundUtils stripedSpriteWithColor1:color1 color2:color2 textureSize:512 stripes: 12];
     ccTexParams tp2 = {GL_LINEAR, GL_LINEAR, GL_REPEAT, GL_CLAMP_TO_EDGE};
     [stripes.texture setTexParameters:&tp2];
     return stripes;
@@ -309,7 +308,8 @@
 -(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
     [self removeChild: _playerPictureMenu cleanup: YES];
 	UIImage *newImage = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
-    UIImage *scaledImage = [newImage scaleToSize: CGSizeMake(200, 200)];
+    float userPictureSize =  200.0 * [CCDirector sharedDirector].contentScaleFactor;
+    UIImage *scaledImage = [newImage scaleToSize: CGSizeMake(userPictureSize, userPictureSize)];
     scaledImage = [UIImage makeRoundCornerImage: scaledImage :25 : 25];
     
     Player *p = [[GameController sharedController] player];
