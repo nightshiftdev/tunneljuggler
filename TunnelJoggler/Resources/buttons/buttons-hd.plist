@@ -137,7 +137,7 @@
             <key>finger.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{92,934},{127,79}}</string>
+                <string>{{182,934},{127,79}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -146,6 +146,19 @@
                 <string>{{0,0},{127,79}}</string>
                 <key>sourceSize</key>
                 <string>{127,79}</string>
+            </dict>
+            <key>hero-gamecenter.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{92,934},{88,88}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{88,88}}</string>
+                <key>sourceSize</key>
+                <string>{88,88}</string>
             </dict>
             <key>info-level-failed.png</key>
             <dict>
@@ -209,7 +222,7 @@
             <key>size</key>
             <string>{512,1024}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:dfba39cde0a9bd0f60abd3da883d0386$</string>
+            <string>$TexturePacker:SmartUpdate:c13fd25e2f52369e64bade0adacedf69$</string>
             <key>textureFileName</key>
             <string>buttons-hd.png</string>
         </dict>

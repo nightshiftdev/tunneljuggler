@@ -147,6 +147,19 @@
                 <key>sourceSize</key>
                 <string>{127,79}</string>
             </dict>
+            <key>hero-gamecenter.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{122,312},{44,44}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{44,44}}</string>
+                <key>sourceSize</key>
+                <string>{44,44}</string>
+            </dict>
             <key>info-level-failed.png</key>
             <dict>
                 <key>frame</key>
@@ -209,7 +222,7 @@
             <key>size</key>
             <string>{512,512}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:3bf59e8b1648b412203c4e81e002cde4$</string>
+            <string>$TexturePacker:SmartUpdate:c1cbcbe6c39bc54c553171fc03562585$</string>
             <key>textureFileName</key>
             <string>buttons.png</string>
         </dict>

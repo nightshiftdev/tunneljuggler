@@ -104,6 +104,15 @@
 		[_currentLevelLabel setPosition:ccp(s.width/2 - 120, s.height/2)];
         _currentLevelLabel.rotation = 90;
         
+        CCMenuItem *itemGameCenter = [SoundMenuItem itemFromNormalSpriteFrameName:@"hero-gamecenter.png" selectedSpriteFrameName:@"hero-gamecenter.png" target:self selector:@selector(highScoreGameCenter:)];
+		CCMenu *menuGameCenter = [CCMenu menuWithItems: itemGameCenter, nil];
+		menuGameCenter.position = ccp(s.width/2 - 40, s.height - 44);
+        id scaleGameCenterButtonTo = [CCScaleTo actionWithDuration:0.5f scale:0.9f];
+		id scaleGameCenterButtonBack = [CCScaleTo actionWithDuration:0.5f scale:1.0f];
+        seq = [CCSequence actions:scaleGameCenterButtonTo, scaleGameCenterButtonBack, nil];
+        [itemGameCenter runAction:[CCRepeatForever actionWithAction:seq]];
+		[self addChild:menuGameCenter];
+        
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(reloadGameData:)
                                                      name:NSPersistentStoreCoordinatorStoresDidChangeNotification
@@ -200,6 +209,10 @@
 
 -(void)reloadGameData:(id)sender {
     NSLog(@"reloadGameData called.");
+}
+
+- (void)highScoreGameCenter:(id)sender {
+    
 }
 
 //-(void) soundOnOff:(id)sender {
