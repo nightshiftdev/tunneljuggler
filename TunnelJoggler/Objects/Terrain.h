@@ -16,11 +16,11 @@
 
 // controls the length of the level
 #define kDefaultMaxHillKeyPoints 300
-#ifdef IPAD_SCREEN
-#define kHillSegmentWidth 8
-#else
+//#ifdef IPAD_SCREEN
+//#define kHillSegmentWidth 8
+//#else
 #define kHillSegmentWidth 5
-#endif
+//#endif
 
 #define kMaxHillVertices 800
 #define kMaxBorderVertices 800
