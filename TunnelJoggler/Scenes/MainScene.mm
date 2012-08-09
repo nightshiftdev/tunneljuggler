@@ -19,6 +19,10 @@
 @interface MainScene()
 - (CCSprite *)genBackground;
 - (void)showImagePicker:(BOOL)hasCamera;
+- (void) setUserPictureForNormalState: (CCSprite *) normalStateSprite selectedState: (CCSprite *) selectedStateSprite;
+
+@property (retain, nonatomic, readwrite) CCMenuItem *itemUserPicture;
+@property (retain, nonatomic, readwrite) CCMenu *playerPictureMenu;
 @end
 
 
@@ -26,6 +30,8 @@
 
 @synthesize emitter;
 @synthesize gameCenterManager;
+@synthesize itemUserPicture;
+@synthesize playerPictureMenu;
 
 +(id) scene {
 	CCScene *scene = [CCScene node];
@@ -43,7 +49,7 @@
 		CCSprite *background = [self genBackground];
 		background.position = ccp(s.width/2, s.height/2);
 		[self addChild:background z:-10];
-
+        
         CCMenuItem *itemUserPictureFrame = [SoundMenuItem itemFromNormalSpriteFrameName:@"player-picture-frame.png" selectedSpriteFrameName:@"player-picture-frame.png" target:nil selector:nil];
         itemUserPictureFrame.isEnabled = NO;
 		CCMenu *menuUserPictureFrame = [CCMenu menuWithItems: itemUserPictureFrame, nil];
@@ -55,27 +61,25 @@
         id rotateLeft = [CCRotateBy actionWithDuration:0.2f angle:-5.0f];
         id rotateRight = [CCRotateBy actionWithDuration:0.4f angle:10.0f];
         
-        id seq = [CCSequence actions:rotateLeft, rotateRight, rotateLeft, nil];
         Player *p = [[GameController sharedController] player];
+        CCSprite *spriteFromImageNormal = nil;
+        CCSprite *spriteFromImageSelected = nil;
         UIImage *playerPicture = p.picture;
-        CCMenuItem *itemUserPicture = nil;
         if (playerPicture != nil) {
-            CCSprite *spriteFromImageNormal = [CCSprite spriteWithCGImage: playerPicture.CGImage key:nil];
-            CCSprite *spriteFromImageSelected = [CCSprite spriteWithCGImage: playerPicture.CGImage key:nil];
-            itemUserPicture = [SoundMenuItem itemFromNormalSprite: spriteFromImageNormal selectedSprite: spriteFromImageSelected target:self selector:@selector(changePicture:)];
+            spriteFromImageNormal = [CCSprite spriteWithCGImage: playerPicture.CGImage key:nil];
+            spriteFromImageSelected = [CCSprite spriteWithCGImage: playerPicture.CGImage key:nil];
         } else {
-            itemUserPicture = [SoundMenuItem itemFromNormalSpriteFrameName:@"player-picture-default.png" selectedSpriteFrameName:@"player-picture-default.png" target:self selector:@selector(changePicture:)];
+            spriteFromImageNormal = [CCSprite spriteWithFile: @"player-picture-default.png"];
+            spriteFromImageSelected = [CCSprite spriteWithFile: @"player-picture-default.png"];
         }
         
-		_playerPictureMenu = [CCMenu menuWithItems: itemUserPicture, nil];
-        _playerPictureMenu.position = ccp(s.width/2 + 100, s.height/2);
-        [itemUserPicture runAction:[CCRepeatForever actionWithAction:seq]];
-		[self addChild:_playerPictureMenu z:10];
-
+        [self setUserPictureForNormalState: spriteFromImageNormal
+                             selectedState: spriteFromImageSelected];
+        
         rotateLeft = [CCRotateBy actionWithDuration:0.1f angle:5.0f];
         rotateRight = [CCRotateBy actionWithDuration:0.2f angle:-10.0f];
         
-		seq = [CCSequence actions:scaleTo, scaleBack, rotateLeft, rotateRight, rotateLeft, nil];
+		id seq = [CCSequence actions:scaleTo, scaleBack, rotateLeft, rotateRight, rotateLeft, nil];
         
 		CCMenuItem *itemPlay = [SoundMenuItem itemFromNormalSpriteFrameName:@"btn-play-normal.png" selectedSpriteFrameName:@"btn-play-selected.png" target:self selector:@selector(playGame:)];
 		CCMenu *menuPlay = [CCMenu menuWithItems: itemPlay, nil];
@@ -125,77 +129,79 @@
         
         [[SimpleAudioEngine sharedEngine] playBackgroundMusic:@"background-music-aac.caf"];
         
-        if([GameCenterManager isGameCenterAvailable])
-        {
-            self.gameCenterManager= [[[GameCenterManager alloc] init] autorelease];
-            [self.gameCenterManager setDelegate: self];
-            [self.gameCenterManager authenticateLocalUser];
-            
-//            [self updateCurrentScore];
-        }
-        else
-        {
-            [self showAlertWithTitle: @"Game Center Support Required!"
-                             message: @"The current device does not support Game Center, which this sample requires."];
-        }
+//        if([GameCenterManager isGameCenterAvailable])
+//        {
+//            self.gameCenterManager= [[[GameCenterManager alloc] init] autorelease];
+//            [self.gameCenterManager setDelegate: self];
+//            [self.gameCenterManager authenticateLocalUser];
+//            
+//            //            [self updateCurrentScore];
+//        }
+//        else
+//        {
+//            [self showAlertWithTitle: @"Game Center Support Required!"
+//                             message: @"The current device does not support Game Center, which this sample requires."];
+//        }
 		
-//		CCMenuItem *itemCredits = [SoundMenuItem itemFromNormalSpriteFrameName:@"btn-credits-normal.png" selectedSpriteFrameName:@"btn-credits-selected.png" target:self selector:@selector(showCredits:)];
-//		CCMenu *menuCredits = [CCMenu menuWithItems: itemCredits, nil];
-//		menuCredits.position = ccp(350, 200);
-//		[self addChild:menuCredits];
+        //		CCMenuItem *itemCredits = [SoundMenuItem itemFromNormalSpriteFrameName:@"btn-credits-normal.png" selectedSpriteFrameName:@"btn-credits-selected.png" target:self selector:@selector(showCredits:)];
+        //		CCMenu *menuCredits = [CCMenu menuWithItems: itemCredits, nil];
+        //		menuCredits.position = ccp(350, 200);
+        //		[self addChild:menuCredits];
 		
 		
 		// how to play button
-//		SoundMenuItem *howToPlayButton = [SoundMenuItem itemFromNormalSpriteFrameName:@"how-to-play-normal.png" selectedSpriteFrameName:@"how-to-play-selected.png" target:self selector:@selector(howToPlayCallback:)];	
-//		howToPlayButton.position = ccp(s.width - 100,s.height - 5);
-//		howToPlayButton.anchorPoint = ccp(0,1);
+        //		SoundMenuItem *howToPlayButton = [SoundMenuItem itemFromNormalSpriteFrameName:@"how-to-play-normal.png" selectedSpriteFrameName:@"how-to-play-selected.png" target:self selector:@selector(howToPlayCallback:)];	
+        //		howToPlayButton.position = ccp(s.width - 100,s.height - 5);
+        //		howToPlayButton.anchorPoint = ccp(0,1);
 		
-//		CCMenu *menu = [CCMenu menuWithItems:howToPlayButton, nil];
-//		menu.position = ccp(0,0);
-//		[self addChild: menu z:0];
+        //		CCMenu *menu = [CCMenu menuWithItems:howToPlayButton, nil];
+        //		menu.position = ccp(0,0);
+        //		[self addChild: menu z:0];
 		
-
-//		// facebook
-//		SoundMenuItem *facebookButton = [SoundMenuItem itemFromNormalSpriteFrameName:@"btn-facebook.png" selectedSpriteFrameName:@"btn-facebook.png" target:self selector:@selector(facebookCallback:)];	
-//		facebookButton.position = ccp(5, 55);
-//		facebookButton.anchorPoint = ccp(0,1);
-//		[facebookButton runAction:[CCRepeatForever actionWithAction:seq]];
-//		
-//		menu = [CCMenu menuWithItems:facebookButton, nil];
-//		menu.position = ccp(0,0);
-//		[self addChild: menu z:0];
-//		
-//		// twitter
-//		SoundMenuItem *twitterButton = [SoundMenuItem itemFromNormalSpriteFrameName:@"btn-twitter.png" selectedSpriteFrameName:@"btn-twitter.png" target:self selector:@selector(twitterCallback:)];	
-//		twitterButton.position = ccp(60, 55);
-//		twitterButton.anchorPoint = ccp(0,1);
-//		[twitterButton runAction:[CCRepeatForever actionWithAction:seq]];
-//		
-//		menu = [CCMenu menuWithItems:twitterButton, nil];
-//		menu.position = ccp(0,0);
-//		[self addChild: menu z:0];
+        
+        //		// facebook
+        //		SoundMenuItem *facebookButton = [SoundMenuItem itemFromNormalSpriteFrameName:@"btn-facebook.png" selectedSpriteFrameName:@"btn-facebook.png" target:self selector:@selector(facebookCallback:)];	
+        //		facebookButton.position = ccp(5, 55);
+        //		facebookButton.anchorPoint = ccp(0,1);
+        //		[facebookButton runAction:[CCRepeatForever actionWithAction:seq]];
+        //		
+        //		menu = [CCMenu menuWithItems:facebookButton, nil];
+        //		menu.position = ccp(0,0);
+        //		[self addChild: menu z:0];
+        //		
+        //		// twitter
+        //		SoundMenuItem *twitterButton = [SoundMenuItem itemFromNormalSpriteFrameName:@"btn-twitter.png" selectedSpriteFrameName:@"btn-twitter.png" target:self selector:@selector(twitterCallback:)];	
+        //		twitterButton.position = ccp(60, 55);
+        //		twitterButton.anchorPoint = ccp(0,1);
+        //		[twitterButton runAction:[CCRepeatForever actionWithAction:seq]];
+        //		
+        //		menu = [CCMenu menuWithItems:twitterButton, nil];
+        //		menu.position = ccp(0,0);
+        //		[self addChild: menu z:0];
 		
-//		[self toggleSoundOnOffBtn];
+        //		[self toggleSoundOnOffBtn];
 		
-//		[[ProgressManager getOrInitProgress] playMainTheme];
+        //		[[ProgressManager getOrInitProgress] playMainTheme];
 	}
 	
 	return self;
 }
 
 - (void)dealloc {
+    self.playerPictureMenu = nil;
+    self.itemUserPicture = nil;
     [[NSNotificationCenter defaultCenter] removeObserver: self];
     [super dealloc];
 }
 
 -(void) onEnter {
 	[super onEnter];
-//	self.emitter = [CCParticleGalaxy node];
-//	[self addChild: emitter z:-5];
-//	if(CGPointEqualToPoint( emitter.sourcePosition, CGPointZero)) {
-//        CGSize s = [[CCDirector sharedDirector] winSize];
-//		emitter.position = ccp(s.width/2, s.height/2);
-//    }
+    //	self.emitter = [CCParticleGalaxy node];
+    //	[self addChild: emitter z:-5];
+    //	if(CGPointEqualToPoint( emitter.sourcePosition, CGPointZero)) {
+    //        CGSize s = [[CCDirector sharedDirector] winSize];
+    //		emitter.position = ccp(s.width/2, s.height/2);
+    //    }
 }
 
 - (void) showAlertWithTitle: (NSString*) title message: (NSString*) message
@@ -310,20 +316,13 @@
 	if (as.cancelButtonIndex == buttonIndex) {
         return;
     } else if (buttonIndex == 2) {
-        [self removeChild: _playerPictureMenu cleanup: NO];
-        
-        id rotateLeft = [CCRotateBy actionWithDuration:0.2f angle:-5.0f];
-        id rotateRight = [CCRotateBy actionWithDuration:0.4f angle:10.0f];
-        
-        id seq = [CCSequence actions:rotateLeft, rotateRight, rotateLeft, nil];
-        
-        CGSize s = [[CCDirector sharedDirector] winSize];
-        CCMenuItem *itemUserPicture = [SoundMenuItem itemFromNormalSpriteFrameName:@"player-picture-default.png" selectedSpriteFrameName:@"player-picture-default.png" target:self selector:@selector(changePicture:)];
-        _playerPictureMenu = [CCMenu menuWithItems: itemUserPicture, nil];
-        _playerPictureMenu.position = ccp(s.width/2 + 100, s.height/2);
-        _playerPictureMenu.isTouchEnabled = YES;
-        [itemUserPicture runAction:[CCRepeatForever actionWithAction:seq]];
-        [self addChild:_playerPictureMenu z:10];
+        CCSprite *spriteFromImageNormal = [CCSprite spriteWithSpriteFrameName: @"player-picture-default.png"];
+        CCSprite *spriteFromImageSelected = [CCSprite spriteWithSpriteFrameName: @"player-picture-default.png"];
+        [self setUserPictureForNormalState: spriteFromImageNormal
+                             selectedState: spriteFromImageSelected];
+        Player *p = [[GameController sharedController] player];
+        p.picture = nil;
+        [[GameController sharedController] setPlayer: p];
     } else  {
         NSString *title = [as buttonTitleAtIndex:buttonIndex];
         if ([title isEqualToString:@"Take Photo"]) {
@@ -335,8 +334,30 @@
     }
 }
 
+- (void) setUserPictureForNormalState: (CCSprite *) normalStateSprite selectedState: (CCSprite *) selectedStateSprite {
+    [self.itemUserPicture stopAllActions];
+    [self removeChild: self.playerPictureMenu cleanup: YES];
+    
+    id rotateLeft = [CCRotateBy actionWithDuration:0.2f angle:-5.0f];
+    id rotateRight = [CCRotateBy actionWithDuration:0.4f angle:10.0f];
+    
+    id seq = [CCSequence actions:rotateLeft, rotateRight, rotateLeft, nil];
+    
+    CGSize s = [[CCDirector sharedDirector] winSize];
+    self.itemUserPicture = [SoundMenuItem itemFromNormalSprite: normalStateSprite
+                                                selectedSprite: selectedStateSprite
+                                                        target:self
+                                                      selector: @selector(changePicture:)
+                            ];
+    self.playerPictureMenu = [CCMenu menuWithItems: self.itemUserPicture, nil];
+    self.playerPictureMenu.position = ccp(s.width/2 + 100, s.height/2);
+    self.playerPictureMenu.isTouchEnabled = YES;
+    [itemUserPicture runAction:[CCRepeatForever actionWithAction:seq]];
+    [self addChild:self.playerPictureMenu z:10];
+}
+
 - (void) showImagePicker:(BOOL)hasCamera {
-    _playerPictureMenu.isTouchEnabled = NO;
+    self.playerPictureMenu.isTouchEnabled = NO;
     UIImagePickerController *picker	= [[UIImagePickerController alloc]init];
 	picker.delegate = self;
     if (hasCamera) {
@@ -358,7 +379,6 @@
 #pragma mark UIImagePickerControllerDelegate protocol methods
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingImage:(UIImage *)image editingInfo:(NSDictionary *)editingInfo {
-    [self removeChild: _playerPictureMenu cleanup: NO];
     float userPictureSize =  128.0 * [CCDirector sharedDirector].contentScaleFactor;
     UIImage *scaledImage = [image scaleToSize: CGSizeMake(userPictureSize, userPictureSize)];
     UIImage *imageToSave = [UIImage makeRoundCornerImage: scaledImage :25 : 25];
@@ -370,18 +390,8 @@
     CCSprite *spriteFromImageNormal = [CCSprite spriteWithCGImage: imageToSave.CGImage key:nil];
     CCSprite *spriteFromImageSelected = [CCSprite spriteWithCGImage: imageToSave.CGImage key:nil];
     
-    id rotateLeft = [CCRotateBy actionWithDuration:0.2f angle:-5.0f];
-    id rotateRight = [CCRotateBy actionWithDuration:0.4f angle:10.0f];
-    
-    id seq = [CCSequence actions:rotateLeft, rotateRight, rotateLeft, nil];
-    
-    CGSize s = [[CCDirector sharedDirector] winSize];
-    CCMenuItem *itemUserPicture = [SoundMenuItem itemFromNormalSprite: spriteFromImageNormal selectedSprite: spriteFromImageSelected target:self selector:@selector(changePicture:)];
-    _playerPictureMenu = [CCMenu menuWithItems: itemUserPicture, nil];
-    _playerPictureMenu.position = ccp(s.width/2 + 100, s.height/2);
-    _playerPictureMenu.isTouchEnabled = YES;
-    [itemUserPicture runAction:[CCRepeatForever actionWithAction:seq]];
-    [self addChild:_playerPictureMenu z:10];
+    [self setUserPictureForNormalState: spriteFromImageNormal
+                         selectedState: spriteFromImageSelected];
     
 	[picker dismissModalViewControllerAnimated:YES];
 	[picker.view removeFromSuperview];
@@ -392,7 +402,7 @@
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
-    _playerPictureMenu.isTouchEnabled = YES;
+    self.playerPictureMenu.isTouchEnabled = YES;
 	[picker dismissModalViewControllerAnimated:YES];
 	[picker.view removeFromSuperview];
 	[picker	release];
