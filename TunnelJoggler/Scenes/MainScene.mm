@@ -25,6 +25,7 @@
 @implementation MainScene
 
 @synthesize emitter;
+@synthesize gameCenterManager;
 
 +(id) scene {
 	CCScene *scene = [CCScene node];
@@ -123,6 +124,20 @@
                                                    object:[GameController sharedController].psc];
         
         [[SimpleAudioEngine sharedEngine] playBackgroundMusic:@"background-music-aac.caf"];
+        
+        if([GameCenterManager isGameCenterAvailable])
+        {
+            self.gameCenterManager= [[[GameCenterManager alloc] init] autorelease];
+            [self.gameCenterManager setDelegate: self];
+            [self.gameCenterManager authenticateLocalUser];
+            
+//            [self updateCurrentScore];
+        }
+        else
+        {
+            [self showAlertWithTitle: @"Game Center Support Required!"
+                             message: @"The current device does not support Game Center, which this sample requires."];
+        }
 		
 //		CCMenuItem *itemCredits = [SoundMenuItem itemFromNormalSpriteFrameName:@"btn-credits-normal.png" selectedSpriteFrameName:@"btn-credits-selected.png" target:self selector:@selector(showCredits:)];
 //		CCMenu *menuCredits = [CCMenu menuWithItems: itemCredits, nil];
@@ -183,6 +198,14 @@
 //    }
 }
 
+- (void) showAlertWithTitle: (NSString*) title message: (NSString*) message
+{
+	UIAlertView* alert= [[[UIAlertView alloc] initWithTitle: title message: message 
+                                                   delegate: NULL cancelButtonTitle: @"OK" otherButtonTitles: NULL] autorelease];
+	[alert show];
+	
+}
+
 -(void) playGame:(id)sender {
 	[[CCDirector sharedDirector] replaceScene:[CCTransitionFade transitionWithDuration:0.1f scene:[Game scene]]];
 }
@@ -201,6 +224,7 @@
     }
     
     [as addButtonWithTitle:@"Choose Existing Photo"];
+    [as addButtonWithTitle:@"Use Default Image"];
     [as addButtonWithTitle:@"Cancel"];
     as.cancelButtonIndex = [as numberOfButtons] - 1;
     
@@ -285,14 +309,29 @@
 - (void) actionSheet:(UIActionSheet *)as clickedButtonAtIndex:(NSInteger)buttonIndex {
 	if (as.cancelButtonIndex == buttonIndex) {
         return;
-    }
-   	
-    NSString *title = [as buttonTitleAtIndex:buttonIndex];
-    if ([title isEqualToString:@"Take Photo"]) {
-        [self showImagePicker:true];
-    }	
-    else {
-		[self showImagePicker:false];
+    } else if (buttonIndex == 2) {
+        [self removeChild: _playerPictureMenu cleanup: NO];
+        
+        id rotateLeft = [CCRotateBy actionWithDuration:0.2f angle:-5.0f];
+        id rotateRight = [CCRotateBy actionWithDuration:0.4f angle:10.0f];
+        
+        id seq = [CCSequence actions:rotateLeft, rotateRight, rotateLeft, nil];
+        
+        CGSize s = [[CCDirector sharedDirector] winSize];
+        CCMenuItem *itemUserPicture = [SoundMenuItem itemFromNormalSpriteFrameName:@"player-picture-default.png" selectedSpriteFrameName:@"player-picture-default.png" target:self selector:@selector(changePicture:)];
+        _playerPictureMenu = [CCMenu menuWithItems: itemUserPicture, nil];
+        _playerPictureMenu.position = ccp(s.width/2 + 100, s.height/2);
+        _playerPictureMenu.isTouchEnabled = YES;
+        [itemUserPicture runAction:[CCRepeatForever actionWithAction:seq]];
+        [self addChild:_playerPictureMenu z:10];
+    } else  {
+        NSString *title = [as buttonTitleAtIndex:buttonIndex];
+        if ([title isEqualToString:@"Take Photo"]) {
+            [self showImagePicker:true];
+        }	
+        else {
+            [self showImagePicker:false];
+        }
     }
 }
 
@@ -318,19 +357,18 @@
 #pragma mark -
 #pragma mark UIImagePickerControllerDelegate protocol methods
 
--(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
-    [self removeChild: _playerPictureMenu cleanup: YES];
-	UIImage *newImage = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
-    float userPictureSize =  200.0 * [CCDirector sharedDirector].contentScaleFactor;
-    UIImage *scaledImage = [newImage scaleToSize: CGSizeMake(userPictureSize, userPictureSize)];
-    scaledImage = [UIImage makeRoundCornerImage: scaledImage :25 : 25];
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingImage:(UIImage *)image editingInfo:(NSDictionary *)editingInfo {
+    [self removeChild: _playerPictureMenu cleanup: NO];
+    float userPictureSize =  128.0 * [CCDirector sharedDirector].contentScaleFactor;
+    UIImage *scaledImage = [image scaleToSize: CGSizeMake(userPictureSize, userPictureSize)];
+    UIImage *imageToSave = [UIImage makeRoundCornerImage: scaledImage :25 : 25];
     
     Player *p = [[GameController sharedController] player];
-    p.picture = scaledImage;
+    p.picture = imageToSave;
     [[GameController sharedController] setPlayer: p];
     
-    CCSprite *spriteFromImageNormal = [CCSprite spriteWithCGImage: scaledImage.CGImage key:nil];
-    CCSprite *spriteFromImageSelected = [CCSprite spriteWithCGImage: scaledImage.CGImage key:nil];
+    CCSprite *spriteFromImageNormal = [CCSprite spriteWithCGImage: imageToSave.CGImage key:nil];
+    CCSprite *spriteFromImageSelected = [CCSprite spriteWithCGImage: imageToSave.CGImage key:nil];
     
     id rotateLeft = [CCRotateBy actionWithDuration:0.2f angle:-5.0f];
     id rotateRight = [CCRotateBy actionWithDuration:0.4f angle:10.0f];
@@ -360,6 +398,13 @@
 	[picker	release];
     [[CCDirector sharedDirector] startAnimation];
 	[[CCDirector sharedDirector] resume];
+}
+
+#pragma mark -
+#pragma mark GKLeaderboardViewControllerDelegate
+
+- (void)leaderboardViewControllerDidFinish:(GKLeaderboardViewController *)viewController {
+    
 }
 
 @end

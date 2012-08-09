@@ -180,10 +180,10 @@ static NSOperationQueue *_presentedItemOperationQueue;
     NSURL *storeURL = [self levelsStoreURL];
     //add the store, use the "LocalConfiguration" to make sure level entities all end up in this store and that no iCloud entities end up in it
     _levelsLocalStore = [_psc addPersistentStoreWithType:NSSQLiteStoreType
-                                     configuration:@"LocalConfig"
-                                               URL:storeURL
-                                           options:nil
-                                             error:&localError];
+                                           configuration:@"LocalConfig"
+                                                     URL:storeURL
+                                                 options:nil
+                                                   error:&localError];
     success = (_levelsLocalStore != nil);
     if (success == NO) {
         //ruh roh
@@ -204,10 +204,10 @@ static NSOperationQueue *_presentedItemOperationQueue;
     }
     NSURL *storeURL = [self playerFallbackStoreURL];
     _playerFallbackStore = [_psc addPersistentStoreWithType:NSSQLiteStoreType
-                                        configuration:@"CloudConfig"
-                                                  URL:storeURL
-                                              options:nil
-                                                error:&localError];
+                                              configuration:@"CloudConfig"
+                                                        URL:storeURL
+                                                    options:nil
+                                                      error:&localError];
     success = (_playerFallbackStore != nil);
     if (NO == success) {
         if (localError  && (error != NULL)) {
@@ -233,10 +233,10 @@ static NSOperationQueue *_presentedItemOperationQueue;
                              iCloudDataURL, NSPersistentStoreUbiquitousContentURLKey,
                              nil];
     _playeriCloudStore = [self.psc addPersistentStoreWithType:NSSQLiteStoreType
-                                          configuration:@"CloudConfig"
-                                                    URL:iCloudStoreURL
-                                                options:options
-                                                  error:&localError];
+                                                configuration:@"CloudConfig"
+                                                          URL:iCloudStoreURL
+                                                      options:options
+                                                        error:&localError];
     success = (_playeriCloudStore != nil);
     if (success) {
         //set up the file presenter
@@ -350,7 +350,7 @@ static NSOperationQueue *_presentedItemOperationQueue;
                                                                    URL:seedStoreURL
                                                                options:seedStoreOptions
                                                                  error:&localError];
-
+    
     if (seedStore) {
         NSManagedObjectContext *seedMOC = [[[NSManagedObjectContext alloc] init] autorelease];
         [seedMOC setPersistentStoreCoordinator:seedPSC];
@@ -450,7 +450,7 @@ static NSOperationQueue *_presentedItemOperationQueue;
 - (void)addPlayer:(Player *)playerToBeAdded toStore:(NSPersistentStore *)store withContext:(NSManagedObjectContext *)moc {
     NSEntityDescription *entity = [playerToBeAdded entity];
     Player *newPlayer = [[[Player alloc] initWithEntity:entity
-                        insertIntoManagedObjectContext:moc] autorelease];
+                         insertIntoManagedObjectContext:moc] autorelease];
     newPlayer.currentLevel = playerToBeAdded.currentLevel;
     newPlayer.name = playerToBeAdded.name;
     newPlayer.picture = playerToBeAdded.picture;

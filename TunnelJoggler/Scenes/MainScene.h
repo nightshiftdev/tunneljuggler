@@ -8,15 +8,24 @@
 
 #import <Foundation/Foundation.h>
 #import "cocos2d.h"
+#import "GameCenterManager.h"
+#import <GameKit/GameKit.h>
 
-@interface MainScene : CCLayer <UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIActionSheetDelegate> {
-//	CCMenu *menuSoundOnOff_;
+@interface MainScene : CCLayer <UIImagePickerControllerDelegate,
+                                UINavigationControllerDelegate,
+                                UIActionSheetDelegate,
+                                GKLeaderboardViewControllerDelegate,
+                                GameCenterManagerDelegate>
+{
+    //	CCMenu *menuSoundOnOff_;
+    GameCenterManager *gameCenterManager;
 	CCParticleSystem *emitter;
     CCMenu *_playerPictureMenu;
     CCLabelBMFont *_scoreLabel;
     CCLabelBMFont *_experienceLabel;
     CCLabelBMFont *_currentLevelLabel;
 }
+@property (nonatomic, retain) GameCenterManager *gameCenterManager;
 @property (readwrite,retain) CCParticleSystem *emitter;
 +(id) scene;
 -(void)reloadGameData:(id)sender;

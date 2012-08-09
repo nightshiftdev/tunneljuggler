@@ -67,7 +67,6 @@
     int experienceLevel = [player.experienceLevel intValue] + 1;
     NSArray *levels = [[GameController sharedController] levels];
     if (nextLevel >= [levels count]) {
-        nextLevel = 0;
         experienceLevel += 100;
     }
     player.experienceLevel =  [NSNumber numberWithInt: experienceLevel];
