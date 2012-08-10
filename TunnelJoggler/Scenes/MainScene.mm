@@ -20,6 +20,7 @@
 - (CCSprite *)genBackground;
 - (void)showImagePicker:(BOOL)hasCamera;
 - (void) setUserPictureForNormalState: (CCSprite *) normalStateSprite selectedState: (CCSprite *) selectedStateSprite;
+- (void) showAlertWithTitle: (NSString*) title message: (NSString*) message;
 
 @property (retain, nonatomic, readwrite) CCMenuItem *itemUserPicture;
 @property (retain, nonatomic, readwrite) CCMenu *playerPictureMenu;
@@ -29,7 +30,7 @@
 @implementation MainScene
 
 @synthesize emitter;
-@synthesize gameCenterManager;
+//@synthesize gameCenterManager;
 @synthesize itemUserPicture;
 @synthesize playerPictureMenu;
 
@@ -69,8 +70,8 @@
             spriteFromImageNormal = [CCSprite spriteWithCGImage: playerPicture.CGImage key:nil];
             spriteFromImageSelected = [CCSprite spriteWithCGImage: playerPicture.CGImage key:nil];
         } else {
-            spriteFromImageNormal = [CCSprite spriteWithFile: @"player-picture-default.png"];
-            spriteFromImageSelected = [CCSprite spriteWithFile: @"player-picture-default.png"];
+            spriteFromImageNormal = [CCSprite spriteWithSpriteFrameName: @"player-picture-default.png"];
+            spriteFromImageSelected = [CCSprite spriteWithSpriteFrameName: @"player-picture-default.png"];
         }
         
         [self setUserPictureForNormalState: spriteFromImageNormal
@@ -128,6 +129,8 @@
                                                    object:[GameController sharedController].psc];
         
         [[SimpleAudioEngine sharedEngine] playBackgroundMusic:@"background-music-aac.caf"];
+//        [self showAlertWithTitle: @"Game Center Support Required!"
+//                         message: @"The current device does not support Game Center, which this sample requires."];
         
 //        if([GameCenterManager isGameCenterAvailable])
 //        {

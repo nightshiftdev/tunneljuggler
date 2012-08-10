@@ -17,6 +17,7 @@
 @implementation AppDelegate
 
 @synthesize window;
+@synthesize gameCenterManager;
 
 - (void) removeStartupFlicker
 {
@@ -112,9 +113,20 @@
 	
 	// Removes the startup flicker
 	[self removeStartupFlicker];
+    
+    MainScene *scene = [MainScene scene];
+    
+    if([GameCenterManager isGameCenterAvailable])
+    {
+        self.gameCenterManager= [[[GameCenterManager alloc] init] autorelease];
+        [self.gameCenterManager setDelegate: scene];
+        [self.gameCenterManager authenticateLocalUser];
+        
+        //            [self updateCurrentScore];
+    }
 	
 	// Run the intro Scene
-	[[CCDirector sharedDirector] runWithScene: [MainScene scene]];
+	[[CCDirector sharedDirector] runWithScene: (CCScene *)scene];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
@@ -166,7 +178,7 @@
 }
 
 - (void)dealloc {
-	[[CCDirector sharedDirector] release];
+	[[CCDirector sharedDirector] end];
 	[window release];
 	[super dealloc];
 }
