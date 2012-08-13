@@ -55,6 +55,15 @@
 @synthesize earnedAchievementCache;
 @synthesize delegate;
 
++(GameCenterManager *)sharedManager {
+    static GameCenterManager *gSharedGameCenterManager = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        gSharedGameCenterManager = [[[GameCenterManager alloc] init] autorelease];
+    });
+    return gSharedGameCenterManager;
+}
+
 - (id) init
 {
 	self = [super init];
@@ -147,6 +156,20 @@
 	}
 }
 
+- (BOOL) isLocalUserAuthenticated {
+    return [GKLocalPlayer localPlayer].authenticated;
+}
+
+- (BOOL) canReportScore
+{
+    BOOL canReportScore = NO;
+    if ([GameCenterManager isGameCenterAvailable] &&
+        [GKLocalPlayer localPlayer].authenticated == YES) {
+        canReportScore = YES;
+    }
+    return canReportScore;
+}
+
 - (void) reloadHighScoresForCategory: (NSString*) category
 {
 	GKLeaderboard* leaderBoard= [[[GKLeaderboard alloc] init] autorelease];
@@ -162,12 +185,14 @@
 
 - (void) reportScore: (int64_t) score forCategory: (NSString*) category 
 {
-	GKScore *scoreReporter = [[[GKScore alloc] initWithCategory:category] autorelease];	
-	scoreReporter.value = score;
-	[scoreReporter reportScoreWithCompletionHandler: ^(NSError *error) 
-	 {
-		 [self callDelegateOnMainThread: @selector(scoreReported:) withArg: NULL error: error];
-	 }];
+    if ([self canReportScore]) {
+        GKScore *scoreReporter = [[[GKScore alloc] initWithCategory:category] autorelease];	
+        scoreReporter.value = score;
+        [scoreReporter reportScoreWithCompletionHandler: ^(NSError *error) 
+         {
+             [self callDelegateOnMainThread: @selector(scoreReported:) withArg: NULL error: error];
+         }];
+    }
 }
 
 - (void) submitAchievement: (NSString*) identifier percentComplete: (double) percentComplete

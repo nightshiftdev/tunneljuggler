@@ -10,8 +10,9 @@
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
 #import "Player.h"
+#import "GameCenterManager.h"
 
-@interface GameController : NSObject <NSFilePresenter>
+@interface GameController : NSObject <NSFilePresenter, GameCenterManagerDelegate>
 {
 @private
     NSPersistentStoreCoordinator *_psc;
@@ -38,6 +39,8 @@
 
 @property (nonatomic, readonly) NSURL *ubiquityURL;
 @property (nonatomic, readonly) id currentUbiquityToken;
+
+@property (assign, nonatomic, readwrite) int64_t gameCenterPlayerBestScore;
 
 // access
 +(GameController *)sharedController;

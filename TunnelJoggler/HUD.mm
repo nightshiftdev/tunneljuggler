@@ -11,6 +11,7 @@
 #import "SoundMenuItem.h"
 #import "MainScene.h"
 #import "GameController.h"
+#import "GameCenterManager.h"
 
 @interface HUD()
 @property (nonatomic, assign) BOOL isGameOver;

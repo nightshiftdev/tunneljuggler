@@ -54,6 +54,6 @@
 //  iTunes Connect will accept will work fine.
 
 //Leaderboard Category IDs
-#define KTunnelJugglerLeaderboardID @"com.etcapps.tunneljuggler.HighScoreList"
+#define kTunnelJugglerLeaderboardID @"com.etcapps.tunneljuggler.HighScoreList"
 
 

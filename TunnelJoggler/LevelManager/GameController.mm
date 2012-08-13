@@ -6,6 +6,7 @@
 //
 //
 
+#import <GameKit/GameKit.h>
 #import "GameController.h"
 #import "Level.h"
 #import "Paddle.h"
@@ -20,7 +21,6 @@ static int gNumberOfLevels = 1;
 static NSOperationQueue *_presentedItemOperationQueue;
 
 @interface GameController (Private)
-
 - (BOOL)isiCloudAvailable;
 - (BOOL)loadLevelsLocalPersistentStore:(NSError *__autoreleasing *)error;
 - (BOOL)loadPlayerFallbackStore:(NSError * __autoreleasing *)error;
@@ -62,6 +62,7 @@ static NSOperationQueue *_presentedItemOperationQueue;
 @synthesize levelsLocalStore = _levelsLocalStore;
 @synthesize currentUbiquityToken = _currentUbiquityToken;
 @synthesize ubiquityURL = _ubiquityURL;
+@synthesize gameCenterPlayerBestScore;
 
 +(GameController *)sharedController {
     static GameController *gSharedGameController = nil;
@@ -752,25 +753,10 @@ static NSOperationQueue *_presentedItemOperationQueue;
 }
 
 -(void)setPlayer:(Player *)playerToBeSaved {
-    NSFetchRequest *fetchRequest = [[[NSFetchRequest alloc] init] autorelease];
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Player" inManagedObjectContext: _mainThreadContext];
-    [fetchRequest setEntity:entity];
+    if ([playerToBeSaved.score intValue] > self.gameCenterPlayerBestScore) {
+        [[GameCenterManager sharedManager] reportScore: [playerToBeSaved.score intValue] forCategory: kTunnelJugglerLeaderboardID];
+    }
     NSError *error = nil;
-    NSArray *players = [_mainThreadContext executeFetchRequest:fetchRequest error:&error];
-    if (error || [players count] > 1) {
-        if (DEBUG_LOG) {
-            NSLog(@"Could not fetch player with error %@. Fetch player count %d", error, [players count]);
-        }
-    }
-    for (Player *p in players) {
-        p.currentLevel = playerToBeSaved.currentLevel;
-        p.name = playerToBeSaved.name;
-        p.picture = playerToBeSaved.picture;
-        p.score = playerToBeSaved.score;
-        p.experienceLevel = playerToBeSaved.experienceLevel;
-        p.bonusItems = playerToBeSaved.bonusItems;
-    }
-    
     BOOL success = [_mainThreadContext save: &error];
     if (error || !success) {
         if (DEBUG_LOG) {
@@ -922,6 +908,61 @@ static NSOperationQueue *_presentedItemOperationQueue;
         [self iCloudAccountChanged:nil];
     });
     completionHandler(NULL);
+}
+
+#pragma mark -
+#pragma mark GameCenterManagerDelegate protocol methods
+
+- (void) processGameCenterAuth: (NSError*) error {
+    
+    if(error == NULL)
+    {
+        [[GameCenterManager sharedManager] reloadHighScoresForCategory: kTunnelJugglerLeaderboardID];
+    }
+    else
+    {
+        if (DEBUG_LOG) {
+            NSLog(@"Game center authentication processed with error %@", error);
+        }
+//        UIAlertView* alert= [[[UIAlertView alloc] initWithTitle: @"Game Center"
+//                                                        message: [NSString stringWithFormat: @"%@", [error localizedDescription]]
+//                                                       delegate: self cancelButtonTitle: @"Dismiss" otherButtonTitles: NULL] autorelease];
+//        [alert show];
+    }
+}
+
+- (void) scoreReported: (NSError*) error {
+    if (DEBUG_LOG) {
+        NSLog(@"Score reported with error %@", error);
+    }
+}
+
+- (void) reloadScoresComplete: (GKLeaderboard*) leaderBoard error: (NSError*) error {
+    if(error == nil)
+	{
+		self.gameCenterPlayerBestScore = leaderBoard.localPlayerScore.value;
+	}
+	else
+	{
+        self.gameCenterPlayerBestScore = -1;
+	}
+    if (DEBUG_LOG) {
+        NSLog(@"Game center player best score %lld", self.gameCenterPlayerBestScore);
+    }
+}
+
+- (void) achievementSubmitted: (GKAchievement*) ach error:(NSError*) error {
+    
+}
+
+- (void) achievementResetResult: (NSError*) error {
+    
+}
+
+- (void) mappedPlayerIDToPlayer: (GKPlayer*) player error: (NSError*) error {
+    if (DEBUG_LOG) {
+        NSLog(@"Mapped PlayerID to Player with error %@", error);
+    }
 }
 
 @end

@@ -15,12 +15,11 @@
 #import "BackgroundUtils.h"
 #import "UIImage+WithScaleToSize.h"
 
-
 @interface MainScene()
 - (CCSprite *)genBackground;
 - (void)showImagePicker:(BOOL)hasCamera;
 - (void) setUserPictureForNormalState: (CCSprite *) normalStateSprite selectedState: (CCSprite *) selectedStateSprite;
-- (void) showAlertWithTitle: (NSString*) title message: (NSString*) message;
+- (void) showLeaderboard;
 
 @property (retain, nonatomic, readwrite) CCMenuItem *itemUserPicture;
 @property (retain, nonatomic, readwrite) CCMenu *playerPictureMenu;
@@ -30,7 +29,6 @@
 @implementation MainScene
 
 @synthesize emitter;
-//@synthesize gameCenterManager;
 @synthesize itemUserPicture;
 @synthesize playerPictureMenu;
 
@@ -129,62 +127,6 @@
                                                    object:[GameController sharedController].psc];
         
         [[SimpleAudioEngine sharedEngine] playBackgroundMusic:@"background-music-aac.caf"];
-//        [self showAlertWithTitle: @"Game Center Support Required!"
-//                         message: @"The current device does not support Game Center, which this sample requires."];
-        
-//        if([GameCenterManager isGameCenterAvailable])
-//        {
-//            self.gameCenterManager= [[[GameCenterManager alloc] init] autorelease];
-//            [self.gameCenterManager setDelegate: self];
-//            [self.gameCenterManager authenticateLocalUser];
-//            
-//            //            [self updateCurrentScore];
-//        }
-//        else
-//        {
-//            [self showAlertWithTitle: @"Game Center Support Required!"
-//                             message: @"The current device does not support Game Center, which this sample requires."];
-//        }
-		
-        //		CCMenuItem *itemCredits = [SoundMenuItem itemFromNormalSpriteFrameName:@"btn-credits-normal.png" selectedSpriteFrameName:@"btn-credits-selected.png" target:self selector:@selector(showCredits:)];
-        //		CCMenu *menuCredits = [CCMenu menuWithItems: itemCredits, nil];
-        //		menuCredits.position = ccp(350, 200);
-        //		[self addChild:menuCredits];
-		
-		
-		// how to play button
-        //		SoundMenuItem *howToPlayButton = [SoundMenuItem itemFromNormalSpriteFrameName:@"how-to-play-normal.png" selectedSpriteFrameName:@"how-to-play-selected.png" target:self selector:@selector(howToPlayCallback:)];	
-        //		howToPlayButton.position = ccp(s.width - 100,s.height - 5);
-        //		howToPlayButton.anchorPoint = ccp(0,1);
-		
-        //		CCMenu *menu = [CCMenu menuWithItems:howToPlayButton, nil];
-        //		menu.position = ccp(0,0);
-        //		[self addChild: menu z:0];
-		
-        
-        //		// facebook
-        //		SoundMenuItem *facebookButton = [SoundMenuItem itemFromNormalSpriteFrameName:@"btn-facebook.png" selectedSpriteFrameName:@"btn-facebook.png" target:self selector:@selector(facebookCallback:)];	
-        //		facebookButton.position = ccp(5, 55);
-        //		facebookButton.anchorPoint = ccp(0,1);
-        //		[facebookButton runAction:[CCRepeatForever actionWithAction:seq]];
-        //		
-        //		menu = [CCMenu menuWithItems:facebookButton, nil];
-        //		menu.position = ccp(0,0);
-        //		[self addChild: menu z:0];
-        //		
-        //		// twitter
-        //		SoundMenuItem *twitterButton = [SoundMenuItem itemFromNormalSpriteFrameName:@"btn-twitter.png" selectedSpriteFrameName:@"btn-twitter.png" target:self selector:@selector(twitterCallback:)];	
-        //		twitterButton.position = ccp(60, 55);
-        //		twitterButton.anchorPoint = ccp(0,1);
-        //		[twitterButton runAction:[CCRepeatForever actionWithAction:seq]];
-        //		
-        //		menu = [CCMenu menuWithItems:twitterButton, nil];
-        //		menu.position = ccp(0,0);
-        //		[self addChild: menu z:0];
-		
-        //		[self toggleSoundOnOffBtn];
-		
-        //		[[ProgressManager getOrInitProgress] playMainTheme];
 	}
 	
 	return self;
@@ -195,24 +137,6 @@
     self.itemUserPicture = nil;
     [[NSNotificationCenter defaultCenter] removeObserver: self];
     [super dealloc];
-}
-
--(void) onEnter {
-	[super onEnter];
-    //	self.emitter = [CCParticleGalaxy node];
-    //	[self addChild: emitter z:-5];
-    //	if(CGPointEqualToPoint( emitter.sourcePosition, CGPointZero)) {
-    //        CGSize s = [[CCDirector sharedDirector] winSize];
-    //		emitter.position = ccp(s.width/2, s.height/2);
-    //    }
-}
-
-- (void) showAlertWithTitle: (NSString*) title message: (NSString*) message
-{
-	UIAlertView* alert= [[[UIAlertView alloc] initWithTitle: title message: message 
-                                                   delegate: NULL cancelButtonTitle: @"OK" otherButtonTitles: NULL] autorelease];
-	[alert show];
-	
 }
 
 -(void) playGame:(id)sender {
@@ -245,47 +169,14 @@
 }
 
 - (void)highScoreGameCenter:(id)sender {
-    
+    if ([[GameCenterManager sharedManager] isLocalUserAuthenticated]) {
+        [self showLeaderboard];
+    } else {
+        if([GameCenterManager isGameCenterAvailable]) {
+            [[GameCenterManager sharedManager] authenticateLocalUser];
+        }
+    }
 }
-
-//-(void) soundOnOff:(id)sender {
-//	BOOL mute = [[SimpleAudioEngine sharedEngine] mute];
-//	[[SimpleAudioEngine sharedEngine] setMute:!mute];
-//	[self toggleSoundOnOffBtn];
-//}
-
-//-(void) toggleSoundOnOffBtn {
-//	if (menuSoundOnOff_ != nil) {
-//		[self removeChild:menuSoundOnOff_ cleanup:NO];
-//	} 
-//	menuSoundOnOff_ = [CCMenu menuWithItems: [self itemSoundOnOff], nil];
-//	menuSoundOnOff_.position = ccp(90, 125);
-//	[self addChild:menuSoundOnOff_];
-//}
-
-//-(CCMenuItem*) itemSoundOnOff {
-//	NSString *soundBtnNameNormal = @"btn-sound-off-normal.png";
-//	NSString *soundBtnNameSelected = @"btn-sound-off-selected.png";
-//	BOOL mute = [[SimpleAudioEngine sharedEngine] mute];
-//	if (mute) {
-//		soundBtnNameNormal = @"btn-sound-on-normal.png";
-//		soundBtnNameSelected = @"btn-sound-on-selected.png";
-//	}
-//	
-//	return [SoundMenuItem itemFromNormalSpriteFrameName:soundBtnNameNormal selectedSpriteFrameName:soundBtnNameSelected target:self selector:@selector(soundOnOff:)];
-//}
-
-//-(void) facebookCallback:(id)sender {
-//	NSString *stringURL = @"http://www.facebook.com/people/@/100003382218124";
-//	NSURL *url = [NSURL URLWithString:stringURL];
-//	[[UIApplication sharedApplication] openURL:url];
-//}
-
-//-(void) twitterCallback:(id)sender {
-//	NSString *stringURL = @"http://twitter.com/etcapps";
-//	NSURL *url = [NSURL URLWithString:stringURL];
-//	[[UIApplication sharedApplication] openURL:url];
-//}
 
 - (CCSprite *)genBackground {
     ccColor4F color1 = [BackgroundUtils randomBrightColor];
@@ -378,6 +269,28 @@
 	[[CCDirector sharedDirector] stopAnimation];
 }
 
+#pragma mark GameCenter View Controllers
+- (void) showLeaderboard
+{
+	GKLeaderboardViewController *leaderboardController = [[GKLeaderboardViewController alloc] init];
+	if (leaderboardController != NULL) 
+	{
+		leaderboardController.category = kTunnelJugglerLeaderboardID;
+		leaderboardController.timeScope = GKLeaderboardTimeScopeAllTime;
+		leaderboardController.leaderboardDelegate = self; 
+		[[[UIApplication sharedApplication] delegate].window.rootViewController presentModalViewController: leaderboardController animated: YES];
+	}
+}
+
+#pragma mark -
+#pragma mark GKLeaderboardViewControllerDelegate
+
+- (void)leaderboardViewControllerDidFinish:(GKLeaderboardViewController *)viewController
+{
+	[[[UIApplication sharedApplication] delegate].window.rootViewController dismissModalViewControllerAnimated: YES];
+	[viewController release];
+}
+
 #pragma mark -
 #pragma mark UIImagePickerControllerDelegate protocol methods
 
@@ -411,13 +324,6 @@
 	[picker	release];
     [[CCDirector sharedDirector] startAnimation];
 	[[CCDirector sharedDirector] resume];
-}
-
-#pragma mark -
-#pragma mark GKLeaderboardViewControllerDelegate
-
-- (void)leaderboardViewControllerDidFinish:(GKLeaderboardViewController *)viewController {
-    
 }
 
 @end

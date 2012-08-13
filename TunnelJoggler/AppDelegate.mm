@@ -118,18 +118,29 @@
     
     if([GameCenterManager isGameCenterAvailable])
     {
-        self.gameCenterManager= [[[GameCenterManager alloc] init] autorelease];
-        [self.gameCenterManager setDelegate: scene];
-        [self.gameCenterManager authenticateLocalUser];
+        [[GameCenterManager sharedManager] setDelegate: [GameController sharedController]];
+        [[GameCenterManager sharedManager] authenticateLocalUser];
+        [[GameCenterManager sharedManager] reloadHighScoresForCategory: kTunnelJugglerLeaderboardID];
         
-        //            [self updateCurrentScore];
+        [[NSNotificationCenter defaultCenter] addObserver: self
+                                                 selector: @selector(gameCenterAuthenticationChanged:)
+                                                     name: GKPlayerAuthenticationDidChangeNotificationName
+                                                   object: nil];
     }
 	
 	// Run the intro Scene
 	[[CCDirector sharedDirector] runWithScene: (CCScene *)scene];
 }
 
+- (void) gameCenterAuthenticationChanged: (id) sender {
+#ifdef DEBUG
+    NSLog(@"Game Center authentication changed. Trying to reauthenticate the user.");
+#endif
+    [[GameCenterManager sharedManager] authenticateLocalUser];
+}
+
 - (void)applicationWillResignActive:(UIApplication *)application {
+    [[NSNotificationCenter defaultCenter] removeObserver: self];
 	[[CCDirector sharedDirector] pause];
 }
 
@@ -139,6 +150,9 @@
 }
 
 - (void)applicationDidReceiveMemoryWarning:(UIApplication *)application {
+#ifdef DEBUG
+    NSLog(@"Did receive memory warning, purging cached data.");
+#endif
 	[[CCDirector sharedDirector] purgeCachedData];
 }
 

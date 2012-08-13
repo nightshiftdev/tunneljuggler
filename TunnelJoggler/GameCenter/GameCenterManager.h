@@ -46,6 +46,7 @@
  */
 
 #import <Foundation/Foundation.h>
+#import "AppSpecificValues.h"
 
 
 @class GKLeaderboard, GKAchievement, GKPlayer;
@@ -74,9 +75,15 @@
 
 @property (nonatomic, assign)  id <GameCenterManagerDelegate> delegate;
 
++ (GameCenterManager *) sharedManager;
+
 + (BOOL) isGameCenterAvailable;
 
+- (BOOL) canReportScore;
+
 - (void) authenticateLocalUser;
+
+- (BOOL) isLocalUserAuthenticated;
 
 - (void) reportScore: (int64_t) score forCategory: (NSString*) category;
 - (void) reloadHighScoresForCategory: (NSString*) category;
