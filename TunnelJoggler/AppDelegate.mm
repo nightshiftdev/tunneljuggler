@@ -13,6 +13,7 @@
 #import "MainScene.h"
 #import "RootViewController.h"
 #import "GameController.h"
+#import "ProgressHUD.h"
 
 @implementation AppDelegate
 
@@ -64,7 +65,7 @@
 	//	2. depth format of 0 bit. Use 16 or 24 bit for 3d effects, like CCPageTurnTransition
 	//
 	//
-	EAGLView *glView = [EAGLView viewWithFrame:[window bounds]
+	EAGLView *glView = [EAGLView viewWithFrame: CGRectMake(0, 0, 100, 100)//[window bounds]
 								   pixelFormat:kEAGLColorFormatRGB565	// kEAGLColorFormatRGBA8
 								   depthFormat:0						// GL_DEPTH_COMPONENT16_OES
 						];
@@ -72,7 +73,7 @@
 	// attach the openglView to the director
 	[director setOpenGLView:glView];
 	
-//	// Enables High Res mode (Retina Display) on iPhone 4 and maintains low res on all other devices
+	// Enables High Res mode (Retina Display) on iPhone 4 and maintains low res on all other devices
 	if( ! [director enableRetinaDisplay:YES] )
 		CCLOG(@"Retina Display Not supported");
 	
@@ -94,10 +95,10 @@
 	[director setAnimationInterval:1.0/60];
 	[director setDisplayFPS:YES];
 	
-	
 	// make the OpenGLView a child of the view controller
 	[viewController setView:glView];
     
+    [[GameController sharedController] setDelegate: self];
     [[GameController sharedController] loadPersistentStores];
     
 	// make the View Controller a child of the main window
@@ -114,22 +115,7 @@
 	// Removes the startup flicker
 	[self removeStartupFlicker];
     
-    MainScene *scene = [MainScene scene];
-    
-    if([GameCenterManager isGameCenterAvailable])
-    {
-        [[GameCenterManager sharedManager] setDelegate: [GameController sharedController]];
-        [[GameCenterManager sharedManager] authenticateLocalUser];
-        [[GameCenterManager sharedManager] reloadHighScoresForCategory: kTunnelJugglerLeaderboardID];
-        
-        [[NSNotificationCenter defaultCenter] addObserver: self
-                                                 selector: @selector(gameCenterAuthenticationChanged:)
-                                                     name: GKPlayerAuthenticationDidChangeNotificationName
-                                                   object: nil];
-    }
-	
-	// Run the intro Scene
-	[[CCDirector sharedDirector] runWithScene: (CCScene *)scene];
+    [[ProgressHUD sharedProgressHUD] showProgress];
 }
 
 - (void) gameCenterAuthenticationChanged: (id) sender {
@@ -201,5 +187,33 @@
     NSLog(@"system version %f", [[[UIDevice currentDevice] systemVersion] floatValue]);
     return ([[[UIDevice currentDevice] systemVersion] floatValue] >= 6.0);
 }
+
+#pragma mark -
+#pragma mark GameControllerDelegate
+- (void) persistentStoresLoaded: (NSError*) error {
+    [[ProgressHUD sharedProgressHUD] stopShowingProgress];
+    if (nil == error) {
+        MainScene *scene = [MainScene scene];
+        
+        if([GameCenterManager isGameCenterAvailable])
+        {
+            [[GameCenterManager sharedManager] setDelegate: [GameController sharedController]];
+            [[GameCenterManager sharedManager] authenticateLocalUser];
+            [[GameCenterManager sharedManager] reloadHighScoresForCategory: kTunnelJugglerLeaderboardID];
+            
+            [[NSNotificationCenter defaultCenter] addObserver: self
+                                                     selector: @selector(gameCenterAuthenticationChanged:)
+                                                         name: GKPlayerAuthenticationDidChangeNotificationName
+                                                       object: nil];
+        }
+        
+        // Run the intro Scene
+        [[CCDirector sharedDirector] runWithScene: (CCScene *)scene];
+    } else {
+        abort();
+    }
+}
+
+
 
 @end

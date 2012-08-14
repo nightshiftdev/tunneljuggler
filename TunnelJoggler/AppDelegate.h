@@ -9,11 +9,12 @@
 #import <UIKit/UIKit.h>
 #import <GameKit/GameKit.h>
 #import "GameCenterManager.h"
+#import "GameController.h"
 
 @class RootViewController;
 @class CCScene;
 
-@interface AppDelegate : NSObject <UIApplicationDelegate> {
+@interface AppDelegate : NSObject <UIApplicationDelegate, GameControllerDelegate> {
 	UIWindow			*window;
 	RootViewController	*viewController;
     GameCenterManager *gameCenterManager;

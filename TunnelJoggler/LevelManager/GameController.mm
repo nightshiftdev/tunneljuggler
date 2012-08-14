@@ -63,6 +63,7 @@ static NSOperationQueue *_presentedItemOperationQueue;
 @synthesize currentUbiquityToken = _currentUbiquityToken;
 @synthesize ubiquityURL = _ubiquityURL;
 @synthesize gameCenterPlayerBestScore;
+@synthesize delegate;
 
 +(GameController *)sharedController {
     static GameController *gSharedGameController = nil;
@@ -109,6 +110,35 @@ static NSOperationQueue *_presentedItemOperationQueue;
     [_playerFallbackStore release];
     [_levelsLocalStore release];
     [super dealloc];
+}
+
+- (void) callDelegate: (SEL) selector withArg: (id) arg error: (NSError*) err
+{
+	assert([NSThread isMainThread]);
+	if([delegate respondsToSelector: selector])
+	{
+		if(arg != NULL)
+		{
+			[delegate performSelector: selector withObject: arg withObject: err];
+		}
+		else
+		{
+			[delegate performSelector: selector withObject: err];
+		}
+	}
+	else
+	{
+		NSLog(@"Missed Method");
+	}
+}
+
+
+- (void) callDelegateOnMainThread: (SEL) selector withArg: (id) arg error: (NSError*) err
+{
+	dispatch_async(dispatch_get_main_queue(), ^(void)
+                   {
+                       [self callDelegate: selector withArg: arg error: err];
+                   });
 }
 
 - (BOOL)isiCloudAvailable {
@@ -167,6 +197,7 @@ static NSOperationQueue *_presentedItemOperationQueue;
                 [_loadingLock unlock];
                 locked = NO;
             }
+            [self callDelegateOnMainThread: @selector(persistentStoresLoaded:) withArg: NULL error: nil];
         }
     });
 }
@@ -740,6 +771,11 @@ static NSOperationQueue *_presentedItemOperationQueue;
 
 -(Player *)player {
     NSFetchRequest *fetchRequest = [[[NSFetchRequest alloc] init] autorelease];
+    if ([self isiCloudAvailable]) {
+        [fetchRequest setAffectedStores: [NSArray arrayWithObjects:_playeriCloudStore, nil]];
+    } else {
+        [fetchRequest setAffectedStores: [NSArray arrayWithObjects:_playerFallbackStore, nil]];
+    }
     NSEntityDescription *entity = [NSEntityDescription entityForName: @"Player" inManagedObjectContext: _mainThreadContext];
     [fetchRequest setEntity:entity];
     NSError *error = nil;

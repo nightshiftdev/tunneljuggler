@@ -12,6 +12,10 @@
 #import "Player.h"
 #import "GameCenterManager.h"
 
+@protocol GameControllerDelegate <NSObject>
+- (void) persistentStoresLoaded: (NSError*) error;
+@end
+
 @interface GameController : NSObject <NSFilePresenter, GameCenterManagerDelegate>
 {
 @private
@@ -24,8 +28,10 @@
     NSLock *_loadingLock;
     NSURL *_presentedItemURL;
     NSURL *_ubiquityURL;
+    id <GameControllerDelegate, NSObject> delegate;
 }
 
+@property (nonatomic, assign)  id <GameControllerDelegate> delegate;
 // game logic
 @property (retain, nonatomic) Player *player;
 @property (retain, nonatomic, readonly) NSArray *levels;
