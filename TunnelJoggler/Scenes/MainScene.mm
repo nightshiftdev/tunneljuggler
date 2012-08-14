@@ -57,8 +57,6 @@
         
         id scaleTo = [CCScaleTo actionWithDuration:0.5f scale:0.9f];
 		id scaleBack = [CCScaleTo actionWithDuration:0.5f scale:1.0f];
-        id rotateLeft = [CCRotateBy actionWithDuration:0.2f angle:-5.0f];
-        id rotateRight = [CCRotateBy actionWithDuration:0.4f angle:10.0f];
         
         Player *p = [[GameController sharedController] player];
         CCSprite *spriteFromImageNormal = nil;
@@ -75,8 +73,8 @@
         [self setUserPictureForNormalState: spriteFromImageNormal
                              selectedState: spriteFromImageSelected];
         
-        rotateLeft = [CCRotateBy actionWithDuration:0.1f angle:5.0f];
-        rotateRight = [CCRotateBy actionWithDuration:0.2f angle:-10.0f];
+        id rotateLeft = [CCRotateBy actionWithDuration:0.1f angle:5.0f];
+        id rotateRight = [CCRotateBy actionWithDuration:0.2f angle:-10.0f];
         
 		id seq = [CCSequence actions:scaleTo, scaleBack, rotateLeft, rotateRight, rotateLeft, nil];
         
@@ -162,6 +160,7 @@
     as.cancelButtonIndex = [as numberOfButtons] - 1;
     
     [as showInView:[[UIApplication sharedApplication] delegate].window];
+    [as release];
 }
 
 -(void)reloadGameData:(id)sender {
