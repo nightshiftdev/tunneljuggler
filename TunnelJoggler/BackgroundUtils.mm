@@ -175,4 +175,14 @@
     return [CCSprite spriteWithTexture:rt.sprite.texture];
 }
 
++ (CCSprite *)genBackground {
+    ccColor4F color1 = [BackgroundUtils randomBrightColor];
+    ccColor4F color2 = [BackgroundUtils randomBrightColor];
+    
+    CCSprite *stripes = [BackgroundUtils stripedSpriteWithColor1:color1 color2:color2 textureSize:512 stripes: 12];
+    ccTexParams tp2 = {GL_LINEAR, GL_LINEAR, GL_REPEAT, GL_CLAMP_TO_EDGE};
+    [stripes.texture setTexParameters:&tp2];
+    return stripes;
+}
+
 @end

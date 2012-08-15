@@ -14,6 +14,7 @@
 #import "RootViewController.h"
 #import "GameController.h"
 #import "ProgressHUD.h"
+#import "SplashScene.h"
 
 @implementation AppDelegate
 
@@ -115,7 +116,7 @@
 	// Removes the startup flicker
 	[self removeStartupFlicker];
     
-    [[ProgressHUD sharedProgressHUD] showProgress];
+    [[CCDirector sharedDirector] runWithScene: [SplashScene scene]];
 }
 
 - (void) gameCenterAuthenticationChanged: (id) sender {
@@ -191,7 +192,6 @@
 #pragma mark -
 #pragma mark GameControllerDelegate
 - (void) persistentStoresLoaded: (NSError*) error {
-    [[ProgressHUD sharedProgressHUD] stopShowingProgress];
     if (nil == error) {
         MainScene *scene = [MainScene scene];
         
@@ -208,7 +208,7 @@
         }
         
         // Run the intro Scene
-        [[CCDirector sharedDirector] runWithScene: (CCScene *)scene];
+        [[CCDirector sharedDirector] replaceScene: (CCScene *)scene];
     } else {
         abort();
     }
