@@ -57,6 +57,16 @@
         
         id scaleTo = [CCScaleTo actionWithDuration:0.5f scale:0.9f];
 		id scaleBack = [CCScaleTo actionWithDuration:0.5f scale:1.0f];
+        id rotateLeft = [CCRotateBy actionWithDuration:0.1f angle:5.0f];
+        id rotateRight = [CCRotateBy actionWithDuration:0.2f angle:-10.0f];
+        
+		id seq = [CCSequence actions:scaleTo, scaleBack, rotateLeft, rotateRight, rotateLeft, nil];
+        
+		CCMenuItem *itemPlay = [SoundMenuItem itemFromNormalSpriteFrameName:@"btn-play-normal.png" selectedSpriteFrameName:@"btn-play-selected.png" target:self selector:@selector(playGame:)];
+		CCMenu *menuPlay = [CCMenu menuWithItems: itemPlay, nil];
+		menuPlay.position = ccp(s.width/8, s.height/2);
+        [itemPlay runAction:[CCRepeatForever actionWithAction:seq]];
+		[self addChild:menuPlay];
         
         Player *p = [[GameController sharedController] player];
         CCSprite *spriteFromImageNormal = nil;
@@ -73,16 +83,6 @@
         [self setUserPictureForNormalState: spriteFromImageNormal
                              selectedState: spriteFromImageSelected];
         
-        id rotateLeft = [CCRotateBy actionWithDuration:0.1f angle:5.0f];
-        id rotateRight = [CCRotateBy actionWithDuration:0.2f angle:-10.0f];
-        
-		id seq = [CCSequence actions:scaleTo, scaleBack, rotateLeft, rotateRight, rotateLeft, nil];
-        
-		CCMenuItem *itemPlay = [SoundMenuItem itemFromNormalSpriteFrameName:@"btn-play-normal.png" selectedSpriteFrameName:@"btn-play-selected.png" target:self selector:@selector(playGame:)];
-		CCMenu *menuPlay = [CCMenu menuWithItems: itemPlay, nil];
-		menuPlay.position = ccp(s.width/8, s.height/2);
-        [itemPlay runAction:[CCRepeatForever actionWithAction:seq]];
-		[self addChild:menuPlay];
         
         // Score
 		_scoreLabel = [CCLabelBMFont labelWithString:[NSString stringWithFormat:@"H I G H  S C O R E:  %d", [p.score intValue]] fntFile:@"sticky.fnt"];
@@ -141,6 +141,32 @@
 	[[CCDirector sharedDirector] replaceScene:[CCTransitionFade transitionWithDuration:0.1f scene:[Game scene]]];
 }
 
+-(void)reloadGameData:(id)sender {
+#ifdef DEBUG
+    NSLog(@"MainScene reloadGameData called.");
+#endif
+    Player *p = [[GameController sharedController] player];
+    CCSprite *spriteFromImageNormal = nil;
+    CCSprite *spriteFromImageSelected = nil;
+    UIImage *playerPicture = p.picture;
+    if (playerPicture != nil) {
+        spriteFromImageNormal = [CCSprite spriteWithCGImage: playerPicture.CGImage key:nil];
+        spriteFromImageSelected = [CCSprite spriteWithCGImage: playerPicture.CGImage key:nil];
+    } else {
+        spriteFromImageNormal = [CCSprite spriteWithSpriteFrameName: @"player-picture-default.png"];
+        spriteFromImageSelected = [CCSprite spriteWithSpriteFrameName: @"player-picture-default.png"];
+    }
+    
+    [self setUserPictureForNormalState: spriteFromImageNormal
+                         selectedState: spriteFromImageSelected];
+    
+    [_scoreLabel setString: [NSString stringWithFormat:@"H I G H  S C O R E:  %d", [p.score intValue]]];
+    
+    [_experienceLabel setString: [NSString stringWithFormat:@"E X P E R I E N C E  L E V E L:  %d", [p.experienceLevel intValue]]];
+    
+    [_currentLevelLabel setString: [NSString stringWithFormat:@"C U R R E N T  L E V E L:  %d", [p.currentLevel intValue]]];
+}
+
 -(void) changePicture:(id)sender {
     BOOL hasCamera = [UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera];
     
@@ -161,10 +187,6 @@
     
     [as showInView:[[UIApplication sharedApplication] delegate].window];
     [as release];
-}
-
--(void)reloadGameData:(id)sender {
-    NSLog(@"reloadGameData called.");
 }
 
 - (void)highScoreGameCenter:(id)sender {

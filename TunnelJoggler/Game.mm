@@ -38,7 +38,6 @@
 
 -(id) init {
     if((self=[super init])) {
-        [[ProgressHUD sharedProgressHUD] showProgress];
         [self setupGamePlay];
         
         [self setupWorld];
@@ -70,8 +69,16 @@
         paddle_.maxSpeed = [_currentLevel.maxSpeed floatValue];
         paddle_.speedIncreaseAmount = [_currentLevel.speedIncreaseValue floatValue];
         
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(reloadGameData:)
+                                                     name:NSPersistentStoreCoordinatorStoresDidChangeNotification
+                                                   object:[GameController sharedController].psc];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(reloadGameData:)
+                                                     name:NSPersistentStoreDidImportUbiquitousContentChangesNotification
+                                                   object:[GameController sharedController].psc];
+        
         [self scheduleUpdate];
-        [[ProgressHUD sharedProgressHUD] stopShowingProgress];
     }
     return self;
 }
@@ -79,6 +86,13 @@
     b2Vec2 gravity = b2Vec2(-7.0f, 0.0f);
     bool doSleep = true;
     world_ = new b2World(gravity, doSleep);            
+}
+
+-(void)reloadGameData:(id)sender {
+#ifdef DEBUG
+    NSLog(@"MainScene reloadGameData called.");
+#endif
+    [self setupGamePlay];
 }
 
 - (void)setupGamePlay {
@@ -407,6 +421,7 @@
 }
 
 - (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver: self];
     self.player = nil;
     self.levels = nil;
     [_currentLevel release];

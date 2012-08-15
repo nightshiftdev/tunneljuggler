@@ -22,6 +22,4 @@
 }
 @property (readwrite,retain) CCParticleSystem *emitter;
 +(id) scene;
--(void)reloadGameData:(id)sender;
-
 @end

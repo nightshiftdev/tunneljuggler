@@ -358,7 +358,6 @@ static NSOperationQueue *_presentedItemOperationQueue;
                 NSManagedObjectContext *addPlayerMOC = [[[NSManagedObjectContext alloc] init] autorelease];
                 [addPlayerMOC setPersistentStoreCoordinator:_psc];
                 [self addPlayerToStore: _playerFallbackStore withContext: addPlayerMOC];
-                [self deDupe:nil];
             }
         } else {
             if (DEBUG_LOG) {
@@ -367,6 +366,8 @@ static NSOperationQueue *_presentedItemOperationQueue;
             abort();
         }
     }
+    
+    [self deDupe:nil];
 }
 
 - (BOOL)seedStore:(NSPersistentStore *)store withPersistentStoreAtURL:(NSURL *)seedStoreURL error:(NSError * __autoreleasing *)error {
@@ -663,59 +664,32 @@ static NSOperationQueue *_presentedItemOperationQueue;
     [fr setIncludesPendingChanges:NO]; //distinct has to go down to the db, not implemented for in memory filtering
     [fr setFetchBatchSize:1000]; //protect the memory
     
-    NSExpression *countExpr = [NSExpression expressionWithFormat:@"count:(recordUUID)"];
-    NSExpressionDescription *countExprDesc = [[[NSExpressionDescription alloc] init] autorelease];
-    [countExprDesc setName:@"count"];
-    [countExprDesc setExpression:countExpr];
-    [countExprDesc setExpressionResultType:NSInteger64AttributeType];
-    
-    NSAttributeDescription *recordUUIDAttr = [[[[[_psc managedObjectModel] entitiesByName] objectForKey:@"Player"] propertiesByName] objectForKey:@"recordUUID"];
-    [fr setPropertiesToFetch:[NSArray arrayWithObjects:recordUUIDAttr, countExprDesc, nil]];
-    [fr setPropertiesToGroupBy:[NSArray arrayWithObject:recordUUIDAttr]];
-    
-    [fr setResultType:NSDictionaryResultType];
-    
-    NSArray *countDictionaries = [moc executeFetchRequest:fr error:&error];
-    NSMutableArray *recordUUIDsWithDupes = [[[NSMutableArray alloc] init] autorelease];
-    for (NSDictionary *dict in countDictionaries) {
-        NSNumber *count = [dict objectForKey:@"count"];
-        if ([count integerValue] > 1) {
-            [recordUUIDsWithDupes addObject:[dict objectForKey:@"recordUUID"]];
-        }
-    }
-    
-    if (DEBUG_LOG) {
-        NSLog(@"recordUUIDs with dupes: %@", recordUUIDsWithDupes);
-    }
-    
-    //fetch out all the duplicate records
-    fr = [NSFetchRequest fetchRequestWithEntityName:@"Player"];
-    [fr setIncludesPendingChanges:NO];
-    
-    
-    NSPredicate *p = [NSPredicate predicateWithFormat:@"recordUUID IN (%@)", recordUUIDsWithDupes];
-    [fr setPredicate:p];
-    
-    NSSortDescriptor *recordUUIDSort = [NSSortDescriptor sortDescriptorWithKey:@"recordUUID" ascending:YES];
-    [fr setSortDescriptors:[NSArray arrayWithObject:recordUUIDSort]];
-    
     NSUInteger batchSize = 500; //can be set 100-10000 objects depending on individual object size and available device memory
-    [fr setFetchBatchSize:batchSize];
     NSArray *dupes = [moc executeFetchRequest:fr error:&error];
     
     Player *prevPlayer = nil;
     
     NSUInteger i = 1;
     for (Player *p in dupes) {
+        if (DEBUG_LOG) {
+            NSLog(@"deDupe ======%d======", i);
+            NSLog(@"Player UUID %@", p.recordUUID);
+            NSLog(@"Player experienceLevel %d", [p.experienceLevel intValue]);
+            NSLog(@"Player score %d", [p.score integerValue]);
+            NSLog(@"deDupe ==============");
+        }
         if (prevPlayer) {
-            if ([p.recordUUID isEqualToString:prevPlayer.recordUUID]) {
-                if (p.experienceLevel < prevPlayer.experienceLevel) {
-                    [moc deleteObject:player];
+            if ([p.experienceLevel intValue] < [prevPlayer.experienceLevel intValue]) {
+                [moc deleteObject:p];
+            } else if ([p.experienceLevel intValue] == [prevPlayer.experienceLevel intValue]) {
+                if ([p.score integerValue] < [prevPlayer.score integerValue]) {
+                    [moc deleteObject:p];
                 } else {
                     [moc deleteObject:prevPlayer];
                     prevPlayer = p;
                 }
             } else {
+                [moc deleteObject:prevPlayer];
                 prevPlayer = p;
             }
         } else {
@@ -783,8 +757,28 @@ static NSOperationQueue *_presentedItemOperationQueue;
     if ([fetchedPlayers count] > 1) {
         if (DEBUG_LOG) {
             NSLog(@"WARNING: Expected only one player, but has %d", [fetchedPlayers count]);
+            int index = 0;
+            for (Player *p in fetchedPlayers) {
+                NSLog(@"======%d======", index);
+                NSLog(@"Player UUID %@", p.recordUUID);
+                NSLog(@"Player experienceLevel %d", [p.experienceLevel intValue]);
+                NSLog(@"Player score %d", [p.score integerValue]);
+                NSLog(@"==============");
+                index++;
+            }
+        }
+    } else {
+        if (DEBUG_LOG) {
+            NSLog(@"Current player");
+            Player *p  = [fetchedPlayers objectAtIndex:0];
+            NSLog(@"==============");
+            NSLog(@"Player UUID %@", p.recordUUID);
+            NSLog(@"Player experienceLevel %d", [p.experienceLevel intValue]);
+            NSLog(@"Player score %d", [p.score integerValue]);
+            NSLog(@"==============");
         }
     }
+    
     return [fetchedPlayers objectAtIndex: 0];
 }
 
@@ -799,6 +793,7 @@ static NSOperationQueue *_presentedItemOperationQueue;
             NSLog(@"Could not save player data.");
         }
     }
+    [self deDupe:nil];
 }
 
 #pragma mark -
@@ -960,10 +955,10 @@ static NSOperationQueue *_presentedItemOperationQueue;
         if (DEBUG_LOG) {
             NSLog(@"Game center authentication processed with error %@", error);
         }
-//        UIAlertView* alert= [[[UIAlertView alloc] initWithTitle: @"Game Center"
-//                                                        message: [NSString stringWithFormat: @"%@", [error localizedDescription]]
-//                                                       delegate: self cancelButtonTitle: @"Dismiss" otherButtonTitles: NULL] autorelease];
-//        [alert show];
+        //        UIAlertView* alert= [[[UIAlertView alloc] initWithTitle: @"Game Center"
+        //                                                        message: [NSString stringWithFormat: @"%@", [error localizedDescription]]
+        //                                                       delegate: self cancelButtonTitle: @"Dismiss" otherButtonTitles: NULL] autorelease];
+        //        [alert show];
     }
 }
 
