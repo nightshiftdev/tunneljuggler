@@ -34,7 +34,7 @@
 		background.position = ccp(s.width/2, s.height/2);
 		[self addChild:background z:-10];
         
-        id rotate = [CCRotateBy actionWithDuration:1.0f angle:360.0f];
+        id rotate = [CCRotateBy actionWithDuration:3.0f angle:360.0f];
         
 		id seq = [CCSequence actions: rotate, nil];
         
@@ -45,7 +45,8 @@
         [gameLoadingItem runAction:[CCRepeatForever actionWithAction:seq]];
 		[self addChild:menuGameLoading];
         
-        [[SimpleAudioEngine sharedEngine] playBackgroundMusic:@"background-music-aac.caf"];
+//        [[SimpleAudioEngine sharedEngine] playBackgroundMusic:@"background-music-aac.caf"];
+        [[SimpleAudioEngine sharedEngine] playBackgroundMusic:@"background-music.MP3"];
 	}
 	
 	return self;

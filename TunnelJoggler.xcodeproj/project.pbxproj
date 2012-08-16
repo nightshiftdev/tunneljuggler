@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		E5342BD915DA82B800863A06 /* TunnelJoggler.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = E5342BD815DA82B700863A06 /* TunnelJoggler.entitlements */; };
 		E5342BEC15DBDFF600863A06 /* SplashScene.mm in Sources */ = {isa = PBXBuildFile; fileRef = E5342BEB15DBDFF600863A06 /* SplashScene.mm */; };
+		E5342BEE15DBE70000863A06 /* background-music.MP3 in Resources */ = {isa = PBXBuildFile; fileRef = E5342BED15DBE70000863A06 /* background-music.MP3 */; };
 		E53C611F150828860047EF66 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E53C611E150828860047EF66 /* QuartzCore.framework */; };
 		E53C6121150828860047EF66 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E53C6120150828860047EF66 /* OpenGLES.framework */; };
 		E53C6123150828860047EF66 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E53C6122150828860047EF66 /* OpenAL.framework */; };
@@ -206,6 +207,7 @@
 		E5342BD815DA82B700863A06 /* TunnelJoggler.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = TunnelJoggler.entitlements; sourceTree = "<group>"; };
 		E5342BEA15DBDFF600863A06 /* SplashScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SplashScene.h; sourceTree = "<group>"; };
 		E5342BEB15DBDFF600863A06 /* SplashScene.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SplashScene.mm; sourceTree = "<group>"; };
+		E5342BED15DBE70000863A06 /* background-music.MP3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = "background-music.MP3"; path = "Resources/background-music.MP3"; sourceTree = "<group>"; };
 		E53C611A150828860047EF66 /* TunnelJuggler.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TunnelJuggler.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E53C611E150828860047EF66 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		E53C6120150828860047EF66 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -672,6 +674,7 @@
 		E53C612F150828860047EF66 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				E5342BED15DBE70000863A06 /* background-music.MP3 */,
 				E55237D51558A17A005B05D3 /* background-music-aac.caf */,
 				E55237D61558A17A005B05D3 /* blip.caf */,
 				E598D42415792A0600DF181A /* buttons-hd.plist */,
@@ -1165,6 +1168,7 @@
 				E55E3D44159A33A600CA5894 /* fire-hd.png in Resources */,
 				E587492215AF001500D22B51 /* ProgressHUD.xib in Resources */,
 				E5342BD915DA82B800863A06 /* TunnelJoggler.entitlements in Resources */,
+				E5342BEE15DBE70000863A06 /* background-music.MP3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
