@@ -178,6 +178,8 @@
 		E57047321590AD1F009991B2 /* Noise_iPad.png in Resources */ = {isa = PBXBuildFile; fileRef = E57047311590AD1F009991B2 /* Noise_iPad.png */; };
 		E587492115AF001500D22B51 /* ProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = E587491F15AF001500D22B51 /* ProgressHUD.m */; };
 		E587492215AF001500D22B51 /* ProgressHUD.xib in Resources */ = {isa = PBXBuildFile; fileRef = E587492015AF001500D22B51 /* ProgressHUD.xib */; };
+		E5879B6415DD3B85007BBD33 /* Level.m in Sources */ = {isa = PBXBuildFile; fileRef = E5879B6315DD3B85007BBD33 /* Level.m */; };
+		E5879B6815DD3B85007BBD33 /* Player.m in Sources */ = {isa = PBXBuildFile; fileRef = E5879B6715DD3B85007BBD33 /* Player.m */; };
 		E598D4231579265300DF181A /* SoundMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = E598D4221579265200DF181A /* SoundMenuItem.m */; };
 		E598D42815792A0600DF181A /* buttons-hd.plist in Resources */ = {isa = PBXBuildFile; fileRef = E598D42415792A0600DF181A /* buttons-hd.plist */; };
 		E598D42915792A0600DF181A /* buttons-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E598D42515792A0600DF181A /* buttons-hd.png */; };
@@ -192,15 +194,12 @@
 		E59A440D15AC6F3C00BBD754 /* GameController.mm in Sources */ = {isa = PBXBuildFile; fileRef = E59A440C15AC6F3C00BBD754 /* GameController.mm */; };
 		E5A42E8B153B5033000CFFB2 /* Obstacle.mm in Sources */ = {isa = PBXBuildFile; fileRef = E5A42E8A153B5033000CFFB2 /* Obstacle.mm */; };
 		E5AD299115BED2D100A43904 /* MainScene.mm in Sources */ = {isa = PBXBuildFile; fileRef = E5AD299015BED2D100A43904 /* MainScene.mm */; };
-		E5AD299D15C01A2300A43904 /* Player.m in Sources */ = {isa = PBXBuildFile; fileRef = E5AD299C15C01A2300A43904 /* Player.m */; };
 		E5B3A14B15BD73D400667F70 /* GameData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E5B3A14915BD73D400667F70 /* GameData.xcdatamodeld */; };
-		E5B4870F15C2E6930067CE1B /* Level.m in Sources */ = {isa = PBXBuildFile; fileRef = E5B4870E15C2E6930067CE1B /* Level.m */; };
 		E5B7D72D152A647800407342 /* Paddle.mm in Sources */ = {isa = PBXBuildFile; fileRef = E5B7D72C152A647800407342 /* Paddle.mm */; };
 		E5C3584B15C5B71E00788E1B /* BackgroundUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = E5C3584A15C5B71D00788E1B /* BackgroundUtils.mm */; };
 		E5C3585215CC05AB00788E1B /* UIImage+WithScaleToSize.m in Sources */ = {isa = PBXBuildFile; fileRef = E5C3585115CC05A900788E1B /* UIImage+WithScaleToSize.m */; };
 		E5C3585B15CF249A00788E1B /* GameCenterManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E5C3585A15CF249A00788E1B /* GameCenterManager.m */; };
 		E5C3585D15CFED0F00788E1B /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5C3585C15CFED0E00788E1B /* GameKit.framework */; };
-		E5CB458D15B6F70900F1D056 /* ImageToDataTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = E5CB458C15B6F70900F1D056 /* ImageToDataTransformer.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -537,6 +536,10 @@
 		E587491E15AF001500D22B51 /* ProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProgressHUD.h; sourceTree = "<group>"; };
 		E587491F15AF001500D22B51 /* ProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProgressHUD.m; sourceTree = "<group>"; };
 		E587492015AF001500D22B51 /* ProgressHUD.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProgressHUD.xib; sourceTree = "<group>"; };
+		E5879B6215DD3B85007BBD33 /* Level.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Level.h; path = LevelManager/Level.h; sourceTree = "<group>"; };
+		E5879B6315DD3B85007BBD33 /* Level.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Level.m; path = LevelManager/Level.m; sourceTree = "<group>"; };
+		E5879B6615DD3B85007BBD33 /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Player.h; path = LevelManager/Player.h; sourceTree = "<group>"; };
+		E5879B6715DD3B85007BBD33 /* Player.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Player.m; path = LevelManager/Player.m; sourceTree = "<group>"; };
 		E598D4211579265200DF181A /* SoundMenuItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoundMenuItem.h; sourceTree = "<group>"; };
 		E598D4221579265200DF181A /* SoundMenuItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SoundMenuItem.m; sourceTree = "<group>"; };
 		E598D42415792A0600DF181A /* buttons-hd.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "buttons-hd.plist"; path = "Resources/buttons/buttons-hd.plist"; sourceTree = "<group>"; };
@@ -555,11 +558,7 @@
 		E5A42E8A153B5033000CFFB2 /* Obstacle.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Obstacle.mm; sourceTree = "<group>"; };
 		E5AD298F15BED2D100A43904 /* MainScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainScene.h; sourceTree = "<group>"; };
 		E5AD299015BED2D100A43904 /* MainScene.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MainScene.mm; sourceTree = "<group>"; };
-		E5AD299B15C01A2300A43904 /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Player.h; path = LevelManager/Player.h; sourceTree = "<group>"; };
-		E5AD299C15C01A2300A43904 /* Player.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Player.m; path = LevelManager/Player.m; sourceTree = "<group>"; };
 		E5B3A14A15BD73D400667F70 /* GameData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = GameData.xcdatamodel; sourceTree = "<group>"; };
-		E5B4870D15C2E6930067CE1B /* Level.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Level.h; path = LevelManager/Level.h; sourceTree = "<group>"; };
-		E5B4870E15C2E6930067CE1B /* Level.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Level.m; path = LevelManager/Level.m; sourceTree = "<group>"; };
 		E5B7D72B152A647800407342 /* Paddle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Paddle.h; path = Objects/Paddle.h; sourceTree = "<group>"; };
 		E5B7D72C152A647800407342 /* Paddle.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Paddle.mm; path = Objects/Paddle.mm; sourceTree = "<group>"; };
 		E5C3584915C5B71D00788E1B /* BackgroundUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BackgroundUtils.h; sourceTree = "<group>"; };
@@ -570,8 +569,6 @@
 		E5C3585915CF249A00788E1B /* GameCenterManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameCenterManager.h; path = GameCenter/GameCenterManager.h; sourceTree = "<group>"; };
 		E5C3585A15CF249A00788E1B /* GameCenterManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GameCenterManager.m; path = GameCenter/GameCenterManager.m; sourceTree = "<group>"; };
 		E5C3585C15CFED0E00788E1B /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
-		E5CB458B15B6F70900F1D056 /* ImageToDataTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ImageToDataTransformer.h; path = LevelManager/ImageToDataTransformer.h; sourceTree = "<group>"; };
-		E5CB458C15B6F70900F1D056 /* ImageToDataTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ImageToDataTransformer.m; path = LevelManager/ImageToDataTransformer.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1055,15 +1052,13 @@
 		E58431FD15AC5E4B00FBDE5A /* LevelManager */ = {
 			isa = PBXGroup;
 			children = (
-				E5CB458B15B6F70900F1D056 /* ImageToDataTransformer.h */,
-				E5CB458C15B6F70900F1D056 /* ImageToDataTransformer.m */,
 				E59A440B15AC6F3C00BBD754 /* GameController.h */,
 				E59A440C15AC6F3C00BBD754 /* GameController.mm */,
+				E5879B6215DD3B85007BBD33 /* Level.h */,
+				E5879B6615DD3B85007BBD33 /* Player.h */,
+				E5879B6715DD3B85007BBD33 /* Player.m */,
+				E5879B6315DD3B85007BBD33 /* Level.m */,
 				E5B3A14915BD73D400667F70 /* GameData.xcdatamodeld */,
-				E5B4870D15C2E6930067CE1B /* Level.h */,
-				E5B4870E15C2E6930067CE1B /* Level.m */,
-				E5AD299B15C01A2300A43904 /* Player.h */,
-				E5AD299C15C01A2300A43904 /* Player.m */,
 			);
 			name = LevelManager;
 			sourceTree = "<group>";
@@ -1324,15 +1319,14 @@
 				E598D4231579265300DF181A /* SoundMenuItem.m in Sources */,
 				E59A440D15AC6F3C00BBD754 /* GameController.mm in Sources */,
 				E587492115AF001500D22B51 /* ProgressHUD.m in Sources */,
-				E5CB458D15B6F70900F1D056 /* ImageToDataTransformer.m in Sources */,
 				E5B3A14B15BD73D400667F70 /* GameData.xcdatamodeld in Sources */,
 				E5AD299115BED2D100A43904 /* MainScene.mm in Sources */,
-				E5AD299D15C01A2300A43904 /* Player.m in Sources */,
-				E5B4870F15C2E6930067CE1B /* Level.m in Sources */,
 				E5C3584B15C5B71E00788E1B /* BackgroundUtils.mm in Sources */,
 				E5C3585215CC05AB00788E1B /* UIImage+WithScaleToSize.m in Sources */,
 				E5C3585B15CF249A00788E1B /* GameCenterManager.m in Sources */,
 				E5342BEC15DBDFF600863A06 /* SplashScene.mm in Sources */,
+				E5879B6415DD3B85007BBD33 /* Level.m in Sources */,
+				E5879B6815DD3B85007BBD33 /* Player.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

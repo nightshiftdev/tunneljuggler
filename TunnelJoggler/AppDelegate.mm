@@ -163,6 +163,8 @@
         }
     }];
     
+//    [[GameController sharedController] seediCloudToFallback];
+    
 	CCDirector *director = [CCDirector sharedDirector];
 	
 	[[director openGLView] removeFromSuperview];

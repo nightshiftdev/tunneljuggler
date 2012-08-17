@@ -178,7 +178,6 @@ static NSOperationQueue *_presentedItemOperationQueue;
 #pragma mark Managing the Persistent Stores
 
 - (void)loadPersistentStores {
-    [[ProgressHUD sharedProgressHUD] showProgress];
     dispatch_queue_t globalQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     dispatch_async(globalQueue, ^{
         BOOL locked = NO;
@@ -189,9 +188,6 @@ static NSOperationQueue *_presentedItemOperationQueue;
             if (![self areObjectsWithNamePopulated:@"Level" inStore: _levelsLocalStore]) {
                 [self createLevels];
             }
-            [[NSOperationQueue mainQueue] addOperationWithBlock: ^{
-                [[ProgressHUD sharedProgressHUD] stopShowingProgress];
-            }];
         } @finally {
             if (locked) {
                 [_loadingLock unlock];
@@ -297,7 +293,7 @@ static NSOperationQueue *_presentedItemOperationQueue;
     
     //if iCloud is available, add the persistent store
     //if iCloud is not available, or the add call fails, fallback to local storage
-    BOOL useFallbackStore = NO;
+    BOOL useFallbackStore = YES;
     if ([self isiCloudAvailable]) {
         if ([self loadPlayeriCloudStore:&error]) {
             if (DEBUG_LOG) {
@@ -367,10 +363,31 @@ static NSOperationQueue *_presentedItemOperationQueue;
         }
     }
     
-    [self deDupe:nil];
+//    [self deDupe:nil];
+}
+
+- (BOOL) seediCloudToFallback {
+    BOOL seedingSuccesful = NO;
+    if ([self isiCloudAvailable]) {
+        NSError *error = nil;
+        seedingSuccesful = [self seedStore: _playerFallbackStore withPersistentStoreAtURL: [self playeriCloudStoreURL] error: &error];
+        if (error || !seedingSuccesful) {
+            if (DEBUG_LOG) {
+                NSLog(@"Could not seed iCloud store to Fallback store: %@", error);
+            }
+        } else {
+            if (DEBUG_LOG) {
+                NSLog(@"Successfully seeded Fallback Store from iCloud Store");
+            }
+        }
+    }
+    return seedingSuccesful;
 }
 
 - (BOOL)seedStore:(NSPersistentStore *)store withPersistentStoreAtURL:(NSURL *)seedStoreURL error:(NSError * __autoreleasing *)error {
+    if (DEBUG_LOG) {
+        NSLog(@"Seeding store");
+    }
     BOOL success = YES;
     NSError *localError = nil;
     NSManagedObjectModel *model = [NSManagedObjectModel mergedModelFromBundles:nil];
@@ -398,6 +415,10 @@ static NSOperationQueue *_presentedItemOperationQueue;
         [moc setPersistentStoreCoordinator:_psc];
         NSUInteger i = 1;
         for (Player *p in players) {
+            NSLog(@"seedStore ======%d======", i);
+            NSLog(@"Player experienceLevel %d", [p.experienceLevel intValue]);
+            NSLog(@"Player score %d", [p.score integerValue]);
+            NSLog(@"seedStore ==============");
             [self addPlayer:p toStore:store withContext:moc];
             if (0 == (i % batchSize)) {
                 success = [moc save:&localError];
@@ -465,11 +486,9 @@ static NSOperationQueue *_presentedItemOperationQueue;
     Player *defaultPlayer = [NSEntityDescription insertNewObjectForEntityForName:@"Player" inManagedObjectContext: moc];
     defaultPlayer.currentLevel = [NSNumber numberWithInt: 0];
     defaultPlayer.name = nil;
-    defaultPlayer.picture = nil;
     defaultPlayer.score = [NSNumber numberWithInt: 0];
     defaultPlayer.experienceLevel = [NSNumber numberWithInt: 0];
     defaultPlayer.bonusItems = [NSNumber numberWithInt: 0];
-    defaultPlayer.recordUUID = [self UUIDString];
     [moc assignObject:defaultPlayer toPersistentStore:store];
     NSError *error = nil;
     BOOL success = [moc save: &error];
@@ -486,11 +505,9 @@ static NSOperationQueue *_presentedItemOperationQueue;
                          insertIntoManagedObjectContext:moc] autorelease];
     newPlayer.currentLevel = playerToBeAdded.currentLevel;
     newPlayer.name = playerToBeAdded.name;
-    newPlayer.picture = playerToBeAdded.picture;
     newPlayer.score = playerToBeAdded.score;
     newPlayer.experienceLevel = playerToBeAdded.experienceLevel;
     newPlayer.bonusItems = playerToBeAdded.bonusItems;
-    newPlayer.recordUUID = (playerToBeAdded.recordUUID == nil) ? [self UUIDString] : playerToBeAdded.recordUUID;
     [moc assignObject:newPlayer toPersistentStore:store];
 }
 
@@ -542,7 +559,6 @@ static NSOperationQueue *_presentedItemOperationQueue;
     l1.bonusBallFrequency = [NSNumber numberWithFloat:2.0f];
     l1.bonusItemFrequency = [NSNumber numberWithFloat:10.0f];
     l1.haveMovingObstacles = [NSNumber numberWithBool:NO];
-    l1.recordUUID = [self UUIDString];
     
     [levelsMOC assignObject:l1 toPersistentStore: _levelsLocalStore];
     
@@ -673,7 +689,6 @@ static NSOperationQueue *_presentedItemOperationQueue;
     for (Player *p in dupes) {
         if (DEBUG_LOG) {
             NSLog(@"deDupe ======%d======", i);
-            NSLog(@"Player UUID %@", p.recordUUID);
             NSLog(@"Player experienceLevel %d", [p.experienceLevel intValue]);
             NSLog(@"Player score %d", [p.score integerValue]);
             NSLog(@"deDupe ==============");
@@ -745,11 +760,11 @@ static NSOperationQueue *_presentedItemOperationQueue;
 
 -(Player *)player {
     NSFetchRequest *fetchRequest = [[[NSFetchRequest alloc] init] autorelease];
-    if ([self isiCloudAvailable]) {
-        [fetchRequest setAffectedStores: [NSArray arrayWithObjects:_playeriCloudStore, nil]];
-    } else {
-        [fetchRequest setAffectedStores: [NSArray arrayWithObjects:_playerFallbackStore, nil]];
-    }
+//    if ([self isiCloudAvailable]) {
+//        [fetchRequest setAffectedStores: [NSArray arrayWithObjects:_playeriCloudStore, nil]];
+//    } else {
+//        [fetchRequest setAffectedStores: [NSArray arrayWithObjects:_playerFallbackStore, nil]];
+//    }
     NSEntityDescription *entity = [NSEntityDescription entityForName: @"Player" inManagedObjectContext: _mainThreadContext];
     [fetchRequest setEntity:entity];
     NSError *error = nil;
@@ -760,7 +775,6 @@ static NSOperationQueue *_presentedItemOperationQueue;
             int index = 0;
             for (Player *p in fetchedPlayers) {
                 NSLog(@"======%d======", index);
-                NSLog(@"Player UUID %@", p.recordUUID);
                 NSLog(@"Player experienceLevel %d", [p.experienceLevel intValue]);
                 NSLog(@"Player score %d", [p.score integerValue]);
                 NSLog(@"==============");
@@ -772,17 +786,24 @@ static NSOperationQueue *_presentedItemOperationQueue;
             NSLog(@"Current player");
             Player *p  = [fetchedPlayers objectAtIndex:0];
             NSLog(@"==============");
-            NSLog(@"Player UUID %@", p.recordUUID);
             NSLog(@"Player experienceLevel %d", [p.experienceLevel intValue]);
             NSLog(@"Player score %d", [p.score integerValue]);
             NSLog(@"==============");
         }
     }
-    
-    return [fetchedPlayers objectAtIndex: 0];
+    Player *p = [fetchedPlayers objectAtIndex: 0];
+    [_mainThreadContext refreshObject: p mergeChanges: YES];
+    return p;
 }
 
 -(void)setPlayer:(Player *)playerToBeSaved {
+    if (DEBUG_LOG) {
+        NSLog(@"Saving player.");
+        NSLog(@"==============");
+        NSLog(@"Player experienceLevel %d", [playerToBeSaved.experienceLevel intValue]);
+        NSLog(@"Player score %d", [playerToBeSaved.score integerValue]);
+        NSLog(@"==============");
+    }
     if ([playerToBeSaved.score intValue] > self.gameCenterPlayerBestScore) {
         [[GameCenterManager sharedManager] reportScore: [playerToBeSaved.score intValue] forCategory: kTunnelJugglerLeaderboardID];
     }
@@ -793,7 +814,7 @@ static NSOperationQueue *_presentedItemOperationQueue;
             NSLog(@"Could not save player data.");
         }
     }
-    [self deDupe:nil];
+//    [self deDupe:nil];
 }
 
 #pragma mark -

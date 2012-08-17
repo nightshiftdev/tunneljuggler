@@ -44,7 +44,8 @@
         
         obstacles_ = [[NSMutableArray alloc] init];
         ballBullets_ = [[NSMutableArray alloc] init];
-        terrain_ = [[Terrain alloc] initWithWorld:world_ terrainLength:[self.currentLevel.length integerValue]];
+        // TODO: renable terrain length when iCloud works OK
+        terrain_ = [[Terrain alloc] initWithWorld:world_ terrainLength:25/*[self.currentLevel.length integerValue]*/];
         terrain_.terrainObserver = self;
         paddle_ = [[[Paddle alloc] initWithWorld:world_] autorelease];
         
@@ -85,11 +86,9 @@
         NSLog(@"============Player===============");
         NSLog(@"player.currentLevel %@", self.player.currentLevel);
         NSLog(@"player.name %@", self.player.name);
-        NSLog(@"player.picture %@", self.player.picture);
         NSLog(@"player.score %@", self.player.score);
         NSLog(@"player.bonusItems %@", self.player.bonusItems);
         NSLog(@"player.experienceLevel %@", self.player.experienceLevel);
-        NSLog(@"player.recordUUID %@", self.player.recordUUID);
         NSLog(@"===================================");
     }
     self.levels = [[GameController sharedController] levels];
@@ -109,7 +108,6 @@
             NSLog(@"speedIncreaseInterval %@", l.speedIncreaseInterval);
             NSLog(@"speedIncreaseValue %@", l.speedIncreaseValue);
             NSLog(@"timeToSurviveToPass %@", l.timeToSurviveToPass);
-            NSLog(@"recordUUID %@", l.recordUUID);
             NSLog(@"===================================");
         }
     }
@@ -127,7 +125,6 @@
         NSLog(@"speedIncreaseInterval %@", self.currentLevel.speedIncreaseInterval);
         NSLog(@"speedIncreaseValue %@", self.currentLevel.speedIncreaseValue);
         NSLog(@"timeToSurviveToPass %@", self.currentLevel.timeToSurviveToPass);
-        NSLog(@"recordUUID %@", self.currentLevel.recordUUID);
         NSLog(@"===================================");
     }
 }

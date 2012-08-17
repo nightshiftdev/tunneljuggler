@@ -68,17 +68,19 @@
 		[self addChild:menuPlay];
         
         Player *p = [[GameController sharedController] player];
-        CCSprite *spriteFromImageNormal = nil;
-        CCSprite *spriteFromImageSelected = nil;
-        UIImage *playerPicture = p.picture;
-        if (playerPicture != nil) {
-            spriteFromImageNormal = [CCSprite spriteWithCGImage: playerPicture.CGImage key:nil];
-            spriteFromImageSelected = [CCSprite spriteWithCGImage: playerPicture.CGImage key:nil];
-        } else {
-            spriteFromImageNormal = [CCSprite spriteWithSpriteFrameName: @"player-picture-default.png"];
-            spriteFromImageSelected = [CCSprite spriteWithSpriteFrameName: @"player-picture-default.png"];
-        }
-        
+//        CCSprite *spriteFromImageNormal = nil;
+//        CCSprite *spriteFromImageSelected = nil;
+//        UIImage *playerPicture = p.picture;
+//        if (playerPicture != nil) {
+//            spriteFromImageNormal = [CCSprite spriteWithCGImage: playerPicture.CGImage key:nil];
+//            spriteFromImageSelected = [CCSprite spriteWithCGImage: playerPicture.CGImage key:nil];
+//        } else {
+//            spriteFromImageNormal = [CCSprite spriteWithSpriteFrameName: @"player-picture-default.png"];
+//            spriteFromImageSelected = [CCSprite spriteWithSpriteFrameName: @"player-picture-default.png"];
+//        }
+//
+        CCSprite *spriteFromImageNormal = [CCSprite spriteWithSpriteFrameName: @"player-picture-default.png"];
+        CCSprite *spriteFromImageSelected = [CCSprite spriteWithSpriteFrameName: @"player-picture-default.png"];
         [self setUserPictureForNormalState: spriteFromImageNormal
                              selectedState: spriteFromImageSelected];
         
@@ -143,19 +145,19 @@
     NSLog(@"MainScene reloadGameData called.");
 #endif
     Player *p = [[GameController sharedController] player];
-    CCSprite *spriteFromImageNormal = nil;
-    CCSprite *spriteFromImageSelected = nil;
-    UIImage *playerPicture = p.picture;
-    if (playerPicture != nil) {
-        spriteFromImageNormal = [CCSprite spriteWithCGImage: playerPicture.CGImage key:nil];
-        spriteFromImageSelected = [CCSprite spriteWithCGImage: playerPicture.CGImage key:nil];
-    } else {
-        spriteFromImageNormal = [CCSprite spriteWithSpriteFrameName: @"player-picture-default.png"];
-        spriteFromImageSelected = [CCSprite spriteWithSpriteFrameName: @"player-picture-default.png"];
-    }
-    
-    [self setUserPictureForNormalState: spriteFromImageNormal
-                         selectedState: spriteFromImageSelected];
+//    CCSprite *spriteFromImageNormal = nil;
+//    CCSprite *spriteFromImageSelected = nil;
+//    UIImage *playerPicture = p.picture;
+//    if (playerPicture != nil) {
+//        spriteFromImageNormal = [CCSprite spriteWithCGImage: playerPicture.CGImage key:nil];
+//        spriteFromImageSelected = [CCSprite spriteWithCGImage: playerPicture.CGImage key:nil];
+//    } else {
+//        spriteFromImageNormal = [CCSprite spriteWithSpriteFrameName: @"player-picture-default.png"];
+//        spriteFromImageSelected = [CCSprite spriteWithSpriteFrameName: @"player-picture-default.png"];
+//    }
+//    
+//    [self setUserPictureForNormalState: spriteFromImageNormal
+//                         selectedState: spriteFromImageSelected];
     
     [_scoreLabel setString: [NSString stringWithFormat:@"H I G H  S C O R E:  %d", [p.score intValue]]];
     
@@ -208,7 +210,7 @@
         [self setUserPictureForNormalState: spriteFromImageNormal
                              selectedState: spriteFromImageSelected];
         Player *p = [[GameController sharedController] player];
-        p.picture = nil;
+//        p.picture = nil;
         [[GameController sharedController] setPlayer: p];
     } else  {
         NSString *title = [as buttonTitleAtIndex:buttonIndex];
@@ -293,7 +295,7 @@
     UIImage *imageToSave = [UIImage makeRoundCornerImage: scaledImage :25 : 25];
     
     Player *p = [[GameController sharedController] player];
-    p.picture = imageToSave;
+//    p.picture = imageToSave;
     [[GameController sharedController] setPlayer: p];
     
     CCSprite *spriteFromImageNormal = [CCSprite spriteWithCGImage: imageToSave.CGImage key:nil];
