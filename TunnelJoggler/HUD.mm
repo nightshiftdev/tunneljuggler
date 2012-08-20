@@ -66,12 +66,18 @@
     Player *player = [[GameController sharedController] player];
     int nextLevel = [player.currentLevel intValue] + 1;
     int experienceLevel = [player.experienceLevel intValue] + 1;
+//    int bonusItems = [player.bonusItems intValue];
+//    NSString *name = player.name;
+//    int currentLevel = [player.currentLevel intValue];
     NSArray *levels = [[GameController sharedController] levels];
     if (nextLevel >= [levels count]) {
         experienceLevel += 100;
     }
     player.experienceLevel =  [NSNumber numberWithInt: experienceLevel];
     player.score = [NSNumber numberWithInt: self.score];
+//    player.currentLevel = [NSNumber numberWithInt: currentLevel];
+//    player.name = name;
+//    player.bonusItems = [NSNumber numberWithInt:bonusItems];
     [GameController sharedController].player = player;
 }
 
@@ -82,14 +88,21 @@
     if (nextLevel >= [levels count]) {
         nextLevel = 0;
     }
+//    int experienceLevel = [player.experienceLevel intValue];
+//    int bonusItems = [player.bonusItems intValue];
+//    NSString *name = player.name;
+//    int64_t playerScore = [player.score intValue];
     player.currentLevel = [NSNumber numberWithInt: nextLevel];
+//    player.experienceLevel =  [NSNumber numberWithInt: experienceLevel];
+//    player.score = [NSNumber numberWithInt: playerScore];
+//    player.name = name;
+//    player.bonusItems = [NSNumber numberWithInt:bonusItems];
     [GameController sharedController].player = player;
 }
 
 -(void) gameOver:(BOOL)didWin touchedFatalObject:(BOOL) fatalObjectTouched {
     if (!self.isGameOver) {
         self.isGameOver = YES;
-        [[CCDirector sharedDirector] pause];
         CCMenuItem *item0 = [SoundMenuItem itemFromNormalSpriteFrameName:@"btn-exit-normal.png" selectedSpriteFrameName:@"btn-exit-selected.png" target:self selector:@selector(onMainMenuPressed:)];
         CCMenuItem *item2, *item1 = nil;
         if (fatalObjectTouched) {
@@ -110,6 +123,7 @@
         [menu_ alignItemsHorizontallyWithPadding: 25.0];
         [menu_ setPosition:ccp(s.width/2, s.height/2)];
         [self addChild:menu_ z:10];
+        [[CCDirector sharedDirector] pause];
     }
 }
 

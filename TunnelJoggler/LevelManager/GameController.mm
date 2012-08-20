@@ -12,6 +12,7 @@
 #import "Paddle.h"
 #import "ProgressHUD.h"
 #import "Game.h"
+#import "SplashScene.h"
 
 NSString * kPlayeriCloudPersistentStoreFilename = @"PlayeriCloudStore.sqlite";
 NSString * kPlayerFallbackPersistentStoreFilename = @"PlayerFallbackStore.sqlite"; //used when iCloud is not available
@@ -48,6 +49,10 @@ static NSOperationQueue *_presentedItemOperationQueue;
 - (NSString *)applicationDocumentsDirectory;
 - (void)iCloudAccountChanged:(NSNotification *)notification;
 
+- (BOOL) retryToAddiCloudStore;
+- (void) nukeAndPaveiCloudStore;
+
+
 - (NSString *) UUIDString;
 @end
 
@@ -81,7 +86,7 @@ static NSOperationQueue *_presentedItemOperationQueue;
         _ubiquityURL = nil;
         _currentUbiquityToken = nil;
         _presentedItemURL = nil;
-        
+        _reloadStoresInProgress = NO;
         NSManagedObjectModel *model = [NSManagedObjectModel mergedModelFromBundles:nil];
         _psc = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:model];
         _mainThreadContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
@@ -144,25 +149,26 @@ static NSOperationQueue *_presentedItemOperationQueue;
 - (BOOL)isiCloudAvailable {
     BOOL available = NO;
     if (([[[UIDevice currentDevice] systemVersion] floatValue] >= 6.0) &&
-        (_currentUbiquityToken != nil)) {
+        ([[NSFileManager defaultManager] ubiquityIdentityToken] != nil)) {
         available = YES;
     }
     return available;
 }
 
 - (void)applicationResumed {
-    if ([self isiCloudAvailable]) {
-        id token = [[NSFileManager defaultManager] ubiquityIdentityToken];
-        if (self.currentUbiquityToken != token) {
-            if (NO == [self.currentUbiquityToken isEqual:token]) {
-                [self iCloudAccountChanged:nil];
-            }
+    id token = [[NSFileManager defaultManager] ubiquityIdentityToken];
+    if (token != nil &&
+        self.currentUbiquityToken != token) {
+        if (NO == [self.currentUbiquityToken isEqual:token]) {
+            [self iCloudAccountChanged:nil];
         }
     }
 }
 
 - (void)iCloudAccountChanged:(NSNotification *)notification {
-    if ([self isiCloudAvailable]) {
+    if ([self isiCloudAvailable] &&
+        !_reloadStoresInProgress) {
+        [[CCDirector sharedDirector] replaceScene: [SplashScene scene]];
         //tell the UI to clean up while we re-add the store
         [self dropStores];
         
@@ -172,6 +178,8 @@ static NSOperationQueue *_presentedItemOperationQueue;
         
         //reload persistent store
         [self loadPersistentStores];
+    } else {
+        _currentUbiquityToken = [[NSFileManager defaultManager] ubiquityIdentityToken];
     }
 }
 
@@ -183,6 +191,7 @@ static NSOperationQueue *_presentedItemOperationQueue;
         BOOL locked = NO;
         @try {
             [_loadingLock lock];
+            _reloadStoresInProgress = YES;
             locked = YES;
             [self asyncLoadPersistentStores];
             if (![self areObjectsWithNamePopulated:@"Level" inStore: _levelsLocalStore]) {
@@ -193,6 +202,7 @@ static NSOperationQueue *_presentedItemOperationQueue;
                 [_loadingLock unlock];
                 locked = NO;
             }
+            _reloadStoresInProgress = NO;
             [self callDelegateOnMainThread: @selector(persistentStoresLoaded:) withArg: NULL error: nil];
         }
     });
@@ -256,9 +266,13 @@ static NSOperationQueue *_presentedItemOperationQueue;
     
     NSURL *iCloudStoreURL = [self playeriCloudStoreURL];
     NSURL *iCloudDataURL = [self.ubiquityURL URLByAppendingPathComponent:@"iCloudData"];
+    NSNumber *timeout = [NSNumber numberWithInt: 15];
     NSDictionary *options = [NSDictionary dictionaryWithObjectsAndKeys:
                              @"PlayeriCloudStore", NSPersistentStoreUbiquitousContentNameKey,
                              iCloudDataURL, NSPersistentStoreUbiquitousContentURLKey,
+                             [NSNumber numberWithBool:YES], NSMigratePersistentStoresAutomaticallyOption,
+                             [NSNumber numberWithBool:YES], NSInferMappingModelAutomaticallyOption,
+                             timeout, NSPersistentStoreTimeoutOption,
                              nil];
     _playeriCloudStore = [self.psc addPersistentStoreWithType:NSSQLiteStoreType
                                                 configuration:@"CloudConfig"
@@ -293,7 +307,7 @@ static NSOperationQueue *_presentedItemOperationQueue;
     
     //if iCloud is available, add the persistent store
     //if iCloud is not available, or the add call fails, fallback to local storage
-    BOOL useFallbackStore = YES;
+    BOOL useFallbackStore = NO;
     if ([self isiCloudAvailable]) {
         if ([self loadPlayeriCloudStore:&error]) {
             if (DEBUG_LOG) {
@@ -334,10 +348,12 @@ static NSOperationQueue *_presentedItemOperationQueue;
             }
             [fm release];
         } else {
+            [self nukeAndPaveiCloudStore];
+            useFallbackStore = [self retryToAddiCloudStore];
             if (DEBUG_LOG) {
                 NSLog(@"Unable to add iCloud store: %@", error);
             }
-            useFallbackStore = YES;
+//            useFallbackStore = YES;
         }
     } else {
         useFallbackStore = YES;
@@ -760,11 +776,6 @@ static NSOperationQueue *_presentedItemOperationQueue;
 
 -(Player *)player {
     NSFetchRequest *fetchRequest = [[[NSFetchRequest alloc] init] autorelease];
-//    if ([self isiCloudAvailable]) {
-//        [fetchRequest setAffectedStores: [NSArray arrayWithObjects:_playeriCloudStore, nil]];
-//    } else {
-//        [fetchRequest setAffectedStores: [NSArray arrayWithObjects:_playerFallbackStore, nil]];
-//    }
     NSEntityDescription *entity = [NSEntityDescription entityForName: @"Player" inManagedObjectContext: _mainThreadContext];
     [fetchRequest setEntity:entity];
     NSError *error = nil;
@@ -781,18 +792,22 @@ static NSOperationQueue *_presentedItemOperationQueue;
                 index++;
             }
         }
-    } else {
-        if (DEBUG_LOG) {
+//        [self deDupe:nil];
+    }
+    Player *p = nil;
+    if ([fetchedPlayers count] > 0) {
+        p = [fetchedPlayers objectAtIndex: 0];
+        [_mainThreadContext refreshObject: p mergeChanges: YES];
+        if (DEBUG_LOG && p != nil) {
             NSLog(@"Current player");
-            Player *p  = [fetchedPlayers objectAtIndex:0];
             NSLog(@"==============");
             NSLog(@"Player experienceLevel %d", [p.experienceLevel intValue]);
             NSLog(@"Player score %d", [p.score integerValue]);
             NSLog(@"==============");
         }
+    } else {
+        NSLog(@"WARNING: Does not have any players stored");
     }
-    Player *p = [fetchedPlayers objectAtIndex: 0];
-    [_mainThreadContext refreshObject: p mergeChanges: YES];
     return p;
 }
 
@@ -807,14 +822,22 @@ static NSOperationQueue *_presentedItemOperationQueue;
     if ([playerToBeSaved.score intValue] > self.gameCenterPlayerBestScore) {
         [[GameCenterManager sharedManager] reportScore: [playerToBeSaved.score intValue] forCategory: kTunnelJugglerLeaderboardID];
     }
+//    NSPersistentStore *store = nil;
+//    if ([self isiCloudAvailable]) {
+//        store = _playeriCloudStore;
+//    } else {
+//        store = _playerFallbackStore;
+//    }
+//    [self addPlayer: playerToBeSaved toStore: store withContext: _mainThreadContext];
     NSError *error = nil;
     BOOL success = [_mainThreadContext save: &error];
     if (error || !success) {
         if (DEBUG_LOG) {
             NSLog(@"Could not save player data.");
         }
+    } else {
+//      [self deDupe:nil];
     }
-//    [self deDupe:nil];
 }
 
 #pragma mark -
@@ -909,6 +932,84 @@ static NSOperationQueue *_presentedItemOperationQueue;
     dispatch_async(queue, ^{
         [self asyncNukeAndPave];
     });
+}
+
+- (BOOL) retryToAddiCloudStore {
+    BOOL success = NO;
+    if ([self isiCloudAvailable]) {
+        NSError *error = nil;
+        if ([self loadPlayeriCloudStore:&error]) {
+            if (DEBUG_LOG) {
+                NSLog(@"Added iCloud Store");
+            }
+            
+            //check to see if we need to seed data
+            if (![self areObjectsWithNamePopulated:@"Player" inStore: _playeriCloudStore]) {
+                //do this synchronously
+                NSManagedObjectContext *addPlayerMOC = [[[NSManagedObjectContext alloc] init] autorelease];
+                [addPlayerMOC setPersistentStoreCoordinator:_psc];
+                [self addPlayerToStore: _playeriCloudStore withContext: addPlayerMOC];
+                [self deDupe:nil];
+            }
+            
+            //check to see if we need to seed or migrate data from the fallback store
+            NSFileManager *fm = [[NSFileManager alloc] init];
+            if ([fm fileExistsAtPath:[[self playerFallbackStoreURL] path]]) {
+                //migrate data from the fallback store to the iCloud store
+                //there is no reason to do this synchronously since no other peer should have this data
+                dispatch_queue_t globalQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+                dispatch_async(globalQueue, ^{
+                    NSError *blockError = nil;
+                    BOOL seedSuccess = [self seedStore:_playeriCloudStore
+                              withPersistentStoreAtURL:[self playerFallbackStoreURL]
+                                                 error:&blockError];
+                    if (seedSuccess) {
+                        if (DEBUG_LOG) {
+                            NSLog(@"Successfully seeded iCloud Store from Fallback Store");
+                        }
+                    } else {
+                        if (DEBUG_LOG) {
+                            NSLog(@"Error seeding iCloud Store from fallback store: %@", error);
+                        }
+                        abort();
+                    }
+                });
+            }
+            [fm release];
+            success = YES;
+        }
+    }
+    return success;
+}
+
+- (void)nukeAndPaveiCloudStore {
+    NSFileCoordinator *fc = [[NSFileCoordinator alloc] initWithFilePresenter:nil];
+    NSError *error = nil;
+    NSFileManager *fm = [NSFileManager defaultManager];
+    NSString *path = [self.ubiquityURL path];
+    NSArray *subPaths = [fm subpathsAtPath:path];
+    for (NSString *subPath in subPaths) {
+        NSString *fullPath = [NSString stringWithFormat:@"%@/%@", path, subPath];
+        [fc coordinateWritingItemAtURL:[NSURL fileURLWithPath:fullPath]
+                               options:NSFileCoordinatorWritingForDeleting
+                                 error:&error
+                            byAccessor:^(NSURL *newURL) {
+                                NSError *blockError = nil;
+                                if ([fm removeItemAtURL:newURL error:&blockError]) {
+                                    if (DEBUG_LOG) {
+                                        NSLog(@"Deleted file: %@", newURL);
+                                    }
+                                } else {
+                                    if (DEBUG_LOG) {
+                                        NSLog(@"Error deleting file: %@\nError: %@", newURL, blockError);
+                                    }
+                                }
+                                
+                            }];
+    }
+    [fc release];
+    fc = nil;
+
 }
 
 - (void)asyncNukeAndPave {

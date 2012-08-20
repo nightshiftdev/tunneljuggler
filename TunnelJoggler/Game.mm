@@ -38,6 +38,11 @@
 
 -(id) init {
     if((self=[super init])) {
+        if (nil == [[GameController sharedController] player]) {
+            
+            abort();
+        }
+        
         [self setupGamePlay];
         
         [self setupWorld];

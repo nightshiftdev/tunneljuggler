@@ -132,7 +132,7 @@
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
-	[[CCDirector sharedDirector] resume];
+    [[CCDirector sharedDirector] resume];
     [[GameController sharedController] applicationResumed];
 }
 
@@ -162,8 +162,6 @@
             }
         }
     }];
-    
-//    [[GameController sharedController] seediCloudToFallback];
     
 	CCDirector *director = [CCDirector sharedDirector];
 	

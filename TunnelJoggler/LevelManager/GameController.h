@@ -28,6 +28,7 @@
     NSLock *_loadingLock;
     NSURL *_presentedItemURL;
     NSURL *_ubiquityURL;
+    BOOL _reloadStoresInProgress;
     id <GameControllerDelegate, NSObject> delegate;
 }
 
@@ -50,6 +51,8 @@
 
 // access
 +(GameController *)sharedController;
+
+- (BOOL) seediCloudToFallback;
 
 /*
  Called by the AppDelegate whenever the application becomes active.
