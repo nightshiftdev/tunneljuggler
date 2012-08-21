@@ -630,8 +630,7 @@
         color4 = ccc4FFromccc4B(redColor);
     }
 
-    float screenFactor = [CCDirector sharedDirector].contentScaleFactor;
-    CCSprite *stripes = [self stripedSpriteWithColor1:color3 color2:color4 textureSize:512 stripes: 4 * screenFactor];
+    CCSprite *stripes = [self stripedSpriteWithColor1:color3 color2:color4 textureSize:512 stripes: 7];
     ccTexParams tp2 = {GL_LINEAR, GL_LINEAR, GL_REPEAT, GL_CLAMP_TO_EDGE};
     [stripes.texture setTexParameters:&tp2];
     terrain_.stripes = stripes;

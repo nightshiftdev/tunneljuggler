@@ -137,7 +137,7 @@
     
     // layer 3: top highlight
     float borderWidth = textureSize/16;
-    float borderAlpha = 0.5f;///screenFactor;
+    float borderAlpha = 0.5f;//screenFactor;
     nVertices = 0;
     
     vertices[nVertices] = CGPointMake(0, 0);
@@ -183,7 +183,8 @@
         color1 = [BackgroundUtils randomBrightColor];
         color2 = [BackgroundUtils randomBrightColor];
     });
-    CCSprite *stripes = [BackgroundUtils stripedSpriteWithColor1:color1 color2:color2 textureSize:512 stripes: 12];
+    float screenFactor = [CCDirector sharedDirector].contentScaleFactor;
+    CCSprite *stripes = [BackgroundUtils stripedSpriteWithColor1:color1 color2:color2 textureSize:512 stripes: 12 * screenFactor];
     ccTexParams tp2 = {GL_LINEAR, GL_LINEAR, GL_REPEAT, GL_CLAMP_TO_EDGE};
     [stripes.texture setTexParameters:&tp2];
     return stripes;

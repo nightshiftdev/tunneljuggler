@@ -131,35 +131,38 @@
                 
                 float y = winSize.height;
                 float screenFactor = [CCDirector sharedDirector].contentScaleFactor;
-                float div = 512;
+                float oppositeDiv = 512;
+                float normalDiv = 512;
                 
                 float textureRotationFactor = 0.5;
                 if (screenFactor == 2.0) {
-                    textureRotationFactor = 0.1;
+                    textureRotationFactor = 1.0;
+                    oppositeDiv = 512;
+                    normalDiv = 1024;
                 }
                 
                 _oppositeHillVertices[_nOppositeHillVertices] = CGPointMake(ot0.x * screenFactor, y * screenFactor);
-                _oppositeHillTexCoords[_nOppositeHillVertices++] = CGPointMake((ot0.y/div)  * screenFactor, textureRotationFactor);
+                _oppositeHillTexCoords[_nOppositeHillVertices++] = CGPointMake((ot0.y/oppositeDiv)  * screenFactor, textureRotationFactor);
                 _oppositeHillVertices[_nOppositeHillVertices] = CGPointMake(ot1.x * screenFactor , y * screenFactor);
-                _oppositeHillTexCoords[_nOppositeHillVertices++] = CGPointMake((ot1.y/div)  * screenFactor, textureRotationFactor);
+                _oppositeHillTexCoords[_nOppositeHillVertices++] = CGPointMake((ot1.y/oppositeDiv)  * screenFactor, textureRotationFactor);
                 
                 _oppositeHillVertices[_nOppositeHillVertices] = CGPointMake((ot0.x * screenFactor), (ot0.y * screenFactor));
-                _oppositeHillTexCoords[_nOppositeHillVertices++] = CGPointMake((ot0.y/div) * screenFactor, 0.0f);
+                _oppositeHillTexCoords[_nOppositeHillVertices++] = CGPointMake((ot0.y/oppositeDiv) * screenFactor, 0.0f);
                 _oppositeHillVertices[_nOppositeHillVertices] = CGPointMake((ot1.x * screenFactor), (ot1.y * screenFactor));
-                _oppositeHillTexCoords[_nOppositeHillVertices++] = CGPointMake((ot1.y/div) * screenFactor, 0.0f);
+                _oppositeHillTexCoords[_nOppositeHillVertices++] = CGPointMake((ot1.y/oppositeDiv) * screenFactor, 0.0f);
 
                 
                 ot0 = ot1;
                 
                 _hillVertices[_nHillVertices] = CGPointMake((pt0.x * screenFactor), 0.0f);
-                _hillTexCoords[_nHillVertices++] = CGPointMake((pt0.x/div) * screenFactor, textureRotationFactor);
+                _hillTexCoords[_nHillVertices++] = CGPointMake((pt0.x/normalDiv) * screenFactor, textureRotationFactor);
                 _hillVertices[_nHillVertices] = CGPointMake((pt1.x * screenFactor), 0.0f);
-                _hillTexCoords[_nHillVertices++] = CGPointMake((pt1.x/div) * screenFactor, textureRotationFactor);
+                _hillTexCoords[_nHillVertices++] = CGPointMake((pt1.x/normalDiv) * screenFactor, textureRotationFactor);
 
                 _hillVertices[_nHillVertices] = CGPointMake((pt0.x * screenFactor), (pt0.y * screenFactor));
-                _hillTexCoords[_nHillVertices++] = CGPointMake((pt0.x/div) * screenFactor, 0.0f);
+                _hillTexCoords[_nHillVertices++] = CGPointMake((pt0.x/normalDiv) * screenFactor, 0.0f);
                 _hillVertices[_nHillVertices] = CGPointMake((pt1.x * screenFactor), (pt1.y * screenFactor));
-                _hillTexCoords[_nHillVertices++] = CGPointMake((pt1.x/div) * screenFactor, 0.0f);                
+                _hillTexCoords[_nHillVertices++] = CGPointMake((pt1.x/normalDiv) * screenFactor, 0.0f);
                 
                 pt0 = pt1;
             }
