@@ -13,10 +13,11 @@
 #import "ProgressHUD.h"
 #import "Game.h"
 #import "SplashScene.h"
+#import "LocalPlayer.h"
 
 NSString * kPlayeriCloudPersistentStoreFilename = @"PlayeriCloudStore.sqlite";
 NSString * kPlayerFallbackPersistentStoreFilename = @"PlayerFallbackStore.sqlite"; //used when iCloud is not available
-NSString * kLevelsLocalStoreFilename = @"LevelsLocalStore.sqlite"; //holds the states information
+NSString * kLevelsLocalStoreFilename = @"LevelsLocalStore.sqlite"; //holds local information
 
 static int gNumberOfLevels = 1;
 static NSOperationQueue *_presentedItemOperationQueue;
@@ -36,6 +37,7 @@ static NSOperationQueue *_presentedItemOperationQueue;
 - (void)addPlayer:(Player *)player toStore:(NSPersistentStore *)store withContext:(NSManagedObjectContext *)moc;
 - (void)addPlayerToStore:(NSPersistentStore *)store withContext:(NSManagedObjectContext *)moc;
 - (BOOL)createLevels;
+- (BOOL)createLocalPlayer;
 - (BOOL)seedStore:(NSPersistentStore *)store withPersistentStoreAtURL:(NSURL *)seedStoreURL error:(NSError * __autoreleasing *)error;
 
 - (void)copyContainerToSandbox;
@@ -53,7 +55,12 @@ static NSOperationQueue *_presentedItemOperationQueue;
 - (void) nukeAndPaveiCloudStore;
 
 
-- (NSString *) UUIDString;
+//- (NSString *) UUIDString;
+- (NSManagedObject *) getRawObjectOrNilWithName: (NSString *) objectName fromStore: (NSPersistentStore *) store;
+- (void) syncLocalPlayerWithPlayerFromStore: (NSPersistentStore *) store;
+- (void) syncPlayerValues: (Player *) p withLocalPlayer: (LocalPlayer *) lp;
+- (void) resetLocalPlayer;
+@property (retain, nonatomic, readonly) LocalPlayer *localPlayer;
 @end
 
 @implementation GameController
@@ -95,6 +102,7 @@ static NSOperationQueue *_presentedItemOperationQueue;
         NSFileManager *fileManager = [NSFileManager defaultManager];
         if ([fileManager respondsToSelector:@selector(ubiquityIdentityToken)]) {
             _currentUbiquityToken = [[NSFileManager defaultManager] ubiquityIdentityToken];
+            NSLog(@"_currentUbiquityToken: %@", _currentUbiquityToken);
         }
         
         //subscribe to the account change notification
@@ -175,6 +183,13 @@ static NSOperationQueue *_presentedItemOperationQueue;
         // update the current ubiquity token
         id token = [[NSFileManager defaultManager] ubiquityIdentityToken];
         _currentUbiquityToken = token;
+//        LocalPlayer *lp = (LocalPlayer *)[self getRawObjectOrNilWithName: @"LocalPlayer" fromStore: _levelsLocalStore];
+//        if ((nil != lp) &&
+//            (NO == [self.currentUbiquityToken isEqual:token])) {
+//            [self resetLocalPlayer];
+//        } else {
+//            [self createLocalPlayer];
+//        }
         
         //reload persistent store
         [self loadPersistentStores];
@@ -196,6 +211,9 @@ static NSOperationQueue *_presentedItemOperationQueue;
             [self asyncLoadPersistentStores];
             if (![self areObjectsWithNamePopulated:@"Level" inStore: _levelsLocalStore]) {
                 [self createLevels];
+            }
+            if (![self areObjectsWithNamePopulated:@"LocalPlayer" inStore: _levelsLocalStore]) {
+                [self createLocalPlayer];
             }
         } @finally {
             if (locked) {
@@ -321,6 +339,8 @@ static NSOperationQueue *_presentedItemOperationQueue;
                 [addPlayerMOC setPersistentStoreCoordinator:_psc];
                 [self addPlayerToStore: _playeriCloudStore withContext: addPlayerMOC];
                 [self deDupe:nil];
+            } else {
+                [self syncLocalPlayerWithPlayerFromStore: _playeriCloudStore];
             }
             
             //check to see if we need to seed or migrate data from the fallback store
@@ -353,7 +373,6 @@ static NSOperationQueue *_presentedItemOperationQueue;
             if (DEBUG_LOG) {
                 NSLog(@"Unable to add iCloud store: %@", error);
             }
-//            useFallbackStore = YES;
         }
     } else {
         useFallbackStore = YES;
@@ -370,6 +389,8 @@ static NSOperationQueue *_presentedItemOperationQueue;
                 NSManagedObjectContext *addPlayerMOC = [[[NSManagedObjectContext alloc] init] autorelease];
                 [addPlayerMOC setPersistentStoreCoordinator:_psc];
                 [self addPlayerToStore: _playerFallbackStore withContext: addPlayerMOC];
+            } else {
+                [self syncLocalPlayerWithPlayerFromStore: _playerFallbackStore];
             }
         } else {
             if (DEBUG_LOG) {
@@ -378,8 +399,61 @@ static NSOperationQueue *_presentedItemOperationQueue;
             abort();
         }
     }
+}
+
+- (NSManagedObject *) getRawObjectOrNilWithName: (NSString *) objectName fromStore: (NSPersistentStore *) store {
+    NSManagedObjectContext *rawObjectMOC = [[[NSManagedObjectContext alloc] init] autorelease];
+    [rawObjectMOC setPersistentStoreCoordinator:_psc];
     
-//    [self deDupe:nil];
+	NSFetchRequest *fetchRequest = [[[NSFetchRequest alloc] init] autorelease];
+    if (store != nil) {
+        [fetchRequest setAffectedStores: [NSArray arrayWithObjects:store, nil]];
+    }
+	NSEntityDescription *entity = [NSEntityDescription entityForName: objectName inManagedObjectContext: rawObjectMOC];
+	[fetchRequest setEntity:entity];
+	NSError *error = nil;
+	NSArray *objects = [rawObjectMOC executeFetchRequest:fetchRequest error:&error];
+	
+    NSManagedObject *object = nil;
+	if ([objects count] > 0) {
+        object = [objects objectAtIndex: 0];
+	}
+    return object;
+}
+
+-(void) assignLocalPlayer:(LocalPlayer *) lp valuesFromPlayer:(Player *) p {
+    lp.score = p.score;
+    lp.experienceLevel = p.experienceLevel;
+    lp.bonusItems = p.bonusItems;
+    lp.name = p.name;
+    lp.currentLevel = p.currentLevel;
+}
+
+-(void) assignPlayer:(Player*) p valuesFromLocalPlayer:(LocalPlayer*) lp {
+    p.score = lp.score;
+    p.experienceLevel = lp.experienceLevel;
+    p.bonusItems = lp.bonusItems;
+    p.name = lp.name;
+    p.currentLevel = lp.currentLevel;
+}
+
+- (void) syncLocalPlayerWithPlayerFromStore: (NSPersistentStore *) store {
+    LocalPlayer *lp = (LocalPlayer *)[self getRawObjectOrNilWithName: @"LocalPlayer" fromStore: _levelsLocalStore];
+    Player *p = (Player *)[self getRawObjectOrNilWithName: @"Player" fromStore: store];
+    
+    NSManagedObjectContext *moc = [[[NSManagedObjectContext alloc] init] autorelease];
+    [moc setPersistentStoreCoordinator:_psc];
+    
+    [self syncPlayerValues: p withLocalPlayer: lp];
+    
+    NSError* error = nil;
+    BOOL success = [moc save:&error];
+    if (!success ||
+        (nil != error)) {
+        if (DEBUG_LOG) {
+            NSLog(@"Failed to sync LocalPlayer");
+        }
+    }
 }
 
 - (BOOL) seediCloudToFallback {
@@ -499,12 +573,23 @@ static NSOperationQueue *_presentedItemOperationQueue;
 }
 
 - (void)addPlayerToStore:(NSPersistentStore *)store withContext:(NSManagedObjectContext *)moc {
+    
+    LocalPlayer *lp = (LocalPlayer *)[self getRawObjectOrNilWithName: @"LocalPlayer" fromStore: _levelsLocalStore];
+    
     Player *defaultPlayer = [NSEntityDescription insertNewObjectForEntityForName:@"Player" inManagedObjectContext: moc];
-    defaultPlayer.currentLevel = [NSNumber numberWithInt: 0];
-    defaultPlayer.name = nil;
-    defaultPlayer.score = [NSNumber numberWithInt: 0];
-    defaultPlayer.experienceLevel = [NSNumber numberWithInt: 0];
-    defaultPlayer.bonusItems = [NSNumber numberWithInt: 0];
+    if (nil != lp) {
+        defaultPlayer.currentLevel = lp.currentLevel;
+        defaultPlayer.name = lp.name;
+        defaultPlayer.score = lp.score;
+        defaultPlayer.experienceLevel = lp.experienceLevel;
+        defaultPlayer.bonusItems = lp.bonusItems;
+    } else {
+        defaultPlayer.currentLevel = [NSNumber numberWithInt: 0];
+        defaultPlayer.name = nil;
+        defaultPlayer.score = [NSNumber numberWithInt: 0];
+        defaultPlayer.experienceLevel = [NSNumber numberWithInt: 0];
+        defaultPlayer.bonusItems = [NSNumber numberWithInt: 0];
+    }
     [moc assignObject:defaultPlayer toPersistentStore:store];
     NSError *error = nil;
     BOOL success = [moc save: &error];
@@ -589,6 +674,65 @@ static NSOperationQueue *_presentedItemOperationQueue;
     return success;
 }
 
+-(BOOL)createLocalPlayer {
+    NSManagedObjectContext *localMOC = [[[NSManagedObjectContext alloc] init] autorelease];
+    [localMOC setPersistentStoreCoordinator:_psc];
+    LocalPlayer *lp = [NSEntityDescription insertNewObjectForEntityForName:@"LocalPlayer" inManagedObjectContext: localMOC];;
+    lp.currentLevel = [NSNumber numberWithInt: 0];
+    lp.name = nil;
+    lp.score = [NSNumber numberWithInt: 0];
+    lp.experienceLevel = [NSNumber numberWithInt: 0];
+    lp.bonusItems = [NSNumber numberWithInt: 0];
+    lp.token = [NSString stringWithFormat:@"%@", [[NSFileManager defaultManager] ubiquityIdentityToken]];
+    [localMOC assignObject:lp toPersistentStore: _levelsLocalStore];
+    
+    NSError *createLocalPlayerError = nil;
+    BOOL success = [localMOC save: &createLocalPlayerError];
+    if (createLocalPlayerError != nil) {
+        if (DEBUG_LOG) {
+            NSLog(@"Error creating levels.");
+        }
+    }
+    [localMOC reset];
+    return success;
+}
+
+-(void)resetLocalPlayer {
+    NSManagedObjectContext *moc = [[[NSManagedObjectContext alloc] init] autorelease];
+    [moc setPersistentStoreCoordinator:_psc];
+    
+    NSFetchRequest *fetchRequest = [[[NSFetchRequest alloc] init] autorelease];
+    [fetchRequest setAffectedStores: [NSArray arrayWithObjects:_levelsLocalStore, nil]];
+    
+    NSEntityDescription *entity = [NSEntityDescription entityForName: @"LocalPlayer" inManagedObjectContext: moc];
+    [fetchRequest setEntity:entity];
+    NSError *error = nil;
+    NSArray *objects = [moc executeFetchRequest:fetchRequest error:&error];
+    
+    LocalPlayer *lp = nil;
+    if ([objects count] > 0) {
+        lp = [objects objectAtIndex: 0];
+        lp.currentLevel = [NSNumber numberWithInt: 0];
+        lp.name = nil;
+        lp.score = [NSNumber numberWithInt: 0];
+        lp.experienceLevel = [NSNumber numberWithInt: 0];
+        lp.bonusItems = [NSNumber numberWithInt: 0];
+        lp.token = [NSString stringWithFormat:@"%@", [[NSFileManager defaultManager] ubiquityIdentityToken]];
+        NSError *saveError = nil;
+        BOOL success = [moc save: &saveError];
+        if (!success ||
+            saveError != nil) {
+            if (DEBUG_LOG) {
+                NSLog(@"Could not reset local player.");
+            }
+        }
+    } else {
+        if (DEBUG_LOG) {
+            NSLog(@"No local player to reset.");
+        }
+    }
+}
+
 #pragma mark -
 #pragma mark Misc.
 
@@ -670,16 +814,16 @@ static NSOperationQueue *_presentedItemOperationQueue;
     return [NSURL fileURLWithPath:storeURL];
 }
 
-- (NSString *) UUIDString {
-    NSString *uuid = nil;
-    CFUUIDRef theUUID = CFUUIDCreate(kCFAllocatorDefault);
-    if (theUUID) {
-        uuid = NSMakeCollectable(CFUUIDCreateString(kCFAllocatorDefault, theUUID));
-        [uuid autorelease];
-        CFRelease(theUUID);
-    }
-    return uuid;
-}
+//- (NSString *) UUIDString {
+//    NSString *uuid = nil;
+//    CFUUIDRef theUUID = CFUUIDCreate(kCFAllocatorDefault);
+//    if (theUUID) {
+//        uuid = NSMakeCollectable(CFUUIDCreateString(kCFAllocatorDefault, theUUID));
+//        [uuid autorelease];
+//        CFRelease(theUUID);
+//    }
+//    return uuid;
+//}
 
 #pragma mark -
 #pragma mark Application Lifecycle - Uniquing
@@ -774,7 +918,74 @@ static NSOperationQueue *_presentedItemOperationQueue;
     return fetchedLevel;
 }
 
--(Player *)player {
+- (LocalPlayer*)localPlayer {
+    NSFetchRequest *fetchRequest = [[[NSFetchRequest alloc] init] autorelease];
+    NSEntityDescription *entity = [NSEntityDescription entityForName: @"LocalPlayer" inManagedObjectContext: _mainThreadContext];
+    [fetchRequest setEntity:entity];
+    NSError *error = nil;
+    NSArray *fetchedLocalPlayers = [_mainThreadContext executeFetchRequest:fetchRequest error:&error];
+    if ([fetchedLocalPlayers count] > 1) {
+        if (DEBUG_LOG) {
+            NSLog(@"WARNING: Expected only one local player, but has %d", [fetchedLocalPlayers count]);
+            int index = 0;
+            for (LocalPlayer *lp in fetchedLocalPlayers) {
+                NSLog(@"======%d======", index);
+                NSLog(@"LocalPlayer experienceLevel %d", [lp.experienceLevel intValue]);
+                NSLog(@"LocalPlayer score %d", [lp.score integerValue]);
+                NSLog(@"==============");
+                index++;
+            }
+        }
+    }
+    LocalPlayer *resultLocalPlayer = nil;
+    if ([fetchedLocalPlayers count] > 0) {
+        resultLocalPlayer = [fetchedLocalPlayers objectAtIndex: 0];
+        [_mainThreadContext refreshObject: resultLocalPlayer mergeChanges: YES];
+        if (DEBUG_LOG && (resultLocalPlayer != nil)) {
+            NSLog(@"Current player");
+            NSLog(@"==============");
+            NSLog(@"Player experienceLevel %d", [resultLocalPlayer.experienceLevel intValue]);
+            NSLog(@"Player score %d", [resultLocalPlayer.score integerValue]);
+            NSLog(@"==============");
+        }
+    } else {
+        NSLog(@"WARNING: Does not have any players stored");
+    }
+    return resultLocalPlayer;
+}
+
+- (void) syncPlayerValues: (Player *) p withLocalPlayer: (LocalPlayer *) lp {
+    if ((nil != lp) &&
+        (nil != p)) {
+        if (DEBUG_LOG) {
+            NSLog(@"Before sync");
+            NSLog(@"LocalPlayer score: %d", [lp.score intValue]);
+            NSLog(@"LocalPlayer expirenceLevel: %d", [lp.experienceLevel intValue]);
+            NSLog(@"Player score: %d", [p.score intValue]);
+            NSLog(@"Player expirenceLevel: %d", [p.experienceLevel intValue]);
+        }
+        if ([lp.experienceLevel intValue] > [p.experienceLevel intValue]) {
+            [self assignPlayer: p valuesFromLocalPlayer: lp];
+        } else if ([lp.experienceLevel intValue] == [p.experienceLevel intValue]) {
+            if([lp.score intValue] > [p.score intValue]) {
+                [self assignPlayer: p valuesFromLocalPlayer: lp];
+            } else {
+                [self assignLocalPlayer: lp valuesFromPlayer: p];
+            }
+        } else {
+            [self assignLocalPlayer: lp valuesFromPlayer: p];
+        }
+        if (DEBUG_LOG) {
+            NSLog(@"After sync");
+            NSLog(@"LocalPlayer score: %d", [lp.score intValue]);
+            NSLog(@"LocalPlayer expirenceLevel: %d", [lp.experienceLevel intValue]);
+            NSLog(@"Player score: %d", [p.score intValue]);
+            NSLog(@"Player expirenceLevel: %d", [p.experienceLevel intValue]);
+        }
+    }
+}
+
+-(Player *)player {    
     NSFetchRequest *fetchRequest = [[[NSFetchRequest alloc] init] autorelease];
     NSEntityDescription *entity = [NSEntityDescription entityForName: @"Player" inManagedObjectContext: _mainThreadContext];
     [fetchRequest setEntity:entity];
@@ -792,13 +1003,17 @@ static NSOperationQueue *_presentedItemOperationQueue;
                 index++;
             }
         }
-//        [self deDupe:nil];
+        // deDupe & refetch players
+        [self deDupe: nil];
+        fetchedPlayers = [_mainThreadContext executeFetchRequest: fetchRequest error: &error];
     }
     Player *p = nil;
     if ([fetchedPlayers count] > 0) {
+        LocalPlayer *lp = self.localPlayer;
         p = [fetchedPlayers objectAtIndex: 0];
         [_mainThreadContext refreshObject: p mergeChanges: YES];
-        if (DEBUG_LOG && p != nil) {
+        [self syncPlayerValues: p withLocalPlayer: lp];
+        if (DEBUG_LOG && (p != nil)) {
             NSLog(@"Current player");
             NSLog(@"==============");
             NSLog(@"Player experienceLevel %d", [p.experienceLevel intValue]);
@@ -812,6 +1027,13 @@ static NSOperationQueue *_presentedItemOperationQueue;
 }
 
 -(void)setPlayer:(Player *)playerToBeSaved {
+    // fetch local player
+    LocalPlayer *lp = self.localPlayer;
+    
+    // transfer values to local player
+    [self syncPlayerValues: playerToBeSaved withLocalPlayer: lp];
+    
+    // save both local and iCloud/fallback player
     if (DEBUG_LOG) {
         NSLog(@"Saving player.");
         NSLog(@"==============");
@@ -822,21 +1044,12 @@ static NSOperationQueue *_presentedItemOperationQueue;
     if ([playerToBeSaved.score intValue] > self.gameCenterPlayerBestScore) {
         [[GameCenterManager sharedManager] reportScore: [playerToBeSaved.score intValue] forCategory: kTunnelJugglerLeaderboardID];
     }
-//    NSPersistentStore *store = nil;
-//    if ([self isiCloudAvailable]) {
-//        store = _playeriCloudStore;
-//    } else {
-//        store = _playerFallbackStore;
-//    }
-//    [self addPlayer: playerToBeSaved toStore: store withContext: _mainThreadContext];
     NSError *error = nil;
     BOOL success = [_mainThreadContext save: &error];
     if (error || !success) {
         if (DEBUG_LOG) {
             NSLog(@"Could not save player data.");
         }
-    } else {
-//      [self deDupe:nil];
     }
 }
 

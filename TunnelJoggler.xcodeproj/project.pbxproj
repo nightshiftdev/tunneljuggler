@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E50121F015E2FC3E002E17B0 /* LocalPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = E50121EF15E2FC3E002E17B0 /* LocalPlayer.m */; };
 		E5342BD915DA82B800863A06 /* TunnelJoggler.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = E5342BD815DA82B700863A06 /* TunnelJoggler.entitlements */; };
 		E5342BEC15DBDFF600863A06 /* SplashScene.mm in Sources */ = {isa = PBXBuildFile; fileRef = E5342BEB15DBDFF600863A06 /* SplashScene.mm */; };
 		E5342BEE15DBE70000863A06 /* background-music.MP3 in Resources */ = {isa = PBXBuildFile; fileRef = E5342BED15DBE70000863A06 /* background-music.MP3 */; };
@@ -203,6 +204,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		E50121EE15E2FC3E002E17B0 /* LocalPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LocalPlayer.h; path = LevelManager/LocalPlayer.h; sourceTree = "<group>"; };
+		E50121EF15E2FC3E002E17B0 /* LocalPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LocalPlayer.m; path = LevelManager/LocalPlayer.m; sourceTree = "<group>"; };
 		E5342BD815DA82B700863A06 /* TunnelJoggler.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = TunnelJoggler.entitlements; sourceTree = "<group>"; };
 		E5342BEA15DBDFF600863A06 /* SplashScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SplashScene.h; sourceTree = "<group>"; };
 		E5342BEB15DBDFF600863A06 /* SplashScene.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SplashScene.mm; sourceTree = "<group>"; };
@@ -1058,6 +1061,8 @@
 				E5879B6615DD3B85007BBD33 /* Player.h */,
 				E5879B6715DD3B85007BBD33 /* Player.m */,
 				E5879B6315DD3B85007BBD33 /* Level.m */,
+				E50121EE15E2FC3E002E17B0 /* LocalPlayer.h */,
+				E50121EF15E2FC3E002E17B0 /* LocalPlayer.m */,
 				E5B3A14915BD73D400667F70 /* GameData.xcdatamodeld */,
 			);
 			name = LevelManager;
@@ -1327,6 +1332,7 @@
 				E5342BEC15DBDFF600863A06 /* SplashScene.mm in Sources */,
 				E5879B6415DD3B85007BBD33 /* Level.m in Sources */,
 				E5879B6815DD3B85007BBD33 /* Player.m in Sources */,
+				E50121F015E2FC3E002E17B0 /* LocalPlayer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
