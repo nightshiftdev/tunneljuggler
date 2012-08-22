@@ -101,7 +101,7 @@ static NSOperationQueue *_presentedItemOperationQueue;
         
         NSFileManager *fileManager = [NSFileManager defaultManager];
         if ([fileManager respondsToSelector:@selector(ubiquityIdentityToken)]) {
-            _currentUbiquityToken = [[NSFileManager defaultManager] ubiquityIdentityToken];
+            _currentUbiquityToken = [fileManager ubiquityIdentityToken];
             NSLog(@"_currentUbiquityToken: %@", _currentUbiquityToken);
         }
         
@@ -164,7 +164,11 @@ static NSOperationQueue *_presentedItemOperationQueue;
 }
 
 - (void)applicationResumed {
-    id token = [[NSFileManager defaultManager] ubiquityIdentityToken];
+    id token = nil;
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    if ([fileManager respondsToSelector:@selector(ubiquityIdentityToken)]) {
+        token = [fileManager ubiquityIdentityToken];
+    }
     if (token != nil &&
         self.currentUbiquityToken != token) {
         if (NO == [self.currentUbiquityToken isEqual:token]) {
@@ -683,7 +687,13 @@ static NSOperationQueue *_presentedItemOperationQueue;
     lp.score = [NSNumber numberWithInt: 0];
     lp.experienceLevel = [NSNumber numberWithInt: 0];
     lp.bonusItems = [NSNumber numberWithInt: 0];
-    lp.token = [NSString stringWithFormat:@"%@", [[NSFileManager defaultManager] ubiquityIdentityToken]];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    if ([fileManager respondsToSelector:@selector(ubiquityIdentityToken)]) {
+        lp.token = [NSString stringWithFormat:@"%@", [fileManager ubiquityIdentityToken]];
+    } else {
+        lp.token = @"";
+    }
+
     [localMOC assignObject:lp toPersistentStore: _levelsLocalStore];
     
     NSError *createLocalPlayerError = nil;
