@@ -26,6 +26,11 @@
 
 - (id)initWithWorld:(b2World *)world terrainLength:(int)terrainLength {
     if ((self = [super init])) {
+        _hillSegmentWidth = 5;
+        if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+            _hillSegmentWidth = 8;
+        }
+        
         _hillKeyPoints = [[NSMutableArray alloc] init];
         self.maxHillKeyPoints = terrainLength + 1;
         _world = world;
@@ -108,7 +113,7 @@
 //            NSLog(@"p1.x %f, p1.y %f", p1.x, p1.y);
 //            NSLog(@"o1.x %f, o1.y %f", o1.x, o1.y);
             // triangle strip between p0 and p1
-            int hSegments = floorf((o1.x-o0.x)/kHillSegmentWidth);
+            int hSegments = floorf((o1.x-o0.x)/_hillSegmentWidth);
             float dxOp = (o1.x - o0.x) / hSegments;
             float daOp = M_PI / hSegments;
             float dx = (p1.x - p0.x) / hSegments;

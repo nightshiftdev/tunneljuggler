@@ -58,9 +58,10 @@
     
     glEnableClientState(GL_TEXTURE_COORD_ARRAY);
     glEnable(GL_TEXTURE_2D);
-    
+        
     CCSprite *noise = [CCSprite spriteWithFile:@"Noise.png"];
-    if (/*IPAD ||*/ [CCDirector sharedDirector].contentScaleFactor == 2) {
+    if (([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) ||
+        [CCDirector sharedDirector].contentScaleFactor == 2) {
         noise = [CCSprite spriteWithFile:@"Noise_iPad.png"];
     }
     [noise setBlendFunc:(ccBlendFunc){GL_DST_COLOR, GL_ZERO}];
@@ -161,7 +162,8 @@
     
     // Layer 2: Noise    
     CCSprite *noise = [CCSprite spriteWithFile:@"Noise.png"];
-    if (/*IPAD ||*/ [CCDirector sharedDirector].contentScaleFactor == 2) {
+    if (([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) ||
+        [CCDirector sharedDirector].contentScaleFactor == 2) {
         noise = [CCSprite spriteWithFile:@"Noise_iPad.png"];
     }
     [noise setBlendFunc:(ccBlendFunc){GL_DST_COLOR, GL_ZERO}];
@@ -184,7 +186,11 @@
         color2 = [BackgroundUtils randomBrightColor];
     });
     float screenFactor = [CCDirector sharedDirector].contentScaleFactor;
-    CCSprite *stripes = [BackgroundUtils stripedSpriteWithColor1:color1 color2:color2 textureSize:512 stripes: 12 * screenFactor];
+    float textureSize = 512;
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+        textureSize = 1024;
+    }
+    CCSprite *stripes = [BackgroundUtils stripedSpriteWithColor1:color1 color2:color2 textureSize:textureSize stripes: 12 * screenFactor];
     ccTexParams tp2 = {GL_LINEAR, GL_LINEAR, GL_REPEAT, GL_CLAMP_TO_EDGE};
     [stripes.texture setTexParameters:&tp2];
     return stripes;

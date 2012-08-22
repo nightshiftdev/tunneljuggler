@@ -43,6 +43,11 @@
             abort();
         }
         
+        _paddleScreenPosOffset = 30.0;
+        if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+            _paddleScreenPosOffset = 240.0;
+        }
+        
         [self setupGamePlay];
         
         [self setupWorld];
@@ -50,7 +55,7 @@
         obstacles_ = [[NSMutableArray alloc] init];
         ballBullets_ = [[NSMutableArray alloc] init];
         // TODO: renable terrain length when iCloud works OK
-        terrain_ = [[Terrain alloc] initWithWorld:world_ terrainLength:25/*[self.currentLevel.length integerValue]*/];
+        terrain_ = [[Terrain alloc] initWithWorld:world_ terrainLength:[self.currentLevel.length integerValue]];
         terrain_.terrainObserver = self;
         paddle_ = [[[Paddle alloc] initWithWorld:world_] autorelease];
         
@@ -229,7 +234,7 @@
     for (int index = 0; index < [ballBullets_ count]; index++) {
         BallBullet *bb = [ballBullets_ objectAtIndex: index];
         float bulletXPos = bb.body->GetPosition().x * PTM_RATIO;
-        if (bulletXPos >= paddle_.position.x - (4*PADDLE_SCREEN_POS_OFFSET)) {
+        if (bulletXPos >= paddle_.position.x - (4*_paddleScreenPosOffset)) {
             [bb update: dt];
         } else {
             [bb resetEmitter];
@@ -245,7 +250,7 @@
     for (int index = 0; index < [obstacles_ count]; index++) {
         Obstacle *o = [obstacles_ objectAtIndex: index];
         float obstacleXPos = o.body->GetPosition().x * PTM_RATIO;
-        if (obstacleXPos >= paddle_.position.x - (4*PADDLE_SCREEN_POS_OFFSET)) {
+        if (obstacleXPos >= paddle_.position.x - (4*_paddleScreenPosOffset)) {
             [o update:dt];
         } else {
             CCSprite *sprite = (CCSprite *)o.body->GetUserData();
@@ -257,7 +262,7 @@
     }
     
     
-    float offset = paddle_.position.x - paddle_.contentSize.height - PADDLE_SCREEN_POS_OFFSET;
+    float offset = paddle_.position.x - paddle_.contentSize.height - _paddleScreenPosOffset;
     if (offset < 0) {
         offset = 0;
         offset += 1;
@@ -455,7 +460,8 @@
     glEnable(GL_TEXTURE_2D);
     
     CCSprite *noise = [CCSprite spriteWithFile:@"Noise.png"];
-    if (IPAD || [CCDirector sharedDirector].contentScaleFactor == 2) {
+    if (([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) ||
+        [CCDirector sharedDirector].contentScaleFactor == 2) {
         noise = [CCSprite spriteWithFile:@"Noise_iPad.png"];
     }
     [noise setBlendFunc:(ccBlendFunc){GL_DST_COLOR, GL_ZERO}];
@@ -556,7 +562,8 @@
     
     // Layer 2: Noise    
     CCSprite *noise = [CCSprite spriteWithFile:@"Noise.png"];
-    if (IPAD || [CCDirector sharedDirector].contentScaleFactor == 2) {
+    if (([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) ||
+        [CCDirector sharedDirector].contentScaleFactor == 2) {
         noise = [CCSprite spriteWithFile:@"Noise_iPad.png"];
     }
     [noise setBlendFunc:(ccBlendFunc){GL_DST_COLOR, GL_ZERO}];
@@ -600,7 +607,7 @@
     }
     
     float textureSize = 512;
-    if (IPAD) {
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
         textureSize = 1024;
     }
     

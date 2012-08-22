@@ -10,17 +10,8 @@
 #import "GLES-Render.h"
 #import "TerrainObserver.h"
 
-#define IPAD NO
-//#define IPAD_SCREEN
-
-
 // controls the length of the level
 #define kDefaultMaxHillKeyPoints 300
-//#ifdef IPAD_SCREEN
-//#define kHillSegmentWidth 8
-//#else
-#define kHillSegmentWidth 5
-//#endif
 
 #define kMaxHillVertices 800
 #define kMaxBorderVertices 800
@@ -47,6 +38,7 @@
     int _nBorderVertices;
     int _nOppositeBorderVertices;
     NSMutableArray *_hillKeyPoints;
+    int _hillSegmentWidth;
 }
 
 @property (retain) CCSprite * stripes;
