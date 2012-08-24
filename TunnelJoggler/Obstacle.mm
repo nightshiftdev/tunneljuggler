@@ -41,7 +41,12 @@
 }
 
 - (id)initWithWorld:(b2World *)world position: (CGPoint) position game: (Game *) g {
-    if ((self = [super initWithSpriteFrameName:@"Block.png"])) {
+    int iconIndex = arc4random() % 2;
+    NSString *blockGraphicName =  [NSString stringWithFormat:@"block-%d.png", iconIndex];
+    if (([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)) {
+        blockGraphicName = [NSString stringWithFormat:@"block-%d_ipad.png", iconIndex];
+    }
+    if ((self = [super initWithSpriteFrameName:blockGraphicName])) {
         self.game = g;
         self.isMoving = NO;
         self.horizontalForce = 0.0;
@@ -82,7 +87,11 @@
 - (void)explode {
     self.emitter = [CCParticleExplosion node];
 	[self.game addChild: emitter z:1];
-    self.emitter.scale = 0.5;
+    float scale = 0.5;
+    if (([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)) {
+        scale = 1.0;
+    }
+    self.emitter.scale = scale;
     self.emitter.positionType = kCCPositionTypeRelative;
     float x = self.position.x + self.game.terrain.position.x;
     self.emitter.life = 0.1;

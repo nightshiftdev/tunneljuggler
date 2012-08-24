@@ -30,7 +30,11 @@
     // Create shape definition and add to body
     b2FixtureDef ballBulletShapeDef;
     ballBulletShapeDef.shape = &ballBulletShape;
-    ballBulletShapeDef.density = 0.5f;
+    float density = 0.5;
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+        density = 0.25;
+    }
+    ballBulletShapeDef.density = density;
     ballBulletShapeDef.friction = 0.1f;
     ballBulletShapeDef.restitution = 1.0f;
     body_->CreateFixture(&ballBulletShapeDef);
@@ -43,7 +47,12 @@
 }
 
 - (id)initWithWorld:(b2World *)world position: (CGPoint) position game: (Game *) g {
-    if ((self = [super initWithSpriteFrameName:@"Ball.png"])) {
+    int iconIndex = arc4random() % 3;
+    NSString *ballGraphicName =  [NSString stringWithFormat:@"ball-%d.png", iconIndex];
+    if (([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)) {
+        ballGraphicName = [NSString stringWithFormat:@"ball-%d_ipad.png", iconIndex];
+    }
+    if ((self = [super initWithSpriteFrameName:ballGraphicName])) {
         self.game = g;
         world_ = world;
         [self createBodyAtPosition:position];

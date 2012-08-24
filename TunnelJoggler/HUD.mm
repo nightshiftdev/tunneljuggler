@@ -160,7 +160,11 @@
     id moveRight = [CCMoveBy actionWithDuration:1.0 position:CGPointMake(0, -50.0)];
     id moveLeft = [CCMoveBy actionWithDuration:2.0 position:CGPointMake(0, 100.0)];
     id seq = [CCSequence actions:moveRight, moveLeft, moveRight, nil];
-	CCMenuItem *item0 = [SoundMenuItem itemFromNormalSpriteFrameName:@"finger.png" selectedSpriteFrameName:@"finger.png" target:nil selector:nil];
+    NSString *fingerGraphicName =  @"finger.png";
+    if (([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)) {
+        fingerGraphicName = @"finger_ipad.png";
+    }
+	CCMenuItem *item0 = [SoundMenuItem itemFromNormalSpriteFrameName:fingerGraphicName selectedSpriteFrameName:fingerGraphicName target:nil selector:nil];
     item0.isEnabled = NO;
 	menu_ = [CCMenu menuWithItems:item0, nil];
     [item0 runAction:[CCRepeatForever actionWithAction:seq]];

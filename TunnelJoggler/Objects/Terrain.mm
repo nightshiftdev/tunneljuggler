@@ -28,7 +28,7 @@
     if ((self = [super init])) {
         _hillSegmentWidth = 5;
         if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-            _hillSegmentWidth = 8;
+            _hillSegmentWidth = 7;
         }
         
         _hillKeyPoints = [[NSMutableArray alloc] init];

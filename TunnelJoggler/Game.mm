@@ -45,7 +45,7 @@
         
         _paddleScreenPosOffset = 30.0;
         if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-            _paddleScreenPosOffset = 240.0;
+            _paddleScreenPosOffset = 120.0;
         }
         
         [self setupGamePlay];
@@ -157,7 +157,11 @@
     CGSize winSize = [CCDirector sharedDirector].winSize;
     if ((addObstacleInterval_ -= dt) < 0) {
         addObstacleInterval_ = [self.currentLevel.obstacleFrequency floatValue];
-        float randomizeObstaclePos = arc4random() % 100;
+        int randomFactor = 100;
+        if (([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)) {
+            randomFactor = 200;
+        }
+        float randomizeObstaclePos = arc4random() % randomFactor;
         if ([self randomize]) {
             randomizeObstaclePos *= -1;
         }
@@ -195,7 +199,11 @@
 - (void) addNextBounusBall:(ccTime)dt {
     CGSize winSize = [CCDirector sharedDirector].winSize;
     if ((addBonusBallInterval_ -= dt) < 0) {
-        float randomizeBulletPos = arc4random() % 100;
+        int randomFactor = 100;
+        if (([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)) {
+            randomFactor = 200;
+        }
+        float randomizeBulletPos = arc4random() % randomFactor;
         if ([self randomize]) {
             randomizeBulletPos *= -1;
         }
@@ -637,7 +645,12 @@
         color4 = ccc4FFromccc4B(redColor);
     }
 
-    CCSprite *stripes = [self stripedSpriteWithColor1:color3 color2:color4 textureSize:512 stripes: 7];
+    int numberOfStripes = 7;
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+        numberOfStripes = 14;
+    }
+    
+    CCSprite *stripes = [self stripedSpriteWithColor1:color3 color2:color4 textureSize:512 stripes: numberOfStripes];
     ccTexParams tp2 = {GL_LINEAR, GL_LINEAR, GL_REPEAT, GL_CLAMP_TO_EDGE};
     [stripes.texture setTexParameters:&tp2];
     terrain_.stripes = stripes;

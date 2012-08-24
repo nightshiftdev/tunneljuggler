@@ -31,7 +31,11 @@
 		
 		CGSize s = [[CCDirector sharedDirector] winSize];
 		CCSprite *background = [BackgroundUtils genBackground];
-		background.position = ccp(s.width/2, s.height/2);
+        if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+            background.position = ccp(512, 384);
+        } else {
+            background.position = ccp(s.width/2, s.height/2);
+        }
 		[self addChild:background z:-10];
         
         id rotate = [CCRotateBy actionWithDuration:3.0f angle:360.0f];
@@ -41,7 +45,11 @@
 		CCMenuItem *gameLoadingItem = [SoundMenuItem itemFromNormalSpriteFrameName:@"umbrella.png" selectedSpriteFrameName:@"umbrella.png" target:nil selector:nil];
         gameLoadingItem.isEnabled = NO;
 		CCMenu *menuGameLoading = [CCMenu menuWithItems: gameLoadingItem, nil];
-		menuGameLoading.position = ccp(s.width/2, s.height/2);
+        if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+            menuGameLoading.position = ccp(512, 384);
+        } else {
+            menuGameLoading.position = ccp(s.width/2, s.height/2);
+        }
         [gameLoadingItem runAction:[CCRepeatForever actionWithAction:seq]];
 		[self addChild:menuGameLoading];
         

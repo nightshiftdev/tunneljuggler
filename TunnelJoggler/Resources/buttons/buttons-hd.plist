@@ -33,7 +33,7 @@
             <key>btn-pause-normal.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{950,108},{58,104}}</string>
+                <string>{{950,278},{58,104}}</string>
                 <key>offset</key>
                 <string>{-1,0}</string>
                 <key>rotated</key>
@@ -46,7 +46,7 @@
             <key>btn-pause-selected.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{950,2},{58,104}}</string>
+                <string>{{950,172},{58,104}}</string>
                 <key>offset</key>
                 <string>{-1,0}</string>
                 <key>rotated</key>
@@ -59,11 +59,11 @@
             <key>btn-play-normal.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{614,682},{138,306}}</string>
+                <string>{{607,724},{138,306}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
                 <string>{{1,1},{138,306}}</string>
                 <key>sourceSize</key>
@@ -72,11 +72,11 @@
             <key>btn-play-selected.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{474,682},{138,306}}</string>
+                <string>{{607,584},{138,306}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
                 <string>{{1,1},{138,306}}</string>
                 <key>sourceSize</key>
@@ -137,20 +137,33 @@
             <key>finger.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{928,452},{127,79}}</string>
+                <string>{{950,2},{168,66}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
                 <true/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{127,79}}</string>
+                <string>{{0,0},{168,66}}</string>
                 <key>sourceSize</key>
-                <string>{127,79}</string>
+                <string>{168,66}</string>
+            </dict>
+            <key>finger_ipad.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{474,584},{335,131}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <true/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{335,131}}</string>
+                <key>sourceSize</key>
+                <string>{335,131}</string>
             </dict>
             <key>hero-gamecenter.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{928,362},{88,88}}</string>
+                <string>{{928,384},{88,88}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -189,11 +202,11 @@
             <key>player-picture-default.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{740,538},{149,142}}</string>
+                <string>{{607,864},{149,142}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
                 <string>{{0,0},{149,142}}</string>
                 <key>sourceSize</key>
@@ -235,7 +248,7 @@
             <key>size</key>
             <string>{1024,1024}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:f7ef2142c9b478bd31c097163f187de3$</string>
+            <string>$TexturePacker:SmartUpdate:d827d50417bbae809fccab20754f1ae0$</string>
             <key>textureFileName</key>
             <string>buttons-hd.png</string>
         </dict>

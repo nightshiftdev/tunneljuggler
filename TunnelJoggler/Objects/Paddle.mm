@@ -54,7 +54,11 @@
 }
 
 - (id)initWithWorld:(b2World *)world {
-    if ((self = [super initWithSpriteFrameName:@"Paddle.png"])) {
+    NSString *paddleGraphicName = @"paddle-1.png";
+    if (([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)) {
+        paddleGraphicName = @"paddle-1_ipad.png";
+    }
+    if ((self = [super initWithSpriteFrameName: paddleGraphicName])) {
         world_ = world;
         [self createBody];
     }
