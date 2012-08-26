@@ -307,9 +307,4 @@
     [[CCDirector sharedDirector] replaceScene:[CCTransitionFade transitionWithDuration:0.1f scene:[ChallengeScene scene]]];
 }
 
--(void)dealloc {
-    self.currentLevel = nil;
-    [super dealloc];
-}
-
 @end

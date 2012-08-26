@@ -207,7 +207,7 @@
         }
         
         // Run the intro Scene
-        [[CCDirector sharedDirector] replaceScene: (CCScene *)scene];
+        [[CCDirector sharedDirector] replaceScene:[CCTransitionFade transitionWithDuration:0.1f scene:(CCScene *)scene]];
     } else {
         abort();
     }

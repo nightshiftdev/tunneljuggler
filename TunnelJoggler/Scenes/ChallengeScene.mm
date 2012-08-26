@@ -95,11 +95,4 @@
     }
     return NO;
 }
-
-- (void)dealloc
-{
-    self.currentLevel = nil;
-    [super dealloc];
-}
-
 @end

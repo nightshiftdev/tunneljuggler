@@ -23,7 +23,6 @@
 }
 
 @property (assign, nonatomic, readonly) BOOL isShowingHowToPlay;
-@property (assign, nonatomic, readonly) BOOL isShowingTimeChallenge;
 
 +(id) HUDWithGameNode:(Game*)game;
 -(id) initWithGameNode:(Game*)game;
