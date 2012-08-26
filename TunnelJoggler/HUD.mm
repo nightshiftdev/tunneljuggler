@@ -13,6 +13,7 @@
 #import "GameController.h"
 #import "GameCenterManager.h"
 #import "Level.h"
+#import "ChallengeScene.h"
 
 @interface HUD()
 @property (nonatomic, assign) BOOL isGameOver;
@@ -303,7 +304,7 @@
 		[[CCDirector sharedDirector] resume];
 	}
     [self advancePlayerToNextLevel];
-    [[CCDirector sharedDirector] replaceScene: [CCTransitionFade transitionWithDuration:0.1f scene:[[game_ class] scene]]];
+    [[CCDirector sharedDirector] replaceScene:[CCTransitionFade transitionWithDuration:0.1f scene:[ChallengeScene scene]]];
 }
 
 -(void)dealloc {

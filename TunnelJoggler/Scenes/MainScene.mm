@@ -13,6 +13,7 @@
 #import "SimpleAudioEngine.h"
 #import "GameController.h"
 #import "BackgroundUtils.h"
+#import "ChallengeScene.h"
 
 @interface MainScene()
 - (void) setUserPictureForNormalState: (CCSprite *) normalStateSprite selectedState: (CCSprite *) selectedStateSprite;
@@ -125,7 +126,7 @@
 }
 
 -(void) playGame:(id)sender {
-	[[CCDirector sharedDirector] replaceScene:[CCTransitionFade transitionWithDuration:0.1f scene:[Game scene]]];
+    [[CCDirector sharedDirector] replaceScene:[CCTransitionFade transitionWithDuration:0.1f scene:[ChallengeScene scene]]];
 }
 
 -(void)reloadGameData:(id)sender {

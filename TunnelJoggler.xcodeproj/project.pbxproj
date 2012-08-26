@@ -11,6 +11,7 @@
 		E50121F715E6B292002E17B0 /* Noise_iPad-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E50121F515E6B292002E17B0 /* Noise_iPad-hd.png */; };
 		E50121F815E6B292002E17B0 /* Noise-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E50121F615E6B292002E17B0 /* Noise-hd.png */; };
 		E50121FE15E7F78D002E17B0 /* Level.m in Sources */ = {isa = PBXBuildFile; fileRef = E50121FD15E7F78D002E17B0 /* Level.m */; };
+		E501220115EA8A43002E17B0 /* ChallengeScene.mm in Sources */ = {isa = PBXBuildFile; fileRef = E501220015EA8A43002E17B0 /* ChallengeScene.mm */; };
 		E5342BD915DA82B800863A06 /* TunnelJoggler.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = E5342BD815DA82B700863A06 /* TunnelJoggler.entitlements */; };
 		E5342BEC15DBDFF600863A06 /* SplashScene.mm in Sources */ = {isa = PBXBuildFile; fileRef = E5342BEB15DBDFF600863A06 /* SplashScene.mm */; };
 		E5342BEE15DBE70000863A06 /* background-music.MP3 in Resources */ = {isa = PBXBuildFile; fileRef = E5342BED15DBE70000863A06 /* background-music.MP3 */; };
@@ -209,6 +210,8 @@
 		E50121F615E6B292002E17B0 /* Noise-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Noise-hd.png"; path = "Resources/Noise-hd.png"; sourceTree = "<group>"; };
 		E50121FC15E7F78D002E17B0 /* Level.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Level.h; path = LevelManager/Level.h; sourceTree = "<group>"; };
 		E50121FD15E7F78D002E17B0 /* Level.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Level.m; path = LevelManager/Level.m; sourceTree = "<group>"; };
+		E50121FF15EA8A42002E17B0 /* ChallengeScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChallengeScene.h; sourceTree = "<group>"; };
+		E501220015EA8A43002E17B0 /* ChallengeScene.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ChallengeScene.mm; sourceTree = "<group>"; };
 		E5342BD815DA82B700863A06 /* TunnelJoggler.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = TunnelJoggler.entitlements; sourceTree = "<group>"; };
 		E5342BEA15DBDFF600863A06 /* SplashScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SplashScene.h; sourceTree = "<group>"; };
 		E5342BEB15DBDFF600863A06 /* SplashScene.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SplashScene.mm; sourceTree = "<group>"; };
@@ -1064,6 +1067,8 @@
 		E5AD298E15BED2D100A43904 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				E50121FF15EA8A42002E17B0 /* ChallengeScene.h */,
+				E501220015EA8A43002E17B0 /* ChallengeScene.mm */,
 				E5342BEA15DBDFF600863A06 /* SplashScene.h */,
 				E5342BEB15DBDFF600863A06 /* SplashScene.mm */,
 				E5AD298F15BED2D100A43904 /* MainScene.h */,
@@ -1325,6 +1330,7 @@
 				E5879B6815DD3B85007BBD33 /* Player.m in Sources */,
 				E50121F015E2FC3E002E17B0 /* LocalPlayer.m in Sources */,
 				E50121FE15E7F78D002E17B0 /* Level.m in Sources */,
+				E501220115EA8A43002E17B0 /* ChallengeScene.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
