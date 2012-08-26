@@ -2,7 +2,7 @@
 //  Level.h
 //  TunnelJoggler
 //
-//  Created by pawel on 8/16/12.
+//  Created by pawel on 8/24/12.
 //
 //
 
@@ -24,5 +24,6 @@
 @property (nonatomic, retain) NSNumber * speedIncreaseInterval;
 @property (nonatomic, retain) NSNumber * speedIncreaseValue;
 @property (nonatomic, retain) NSNumber * timeToSurviveToPass;
+@property (nonatomic, retain) NSNumber * levelNumber;
 
 @end

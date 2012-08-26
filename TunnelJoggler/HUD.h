@@ -9,14 +9,21 @@
 #import "cocos2d.h"
 
 @class Game;
+@class Level;
 
 @interface HUD : CCLayer {
     Game *game_;
     CCLabelBMFont *scoreLabel_;
+    CCLabelBMFont *_timeLabel;
+    CCLabelBMFont *_scoreChallengeLabel;
     CCMenu *menu_;
+    int _minutes;
+    int _seconds;
+    Level* _currentLevel;
 }
 
 @property (assign, nonatomic, readonly) BOOL isShowingHowToPlay;
+@property (assign, nonatomic, readonly) BOOL isShowingTimeChallenge;
 
 +(id) HUDWithGameNode:(Game*)game;
 -(id) initWithGameNode:(Game*)game;
@@ -25,5 +32,6 @@
 -(void) pause;
 -(void) showHowToPlay;
 -(void) dismissHowToPlay:(id)sender;
+-(void) onUpdateCountDownTimer;
 
 @end

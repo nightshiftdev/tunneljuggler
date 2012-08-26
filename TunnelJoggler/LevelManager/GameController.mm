@@ -10,7 +10,6 @@
 #import "GameController.h"
 #import "Level.h"
 #import "Paddle.h"
-#import "ProgressHUD.h"
 #import "Game.h"
 #import "SplashScene.h"
 #import "LocalPlayer.h"
@@ -19,7 +18,7 @@ NSString * kPlayeriCloudPersistentStoreFilename = @"PlayeriCloudStore.sqlite";
 NSString * kPlayerFallbackPersistentStoreFilename = @"PlayerFallbackStore.sqlite"; //used when iCloud is not available
 NSString * kLevelsLocalStoreFilename = @"LevelsLocalStore.sqlite"; //holds local information
 
-static int gNumberOfLevels = 1;
+static int gNumberOfLevels = 2;
 static NSOperationQueue *_presentedItemOperationQueue;
 
 @interface GameController (Private)
@@ -651,10 +650,13 @@ static NSOperationQueue *_presentedItemOperationQueue;
 -(BOOL)createLevels {
     NSManagedObjectContext *levelsMOC = [[[NSManagedObjectContext alloc] init] autorelease];
     [levelsMOC setPersistentStoreCoordinator:_psc];
-    Level *l1 = [NSEntityDescription insertNewObjectForEntityForName:@"Level" inManagedObjectContext: levelsMOC];;
+    
+    // regular level must reach end of level to pass, easy
+    Level *l1 = [NSEntityDescription insertNewObjectForEntityForName:@"Level" inManagedObjectContext: levelsMOC];
+    l1.levelNumber = [NSNumber numberWithInt: 0];
     l1.length = [NSNumber numberWithInt: 100];
     l1.mustReachEndOfLevelToPass = [NSNumber numberWithBool:YES];
-    l1.timeToSurviveToPass = [NSNumber numberWithFloat:0.0f];
+    l1.timeToSurviveToPass = [NSNumber numberWithInteger:0];
     l1.scoreToPass = [NSNumber numberWithInt:0];
     l1.maxSpeed = [NSNumber numberWithFloat:MAX_PADDLE_SPEED/4];
     l1.minSpeed = [NSNumber numberWithFloat:MIN_PADDLE_SPEED];
@@ -666,6 +668,42 @@ static NSOperationQueue *_presentedItemOperationQueue;
     l1.haveMovingObstacles = [NSNumber numberWithBool:NO];
     
     [levelsMOC assignObject:l1 toPersistentStore: _levelsLocalStore];
+    
+    // time challenge level, normal difficulty
+    Level *l2 = [NSEntityDescription insertNewObjectForEntityForName:@"Level" inManagedObjectContext: levelsMOC];
+    l2.levelNumber = [NSNumber numberWithInt: 1];
+    l2.length = [NSNumber numberWithInt: 500];
+    l2.mustReachEndOfLevelToPass = [NSNumber numberWithBool:NO];
+    l2.timeToSurviveToPass = [NSNumber numberWithInteger:45];
+    l2.scoreToPass = [NSNumber numberWithInt:0];
+    l2.maxSpeed = [NSNumber numberWithFloat:MAX_PADDLE_SPEED];
+    l2.minSpeed = [NSNumber numberWithFloat:MIN_PADDLE_SPEED*2];
+    l2.speedIncreaseInterval = [NSNumber numberWithFloat:2.0f];
+    l2.speedIncreaseValue = [NSNumber numberWithFloat:0.2f];
+    l2.obstacleFrequency = [NSNumber numberWithFloat:2.0f];
+    l2.bonusBallFrequency = [NSNumber numberWithFloat:1.0f];
+    l2.bonusItemFrequency = [NSNumber numberWithFloat:10.0f];
+    l2.haveMovingObstacles = [NSNumber numberWithBool:NO];
+    
+    [levelsMOC assignObject:l2 toPersistentStore: _levelsLocalStore];
+    
+    // points challenge level, easy
+    Level *l3 = [NSEntityDescription insertNewObjectForEntityForName:@"Level" inManagedObjectContext: levelsMOC];
+    l3.levelNumber = [NSNumber numberWithInt: 2];
+    l3.length = [NSNumber numberWithInt: 1000];
+    l3.mustReachEndOfLevelToPass = [NSNumber numberWithBool:NO];
+    l3.timeToSurviveToPass = [NSNumber numberWithInteger: 0];
+    l3.scoreToPass = [NSNumber numberWithInt: 100];
+    l3.maxSpeed = [NSNumber numberWithFloat:MAX_PADDLE_SPEED/2];
+    l3.minSpeed = [NSNumber numberWithFloat:MIN_PADDLE_SPEED];
+    l3.speedIncreaseInterval = [NSNumber numberWithFloat:0.5f];
+    l3.speedIncreaseValue = [NSNumber numberWithFloat:0.2f];
+    l3.obstacleFrequency = [NSNumber numberWithFloat:2.0f];
+    l3.bonusBallFrequency = [NSNumber numberWithFloat:1.0f];
+    l3.bonusItemFrequency = [NSNumber numberWithFloat:10.0f];
+    l3.haveMovingObstacles = [NSNumber numberWithBool:NO];
+    
+    [levelsMOC assignObject:l2 toPersistentStore: _levelsLocalStore];
     
     NSError *createLevelsError = nil;
     BOOL success = [levelsMOC save: &createLevelsError];
@@ -918,6 +956,8 @@ static NSOperationQueue *_presentedItemOperationQueue;
     }
     NSEntityDescription *entity = [NSEntityDescription entityForName: @"Level" inManagedObjectContext: _mainThreadContext];
     [fetchRequest setEntity:entity];
+    NSSortDescriptor *sortOrder = [[[NSSortDescriptor alloc] initWithKey:@"levelNumber" ascending: YES] autorelease];
+    [fetchRequest setSortDescriptors: [NSArray arrayWithObjects:sortOrder, nil]];
     NSError *error = nil;
     NSArray *fetchedLevel = [_mainThreadContext executeFetchRequest:fetchRequest error:&error];
     if ([fetchedLevel count] > gNumberOfLevels) {

@@ -53,8 +53,7 @@
         [gameLoadingItem runAction:[CCRepeatForever actionWithAction:seq]];
 		[self addChild:menuGameLoading];
         
-//        [[SimpleAudioEngine sharedEngine] playBackgroundMusic:@"background-music-aac.caf"];
-//        [[SimpleAudioEngine sharedEngine] playBackgroundMusic:@"background-music.MP3"];
+        [[SimpleAudioEngine sharedEngine] playBackgroundMusic:@"background-music.MP3"];
 	}
 	
 	return self;

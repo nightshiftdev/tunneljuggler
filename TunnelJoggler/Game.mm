@@ -9,13 +9,13 @@
 #import "GameController.h"
 #import "Level.h"
 #import "Player.h"
-#import "ProgressHUD.h"
 
 @interface Game ()
 @property (readwrite, nonatomic, retain) Player *player;
 @property (readwrite, nonatomic, retain) NSArray *levels;
 @property (readwrite, nonatomic, retain) Level *currentLevel;
 -(void)setupGamePlay;
+- (BOOL)isTimeChallengeLevel;
 @end
 
 @implementation Game
@@ -42,6 +42,7 @@
             
             abort();
         }
+        _oneSecond = 1.0;
         
         _paddleScreenPosOffset = 30.0;
         if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
@@ -54,7 +55,6 @@
         
         obstacles_ = [[NSMutableArray alloc] init];
         ballBullets_ = [[NSMutableArray alloc] init];
-        // TODO: renable terrain length when iCloud works OK
         terrain_ = [[Terrain alloc] initWithWorld:world_ terrainLength:[self.currentLevel.length integerValue]];
         terrain_.terrainObserver = self;
         paddle_ = [[[Paddle alloc] initWithWorld:world_] autorelease];
@@ -137,6 +137,34 @@
         NSLog(@"timeToSurviveToPass %@", self.currentLevel.timeToSurviveToPass);
         NSLog(@"===================================");
     }
+    
+//    double delayInSeconds = 1.0;
+//    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+//    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+//        if ([self isTimeChallengeLevel]) {
+//            [self.hud showLevelTimeChallenge];
+//        } else {
+//            [self.hud showLengthTimeChallenge];
+//        }
+//    });
+}
+
+- (BOOL)isTimeChallengeLevel {
+    BOOL isTimeChallengeLevel = NO;
+    if (![self.currentLevel.mustReachEndOfLevelToPass boolValue] &&
+        [self.currentLevel.timeToSurviveToPass intValue] > 0) {
+        isTimeChallengeLevel = YES;
+    }
+    return isTimeChallengeLevel;
+}
+
+- (BOOL)isPointsChallengeLevel {
+    BOOL isPointsChallengeLevel = NO;
+    if (![self.currentLevel.mustReachEndOfLevelToPass boolValue] &&
+        [self.currentLevel.scoreToPass intValue] > 0) {
+        isPointsChallengeLevel = YES;
+    }
+    return isPointsChallengeLevel;
 }
 
 - (void)createBallBulletAtPosition:(CGPoint)position {
@@ -213,6 +241,15 @@
     }
 }
 
+- (void) updateCountDownTimer:(ccTime)dt {
+    if ([self isTimeChallengeLevel]) {
+        if ((_oneSecond -= dt) < 0) {
+            [self.hud onUpdateCountDownTimer];
+            _oneSecond = 1.0;
+        }
+    }
+}
+
 - (void) increasePaddleSpeed:(ccTime)dt {
     if ((increasePaddleSpeedInterval_ -= dt) < 0) {
         increasePaddleSpeedInterval_ = [self.currentLevel.speedIncreaseInterval floatValue];
@@ -224,6 +261,7 @@
     [self addNextObstacle: dt];
     [self addNextBounusBall:dt];
     [self increasePaddleSpeed:dt];
+    [self updateCountDownTimer:dt];
     
     timeAccumulator_ += dt;
     if (timeAccumulator_ > (MAX_CYCLES_PER_FRAME * UPDATE_INTERVAL)) {
@@ -281,7 +319,6 @@
                 !self.hud.isShowingHowToPlay) {
                 [self.hud showHowToPlay];
             }
-            
         });
     }
     
@@ -389,7 +426,9 @@
 }
 
 -(void)ccTouchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
-    
+    if (self.hud.isShowingHowToPlay) {
+        [self.hud dismissHowToPlay:self];
+    }
     paddle_.decreaseHorizontalForceToZero = NO;
     
     UITouch *myTouch = [touches anyObject];    
@@ -659,7 +698,11 @@
 #pragma mark - TerrainObserver
 
 -(void)onTerrainEnd:(Terrain *)terrain {
-    [self.hud gameOver:YES touchedFatalObject:NO];
+    if ([self isPointsChallengeLevel]) {
+        [self.hud gameOver:NO touchedFatalObject:NO];
+    } else {
+        [self.hud gameOver:YES touchedFatalObject:NO];
+    }
 }
 
 @end

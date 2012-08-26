@@ -13,11 +13,8 @@
 #import "SimpleAudioEngine.h"
 #import "GameController.h"
 #import "BackgroundUtils.h"
-#import "UIImage+WithScaleToSize.h"
-//#import "SplashScene.h"
 
 @interface MainScene()
-- (void)showImagePicker:(BOOL)hasCamera;
 - (void) setUserPictureForNormalState: (CCSprite *) normalStateSprite selectedState: (CCSprite *) selectedStateSprite;
 - (void) showLeaderboard;
 
@@ -28,7 +25,6 @@
 
 @implementation MainScene
 
-@synthesize emitter;
 @synthesize itemUserPicture;
 @synthesize playerPictureMenu;
 
@@ -136,48 +132,12 @@
 #ifdef DEBUG
     NSLog(@"MainScene reloadGameData called.");
 #endif
-    Player *p = [[GameController sharedController] player];
-//    CCSprite *spriteFromImageNormal = nil;
-//    CCSprite *spriteFromImageSelected = nil;
-//    UIImage *playerPicture = p.picture;
-//    if (playerPicture != nil) {
-//        spriteFromImageNormal = [CCSprite spriteWithCGImage: playerPicture.CGImage key:nil];
-//        spriteFromImageSelected = [CCSprite spriteWithCGImage: playerPicture.CGImage key:nil];
-//    } else {
-//        spriteFromImageNormal = [CCSprite spriteWithSpriteFrameName: @"player-picture-default.png"];
-//        spriteFromImageSelected = [CCSprite spriteWithSpriteFrameName: @"player-picture-default.png"];
-//    }
-//    
-//    [self setUserPictureForNormalState: spriteFromImageNormal
-//                         selectedState: spriteFromImageSelected];
-    
+    Player *p = [[GameController sharedController] player];    
     [_scoreLabel setString: [NSString stringWithFormat:@"H I G H  S C O R E:  %d", [p.score intValue]]];
     
     [_experienceLabel setString: [NSString stringWithFormat:@"E X P E R I E N C E  L E V E L:  %d", [p.experienceLevel intValue]]];
     
     [_currentLevelLabel setString: [NSString stringWithFormat:@"C U R R E N T  L E V E L:  %d", [p.currentLevel intValue]]];
-}
-
--(void) changePicture:(id)sender {
-    BOOL hasCamera = [UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera];
-    
-    UIActionSheet *as = [[UIActionSheet alloc] initWithTitle:nil
-                                                    delegate:self
-                                           cancelButtonTitle:nil
-                                      destructiveButtonTitle:nil
-                                           otherButtonTitles:nil];
-    
-    if (hasCamera) {
-        [as addButtonWithTitle:@"Take Photo"];
-    }
-    
-    [as addButtonWithTitle:@"Choose Existing Photo"];
-    [as addButtonWithTitle:@"Use Default Image"];
-    [as addButtonWithTitle:@"Cancel"];
-    as.cancelButtonIndex = [as numberOfButtons] - 1;
-    
-    [as showInView:[[UIApplication sharedApplication] delegate].window];
-    [as release];
 }
 
 - (void)highScoreGameCenter:(id)sender {
@@ -186,31 +146,6 @@
     } else {
         if([GameCenterManager isGameCenterAvailable]) {
             [[GameCenterManager sharedManager] authenticateLocalUser];
-        }
-    }
-}
-
-#pragma mark -
-#pragma mark UIActionSheetDelegate
-
-- (void) actionSheet:(UIActionSheet *)as clickedButtonAtIndex:(NSInteger)buttonIndex {
-	if (as.cancelButtonIndex == buttonIndex) {
-        return;
-    } else if (buttonIndex == 2) {
-        CCSprite *spriteFromImageNormal = [CCSprite spriteWithSpriteFrameName: @"player-picture-default.png"];
-        CCSprite *spriteFromImageSelected = [CCSprite spriteWithSpriteFrameName: @"player-picture-default.png"];
-        [self setUserPictureForNormalState: spriteFromImageNormal
-                             selectedState: spriteFromImageSelected];
-        Player *p = [[GameController sharedController] player];
-//        p.picture = nil;
-        [[GameController sharedController] setPlayer: p];
-    } else  {
-        NSString *title = [as buttonTitleAtIndex:buttonIndex];
-        if ([title isEqualToString:@"Take Photo"]) {
-            [self showImagePicker:true];
-        }	
-        else {
-            [self showImagePicker:false];
         }
     }
 }
@@ -225,35 +160,16 @@
     id seq = [CCSequence actions:rotateLeft, rotateRight, rotateLeft, nil];
     
     CGSize s = [[CCDirector sharedDirector] winSize];
-    self.itemUserPicture = [SoundMenuItem itemFromNormalSprite: normalStateSprite
-                                                selectedSprite: selectedStateSprite
+    self.itemUserPicture = [SoundMenuItem itemFromNormalSprite:normalStateSprite
+                                                selectedSprite:selectedStateSprite
                                                         target:self
-                                                      selector: @selector(changePicture:)
+                                                      selector:nil
                             ];
     self.playerPictureMenu = [CCMenu menuWithItems: self.itemUserPicture, nil];
     self.playerPictureMenu.position = ccp(s.width/2 + 100, s.height/2);
     self.playerPictureMenu.isTouchEnabled = YES;
     [itemUserPicture runAction:[CCRepeatForever actionWithAction:seq]];
     [self addChild:self.playerPictureMenu z:10];
-}
-
-- (void) showImagePicker:(BOOL)hasCamera {
-    self.playerPictureMenu.isTouchEnabled = NO;
-    UIImagePickerController *picker	= [[UIImagePickerController alloc]init];
-	picker.delegate = self;
-    if (hasCamera) {
-		picker.sourceType = UIImagePickerControllerSourceTypeCamera;
-	}
-	picker.wantsFullScreenLayout = YES;
-    picker.view.transform = CGAffineTransformMakeRotation(-M_PI/2);
-    picker.view.frame = CGRectMake(0.0, 0.0, 480.0, 320.0);
-	[[[UIApplication sharedApplication] delegate].window.rootViewController presentModalViewController:picker animated:YES];
-    
-	[[[CCDirector sharedDirector] openGLView] addSubview:picker.view];
-    
-	// Pause the Directore to speed up image picker (maybe it's better to put it before adding the view??)
-	[[CCDirector sharedDirector] pause];
-	[[CCDirector sharedDirector] stopAnimation];
 }
 
 #pragma mark GameCenter View Controllers
@@ -276,41 +192,6 @@
 {
 	[[[UIApplication sharedApplication] delegate].window.rootViewController dismissModalViewControllerAnimated: YES];
 	[viewController release];
-}
-
-#pragma mark -
-#pragma mark UIImagePickerControllerDelegate protocol methods
-
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingImage:(UIImage *)image editingInfo:(NSDictionary *)editingInfo {
-    float userPictureSize =  128.0 * [CCDirector sharedDirector].contentScaleFactor;
-    UIImage *scaledImage = [image scaleToSize: CGSizeMake(userPictureSize, userPictureSize)];
-    UIImage *imageToSave = [UIImage makeRoundCornerImage: scaledImage :25 : 25];
-    
-    Player *p = [[GameController sharedController] player];
-//    p.picture = imageToSave;
-    [[GameController sharedController] setPlayer: p];
-    
-    CCSprite *spriteFromImageNormal = [CCSprite spriteWithCGImage: imageToSave.CGImage key:nil];
-    CCSprite *spriteFromImageSelected = [CCSprite spriteWithCGImage: imageToSave.CGImage key:nil];
-    
-    [self setUserPictureForNormalState: spriteFromImageNormal
-                         selectedState: spriteFromImageSelected];
-    
-	[picker dismissModalViewControllerAnimated:YES];
-	[picker.view removeFromSuperview];
-	[picker	release];
-    
-	[[CCDirector sharedDirector] startAnimation];
-	[[CCDirector sharedDirector] resume];
-}
-
-- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
-    self.playerPictureMenu.isTouchEnabled = YES;
-	[picker dismissModalViewControllerAnimated:YES];
-	[picker.view removeFromSuperview];
-	[picker	release];
-    [[CCDirector sharedDirector] startAnimation];
-	[[CCDirector sharedDirector] resume];
 }
 
 @end

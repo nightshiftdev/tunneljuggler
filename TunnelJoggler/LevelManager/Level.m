@@ -2,7 +2,7 @@
 //  Level.m
 //  TunnelJoggler
 //
-//  Created by pawel on 8/16/12.
+//  Created by pawel on 8/24/12.
 //
 //
 
@@ -23,5 +23,6 @@
 @dynamic speedIncreaseInterval;
 @dynamic speedIncreaseValue;
 @dynamic timeToSurviveToPass;
+@dynamic levelNumber;
 
 @end

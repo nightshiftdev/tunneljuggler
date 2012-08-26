@@ -40,11 +40,12 @@ static const double MAX_CYCLES_PER_FRAME = 5;
     float addBonusBallInterval_;
     float increasePaddleSpeedInterval_;
     MyContactListener *contactListener_;
-    HUD *hud_;
+    HUD *_hud;
     Player *_player;
     Level *_currentLevel;
     double timeAccumulator_;
     float _paddleScreenPosOffset;
+    float _oneSecond;
 }
 
 +(CCScene *)scene;

@@ -10,6 +10,7 @@
 		E50121F015E2FC3E002E17B0 /* LocalPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = E50121EF15E2FC3E002E17B0 /* LocalPlayer.m */; };
 		E50121F715E6B292002E17B0 /* Noise_iPad-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E50121F515E6B292002E17B0 /* Noise_iPad-hd.png */; };
 		E50121F815E6B292002E17B0 /* Noise-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E50121F615E6B292002E17B0 /* Noise-hd.png */; };
+		E50121FE15E7F78D002E17B0 /* Level.m in Sources */ = {isa = PBXBuildFile; fileRef = E50121FD15E7F78D002E17B0 /* Level.m */; };
 		E5342BD915DA82B800863A06 /* TunnelJoggler.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = E5342BD815DA82B700863A06 /* TunnelJoggler.entitlements */; };
 		E5342BEC15DBDFF600863A06 /* SplashScene.mm in Sources */ = {isa = PBXBuildFile; fileRef = E5342BEB15DBDFF600863A06 /* SplashScene.mm */; };
 		E5342BEE15DBE70000863A06 /* background-music.MP3 in Resources */ = {isa = PBXBuildFile; fileRef = E5342BED15DBE70000863A06 /* background-music.MP3 */; };
@@ -179,9 +180,6 @@
 		E55E3D41159A339400CA5894 /* fire.png in Resources */ = {isa = PBXBuildFile; fileRef = E55E3D40159A339400CA5894 /* fire.png */; };
 		E55E3D44159A33A600CA5894 /* fire-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E55E3D43159A33A600CA5894 /* fire-hd.png */; };
 		E57047321590AD1F009991B2 /* Noise_iPad.png in Resources */ = {isa = PBXBuildFile; fileRef = E57047311590AD1F009991B2 /* Noise_iPad.png */; };
-		E587492115AF001500D22B51 /* ProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = E587491F15AF001500D22B51 /* ProgressHUD.m */; };
-		E587492215AF001500D22B51 /* ProgressHUD.xib in Resources */ = {isa = PBXBuildFile; fileRef = E587492015AF001500D22B51 /* ProgressHUD.xib */; };
-		E5879B6415DD3B85007BBD33 /* Level.m in Sources */ = {isa = PBXBuildFile; fileRef = E5879B6315DD3B85007BBD33 /* Level.m */; };
 		E5879B6815DD3B85007BBD33 /* Player.m in Sources */ = {isa = PBXBuildFile; fileRef = E5879B6715DD3B85007BBD33 /* Player.m */; };
 		E598D4231579265300DF181A /* SoundMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = E598D4221579265200DF181A /* SoundMenuItem.m */; };
 		E598D42815792A0600DF181A /* buttons-hd.plist in Resources */ = {isa = PBXBuildFile; fileRef = E598D42415792A0600DF181A /* buttons-hd.plist */; };
@@ -200,7 +198,6 @@
 		E5B3A14B15BD73D400667F70 /* GameData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E5B3A14915BD73D400667F70 /* GameData.xcdatamodeld */; };
 		E5B7D72D152A647800407342 /* Paddle.mm in Sources */ = {isa = PBXBuildFile; fileRef = E5B7D72C152A647800407342 /* Paddle.mm */; };
 		E5C3584B15C5B71E00788E1B /* BackgroundUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = E5C3584A15C5B71D00788E1B /* BackgroundUtils.mm */; };
-		E5C3585215CC05AB00788E1B /* UIImage+WithScaleToSize.m in Sources */ = {isa = PBXBuildFile; fileRef = E5C3585115CC05A900788E1B /* UIImage+WithScaleToSize.m */; };
 		E5C3585B15CF249A00788E1B /* GameCenterManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E5C3585A15CF249A00788E1B /* GameCenterManager.m */; };
 		E5C3585D15CFED0F00788E1B /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5C3585C15CFED0E00788E1B /* GameKit.framework */; };
 /* End PBXBuildFile section */
@@ -210,6 +207,8 @@
 		E50121EF15E2FC3E002E17B0 /* LocalPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LocalPlayer.m; path = LevelManager/LocalPlayer.m; sourceTree = "<group>"; };
 		E50121F515E6B292002E17B0 /* Noise_iPad-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Noise_iPad-hd.png"; path = "Resources/Noise_iPad-hd.png"; sourceTree = "<group>"; };
 		E50121F615E6B292002E17B0 /* Noise-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Noise-hd.png"; path = "Resources/Noise-hd.png"; sourceTree = "<group>"; };
+		E50121FC15E7F78D002E17B0 /* Level.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Level.h; path = LevelManager/Level.h; sourceTree = "<group>"; };
+		E50121FD15E7F78D002E17B0 /* Level.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Level.m; path = LevelManager/Level.m; sourceTree = "<group>"; };
 		E5342BD815DA82B700863A06 /* TunnelJoggler.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = TunnelJoggler.entitlements; sourceTree = "<group>"; };
 		E5342BEA15DBDFF600863A06 /* SplashScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SplashScene.h; sourceTree = "<group>"; };
 		E5342BEB15DBDFF600863A06 /* SplashScene.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SplashScene.mm; sourceTree = "<group>"; };
@@ -540,11 +539,6 @@
 		E55E3D43159A33A600CA5894 /* fire-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "fire-hd.png"; path = "Resources/particles/particles-hd/fire-hd.png"; sourceTree = "<group>"; };
 		E57047311590AD1F009991B2 /* Noise_iPad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Noise_iPad.png; path = Resources/Noise_iPad.png; sourceTree = "<group>"; };
 		E58431ED15A1D7DB00FBDE5A /* TerrainObserver.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TerrainObserver.h; path = Objects/TerrainObserver.h; sourceTree = "<group>"; };
-		E587491E15AF001500D22B51 /* ProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProgressHUD.h; sourceTree = "<group>"; };
-		E587491F15AF001500D22B51 /* ProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProgressHUD.m; sourceTree = "<group>"; };
-		E587492015AF001500D22B51 /* ProgressHUD.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProgressHUD.xib; sourceTree = "<group>"; };
-		E5879B6215DD3B85007BBD33 /* Level.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Level.h; path = LevelManager/Level.h; sourceTree = "<group>"; };
-		E5879B6315DD3B85007BBD33 /* Level.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Level.m; path = LevelManager/Level.m; sourceTree = "<group>"; };
 		E5879B6615DD3B85007BBD33 /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Player.h; path = LevelManager/Player.h; sourceTree = "<group>"; };
 		E5879B6715DD3B85007BBD33 /* Player.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Player.m; path = LevelManager/Player.m; sourceTree = "<group>"; };
 		E598D4211579265200DF181A /* SoundMenuItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoundMenuItem.h; sourceTree = "<group>"; };
@@ -570,8 +564,6 @@
 		E5B7D72C152A647800407342 /* Paddle.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Paddle.mm; path = Objects/Paddle.mm; sourceTree = "<group>"; };
 		E5C3584915C5B71D00788E1B /* BackgroundUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BackgroundUtils.h; sourceTree = "<group>"; };
 		E5C3584A15C5B71D00788E1B /* BackgroundUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BackgroundUtils.mm; sourceTree = "<group>"; };
-		E5C3585015CC05A700788E1B /* UIImage+WithScaleToSize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+WithScaleToSize.h"; sourceTree = "<group>"; };
-		E5C3585115CC05A900788E1B /* UIImage+WithScaleToSize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+WithScaleToSize.m"; sourceTree = "<group>"; };
 		E5C3585815CF249A00788E1B /* AppSpecificValues.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppSpecificValues.h; path = GameCenter/AppSpecificValues.h; sourceTree = "<group>"; };
 		E5C3585915CF249A00788E1B /* GameCenterManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameCenterManager.h; path = GameCenter/GameCenterManager.h; sourceTree = "<group>"; };
 		E5C3585A15CF249A00788E1B /* GameCenterManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GameCenterManager.m; path = GameCenter/GameCenterManager.m; sourceTree = "<group>"; };
@@ -649,17 +641,12 @@
 				E55237E415671693005B05D3 /* HUD.mm */,
 				E54BBBCE15445C900093A6CB /* MyContactListener.h */,
 				E54BBBCF15445C900093A6CB /* MyContactListener.mm */,
-				E587491E15AF001500D22B51 /* ProgressHUD.h */,
-				E587491F15AF001500D22B51 /* ProgressHUD.m */,
-				E587492015AF001500D22B51 /* ProgressHUD.xib */,
 				E53C62E91508288B0047EF66 /* RootViewController.h */,
 				E53C62EA1508288B0047EF66 /* RootViewController.m */,
 				E598D4211579265200DF181A /* SoundMenuItem.h */,
 				E598D4221579265200DF181A /* SoundMenuItem.m */,
 				E5C3584915C5B71D00788E1B /* BackgroundUtils.h */,
 				E5C3584A15C5B71D00788E1B /* BackgroundUtils.mm */,
-				E5C3585015CC05A700788E1B /* UIImage+WithScaleToSize.h */,
-				E5C3585115CC05A900788E1B /* UIImage+WithScaleToSize.m */,
 				E58431FD15AC5E4B00FBDE5A /* LevelManager */,
 				E5AD298E15BED2D100A43904 /* Scenes */,
 				E53C62FA1508297B0047EF66 /* Objects */,
@@ -1063,12 +1050,12 @@
 			children = (
 				E59A440B15AC6F3C00BBD754 /* GameController.h */,
 				E59A440C15AC6F3C00BBD754 /* GameController.mm */,
-				E5879B6215DD3B85007BBD33 /* Level.h */,
 				E5879B6615DD3B85007BBD33 /* Player.h */,
 				E5879B6715DD3B85007BBD33 /* Player.m */,
-				E5879B6315DD3B85007BBD33 /* Level.m */,
 				E50121EE15E2FC3E002E17B0 /* LocalPlayer.h */,
 				E50121EF15E2FC3E002E17B0 /* LocalPlayer.m */,
+				E50121FC15E7F78D002E17B0 /* Level.h */,
+				E50121FD15E7F78D002E17B0 /* Level.m */,
 				E5B3A14915BD73D400667F70 /* GameData.xcdatamodeld */,
 			);
 			name = LevelManager;
@@ -1172,7 +1159,6 @@
 				E55E3D321598A39300CA5894 /* sticky.png in Resources */,
 				E55E3D41159A339400CA5894 /* fire.png in Resources */,
 				E55E3D44159A33A600CA5894 /* fire-hd.png in Resources */,
-				E587492215AF001500D22B51 /* ProgressHUD.xib in Resources */,
 				E5342BD915DA82B800863A06 /* TunnelJoggler.entitlements in Resources */,
 				E5342BEE15DBE70000863A06 /* background-music.MP3 in Resources */,
 				E50121F715E6B292002E17B0 /* Noise_iPad-hd.png in Resources */,
@@ -1331,16 +1317,14 @@
 				E55237E515671693005B05D3 /* HUD.mm in Sources */,
 				E598D4231579265300DF181A /* SoundMenuItem.m in Sources */,
 				E59A440D15AC6F3C00BBD754 /* GameController.mm in Sources */,
-				E587492115AF001500D22B51 /* ProgressHUD.m in Sources */,
 				E5B3A14B15BD73D400667F70 /* GameData.xcdatamodeld in Sources */,
 				E5AD299115BED2D100A43904 /* MainScene.mm in Sources */,
 				E5C3584B15C5B71E00788E1B /* BackgroundUtils.mm in Sources */,
-				E5C3585215CC05AB00788E1B /* UIImage+WithScaleToSize.m in Sources */,
 				E5C3585B15CF249A00788E1B /* GameCenterManager.m in Sources */,
 				E5342BEC15DBDFF600863A06 /* SplashScene.mm in Sources */,
-				E5879B6415DD3B85007BBD33 /* Level.m in Sources */,
 				E5879B6815DD3B85007BBD33 /* Player.m in Sources */,
 				E50121F015E2FC3E002E17B0 /* LocalPlayer.m in Sources */,
+				E50121FE15E7F78D002E17B0 /* Level.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

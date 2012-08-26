@@ -5,6 +5,7 @@
         <attribute name="bonusItemFrequency" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="haveMovingObstacles" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="length" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="levelNumber" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="maxSpeed" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="minSpeed" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="mustReachEndOfLevelToPass" optional="YES" attributeType="Boolean" syncable="YES"/>
@@ -12,7 +13,7 @@
         <attribute name="scoreToPass" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="speedIncreaseInterval" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="speedIncreaseValue" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="timeToSurviveToPass" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="timeToSurviveToPass" optional="YES" attributeType="Integer 64" defaultValueString="0.0" syncable="YES"/>
     </entity>
     <entity name="LocalPlayer" representedClassName="LocalPlayer" syncable="YES">
         <attribute name="bonusItems" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
@@ -37,8 +38,8 @@
         <memberEntity name="LocalPlayer"/>
     </configuration>
     <elements>
-        <element name="Level" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="Player" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Level" positionX="0" positionY="0" width="0" height="240"/>
         <element name="LocalPlayer" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Player" positionX="0" positionY="0" width="0" height="0"/>
     </elements>
 </model>

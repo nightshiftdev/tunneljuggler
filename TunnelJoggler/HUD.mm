@@ -12,11 +12,19 @@
 #import "MainScene.h"
 #import "GameController.h"
 #import "GameCenterManager.h"
+#import "Level.h"
 
 @interface HUD()
 @property (nonatomic, assign) BOOL isGameOver;
 @property (nonatomic, assign) int score;
 @property (assign, nonatomic, readwrite) BOOL isShowingHowToPlay;
+@property (assign, nonatomic, readwrite) BOOL pointsLevelChallenge;
+@property (assign, nonatomic, readwrite) BOOL timeLevelChallenge;
+@property (retain, nonatomic, readwrite) Level* currentLevel;
+@property (nonatomic, assign) int scoreToPassLevel;
+-(void) setupCountDownTimer;
+-(void) setupAdditionalScoreCounter;
+-(void) resume;
 @end
 
 @implementation HUD
@@ -24,6 +32,10 @@
 @synthesize isGameOver;
 @synthesize score;
 @synthesize isShowingHowToPlay;
+@synthesize pointsLevelChallenge;
+@synthesize timeLevelChallenge;
+@synthesize currentLevel = _currentLevel;
+@synthesize scoreToPassLevel;
 
 +(id) HUDWithGameNode:(Game*)game {
 	return [[[self alloc] initWithGameNode:game] autorelease];
@@ -37,10 +49,9 @@
 		CGSize s = [[CCDirector sharedDirector] winSize];
 		
 		[[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"buttons.plist"];
-//		[[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"sprites.plist"];
 		
-		CCLayerColor *color = [CCLayerColor layerWithColor:ccc4(0,0,0,0) width:40 height:s.height];
-		[color setPosition:ccp(s.width-40,0)];
+		CCLayerColor *color = [CCLayerColor layerWithColor:ccc4(0,0,0,0) width:80 height:s.height];
+		[color setPosition:ccp(s.width-80,0)];
 		[self addChild:color z:0];
         
         // Menu Button
@@ -51,13 +62,18 @@
         self.isGameOver = NO;
         
         
-        // Score Points
+        // Score
         self.score = [[[GameController sharedController] player].score intValue];
 		scoreLabel_ = [CCLabelBMFont labelWithString:[NSString stringWithFormat:@"%d", self.score] fntFile:@"sticky.fnt"];
 		[scoreLabel_.texture setAliasTexParameters];
 		[self addChild:scoreLabel_ z:1];
 		[scoreLabel_ setPosition:ccp(s.width - 20, s.height/2)];
         scoreLabel_.rotation = 90;
+
+        
+        [self setupCountDownTimer];
+        
+        [self setupAdditionalScoreCounter];
 	}
 	return self;
 }
@@ -66,18 +82,12 @@
     Player *player = [[GameController sharedController] player];
     int nextLevel = [player.currentLevel intValue] + 1;
     int experienceLevel = [player.experienceLevel intValue] + 1;
-//    int bonusItems = [player.bonusItems intValue];
-//    NSString *name = player.name;
-//    int currentLevel = [player.currentLevel intValue];
     NSArray *levels = [[GameController sharedController] levels];
     if (nextLevel >= [levels count]) {
         experienceLevel += 100;
     }
     player.experienceLevel =  [NSNumber numberWithInt: experienceLevel];
     player.score = [NSNumber numberWithInt: self.score];
-//    player.currentLevel = [NSNumber numberWithInt: currentLevel];
-//    player.name = name;
-//    player.bonusItems = [NSNumber numberWithInt:bonusItems];
     [GameController sharedController].player = player;
 }
 
@@ -88,15 +98,7 @@
     if (nextLevel >= [levels count]) {
         nextLevel = 0;
     }
-//    int experienceLevel = [player.experienceLevel intValue];
-//    int bonusItems = [player.bonusItems intValue];
-//    NSString *name = player.name;
-//    int64_t playerScore = [player.score intValue];
     player.currentLevel = [NSNumber numberWithInt: nextLevel];
-//    player.experienceLevel =  [NSNumber numberWithInt: experienceLevel];
-//    player.score = [NSNumber numberWithInt: playerScore];
-//    player.name = name;
-//    player.bonusItems = [NSNumber numberWithInt:bonusItems];
     [GameController sharedController].player = player;
 }
 
@@ -123,7 +125,13 @@
         [menu_ alignItemsHorizontallyWithPadding: 25.0];
         [menu_ setPosition:ccp(s.width/2, s.height/2)];
         [self addChild:menu_ z:10];
-        [[CCDirector sharedDirector] pause];
+        
+        double delayInSeconds = 0.1;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            [[CCDirector sharedDirector] pause];
+            self.currentLevel = nil;
+        });
     }
 }
 
@@ -135,10 +143,92 @@
 	id scaleBack = [CCScaleTo actionWithDuration:0.1f scale:1];
 	id seq = [CCSequence actions:scaleTo, scaleBack, nil];
 	[scoreLabel_ runAction:seq];
+    
+    if (self.pointsLevelChallenge) {
+        self.scoreToPassLevel += addScore;
+        [_scoreChallengeLabel setString: [NSString stringWithFormat:@"%d ( %d )", self.scoreToPassLevel, [self.currentLevel.scoreToPass intValue]]];
+        if (self.scoreToPassLevel >= [self.currentLevel.scoreToPass intValue]) {
+            [self gameOver:YES touchedFatalObject:NO];
+        }
+    }
+}
+
+-(Level*)currentLevel {
+    if (nil == _currentLevel) {
+        Player *p = [[GameController sharedController] player];
+        NSArray *levels = [[GameController sharedController] levels];
+        _currentLevel = [levels objectAtIndex: [p.currentLevel intValue]];
+    }
+    return _currentLevel;
+}
+
+-(BOOL)pointsLevelChallenge {
+    if(![self.currentLevel.mustReachEndOfLevelToPass boolValue] &&
+       [self.currentLevel.scoreToPass intValue] > 0) {
+        return YES;
+    }
+    return NO;
+}
+
+-(BOOL)timeLevelChallenge {
+    if (![self.currentLevel.mustReachEndOfLevelToPass boolValue] &&
+        [self.currentLevel.timeToSurviveToPass intValue] > 0) {
+        return YES;
+    }
+    return NO;
+}
+
+-(void) setupCountDownTimer {
+    if (self.timeLevelChallenge == YES) {
+        int time = [self.currentLevel.timeToSurviveToPass intValue];
+        _minutes = time / 60;
+        _seconds = time - (_minutes * 60);
+        CGSize s = [[CCDirector sharedDirector] winSize];
+        NSString *counterLabelFormat = nil;
+        if (_seconds < 10) {
+            counterLabelFormat = [NSString stringWithFormat:@"%d : 0%d", _minutes, _seconds];
+        } else {
+            counterLabelFormat = [NSString stringWithFormat:@"%d : %d", _minutes, _seconds];
+        }
+        _timeLabel = [CCLabelBMFont labelWithString:counterLabelFormat fntFile:@"sticky.fnt"];
+        [_timeLabel.texture setAliasTexParameters];
+        [self addChild:_timeLabel z:1];
+        [_timeLabel setPosition:ccp(s.width - 60, s.height/2)];
+        _timeLabel.rotation = 90;
+    }
+}
+
+-(void) setupAdditionalScoreCounter {
+    if (self.pointsLevelChallenge == YES) {
+        self.scoreToPassLevel = 0;
+        CGSize s = [[CCDirector sharedDirector] winSize];
+        _scoreChallengeLabel = [CCLabelBMFont labelWithString:[NSString stringWithFormat:@"%d ( %d )", self.scoreToPassLevel, [self.currentLevel.scoreToPass intValue]] fntFile:@"sticky.fnt"];
+        [_scoreChallengeLabel.texture setAliasTexParameters];
+        [self addChild:_scoreChallengeLabel z:1];
+        [_scoreChallengeLabel setPosition:ccp(s.width - 60, s.height/2)];
+        _scoreChallengeLabel.rotation = 90;
+    }
+}
+
+-(void) onUpdateCountDownTimer {
+    if (_seconds <= 0 && _minutes > 0) {
+        _seconds = 59;
+        _minutes--;
+    } else if (_seconds > 0) {
+        _seconds--;
+    }
+    if (_seconds < 10) {
+        [_timeLabel setString: [NSString stringWithFormat:@"%d : 0%d", _minutes, _seconds]];
+    } else {
+        [_timeLabel setString: [NSString stringWithFormat:@"%d : %d", _minutes, _seconds]];
+    }
+    
+    if (_minutes == 0 && _seconds == 0) {
+        [self gameOver:YES touchedFatalObject:NO];
+    }
 }
 
 -(void) pause {
-    [[CCDirector sharedDirector] pause];
 	CGSize s = [[CCDirector sharedDirector] winSize];
 	CCMenuItem *item2 = [SoundMenuItem itemFromNormalSpriteFrameName:@"btn-small-play-normal.png" selectedSpriteFrameName:@"btn-small-play-selected.png" target:self selector:@selector(onResumePressed:)];
 	CCMenuItem *item1 = [SoundMenuItem itemFromNormalSpriteFrameName:@"btn-try-again-normal.png" selectedSpriteFrameName:@"btn-try-again-selected.png" target:self selector:@selector(onPlayAgainPressed:)];
@@ -147,6 +237,7 @@
 	[menu_ alignItemsHorizontallyWithPadding: 25.0];
 	[menu_ setPosition:ccp(s.width/2, s.height/2)];
 	[self addChild:menu_ z:10];
+    [[CCDirector sharedDirector] pause];
 }
 
 -(void)resume {
@@ -213,6 +304,11 @@
 	}
     [self advancePlayerToNextLevel];
     [[CCDirector sharedDirector] replaceScene: [CCTransitionFade transitionWithDuration:0.1f scene:[[game_ class] scene]]];
+}
+
+-(void)dealloc {
+    self.currentLevel = nil;
+    [super dealloc];
 }
 
 @end

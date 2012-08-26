@@ -10,16 +10,11 @@
 #import <GameKit/GameKit.h>
 #import "cocos2d.h"
 
-@interface MainScene : CCLayer <UIImagePickerControllerDelegate,
-                                UINavigationControllerDelegate,
-                                UIActionSheetDelegate,
-                                GKLeaderboardViewControllerDelegate>
+@interface MainScene : CCLayer <GKLeaderboardViewControllerDelegate>
 {
-	CCParticleSystem *emitter;
     CCLabelBMFont *_scoreLabel;
     CCLabelBMFont *_experienceLabel;
     CCLabelBMFont *_currentLevelLabel;
 }
-@property (readwrite,retain) CCParticleSystem *emitter;
 +(id) scene;
 @end

@@ -13,7 +13,6 @@
 #import "MainScene.h"
 #import "RootViewController.h"
 #import "GameController.h"
-#import "ProgressHUD.h"
 #import "SplashScene.h"
 
 @implementation AppDelegate
