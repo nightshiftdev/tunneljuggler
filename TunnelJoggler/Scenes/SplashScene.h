@@ -8,6 +8,11 @@
 
 #import "cocos2d.h"
 
-@interface SplashScene : CCLayer
+@interface SplashScene : CCLayer {
+    CCSprite *_preloader;
+    CCAction *_jugglingAction;
+}
 +(id) scene;
+@property (nonatomic, retain) CCSprite *preloader;
+@property (nonatomic, retain) CCAction *jugglingAction;
 @end

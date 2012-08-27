@@ -54,7 +54,7 @@
 -(void) selected {
 	[super selected];
 
-	[[SimpleAudioEngine sharedEngine] playEffect:@"button-pressed.wav"];
+	[[SimpleAudioEngine sharedEngine] playEffect:@"blip.caf"];
 }
 
 @end

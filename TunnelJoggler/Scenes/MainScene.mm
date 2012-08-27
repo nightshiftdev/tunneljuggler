@@ -39,7 +39,11 @@
 
 -(id) init {
 	if((self=[super init])) {
-		[[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"buttons.plist"];
+        NSString *buttonsPlist = @"buttons.plist";
+        if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+            buttonsPlist = @"buttons-ipad.plist";
+        }
+        [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:buttonsPlist];
 		
 		CGSize s = [[CCDirector sharedDirector] winSize];
 		CCSprite *background = [BackgroundUtils genBackground];
@@ -48,11 +52,27 @@
         
         Player *p = [[GameController sharedController] player];
         if (nil != p) {
-            CCMenuItem *itemUserPictureFrame = [SoundMenuItem itemFromNormalSpriteFrameName:@"player-picture-frame.png" selectedSpriteFrameName:@"player-picture-frame.png" target:nil selector:nil];
+            // main frame
+            CCMenuItem *itemFrame = [SoundMenuItem itemFromNormalSpriteFrameName:@"main-frame.png" selectedSpriteFrameName:@"main-frame.png" target:nil selector:nil];
+            itemFrame.isEnabled = NO;
+            CCMenu *menuFrame = [CCMenu menuWithItems: itemFrame, nil];
+            menuFrame.position = ccp(s.width/2, s.height/2);
+            [self addChild:menuFrame z:0];
+            
+            //game title
+            CCMenuItem *itemTitle = [SoundMenuItem itemFromNormalSpriteFrameName:@"main-title.png" selectedSpriteFrameName:@"main-title.png" target:nil selector:nil];
+            itemTitle.isEnabled = NO;
+            CCMenu *menuTitle = [CCMenu menuWithItems: itemTitle, nil];
+            menuTitle.position = ccp(s.width/1.12, s.height/2);
+            [self addChild:menuTitle z:2];
+            
+            
+            // clown frame
+            CCMenuItem *itemUserPictureFrame = [SoundMenuItem itemFromNormalSpriteFrameName:@"picture-frame.png" selectedSpriteFrameName:@"picture-frame.png" target:nil selector:nil];
             itemUserPictureFrame.isEnabled = NO;
             CCMenu *menuUserPictureFrame = [CCMenu menuWithItems: itemUserPictureFrame, nil];
-            menuUserPictureFrame.position = ccp(s.width/2 + 100, s.height/2);
-            [self addChild:menuUserPictureFrame z:5];
+            menuUserPictureFrame.position = ccp(s.width/1.35, s.height/2);
+            [self addChild:menuUserPictureFrame z:1];
             
             id scaleTo = [CCScaleTo actionWithDuration:0.5f scale:0.9f];
             id scaleBack = [CCScaleTo actionWithDuration:0.5f scale:1.0f];
@@ -61,43 +81,67 @@
             
             id seq = [CCSequence actions:scaleTo, scaleBack, rotateLeft, rotateRight, rotateLeft, nil];
             
-            CCMenuItem *itemPlay = [SoundMenuItem itemFromNormalSpriteFrameName:@"btn-play-normal.png" selectedSpriteFrameName:@"btn-play-selected.png" target:self selector:@selector(playGame:)];
+            //Play button
+            CCMenuItem *itemPlay = [SoundMenuItem itemFromNormalSpriteFrameName:@"start-game-off.png" selectedSpriteFrameName:@"start-game-on.png" target:self selector:@selector(playGame:)];
             CCMenu *menuPlay = [CCMenu menuWithItems: itemPlay, nil];
-            menuPlay.position = ccp(s.width/8, s.height/2);
+            menuPlay.position = ccp(s.width/3, s.height/2);
             [itemPlay runAction:[CCRepeatForever actionWithAction:seq]];
             [self addChild:menuPlay];
             
-            CCSprite *spriteFromImageNormal = [CCSprite spriteWithSpriteFrameName: @"player-picture-default.png"];
-            CCSprite *spriteFromImageSelected = [CCSprite spriteWithSpriteFrameName: @"player-picture-default.png"];
+            //Level ribbon
+            CCMenuItem *itemLevelRibbon = [SoundMenuItem itemFromNormalSpriteFrameName:@"level-indicator.png" selectedSpriteFrameName:@"level-indicator.png" target:nil selector:nil];
+            itemLevelRibbon.isEnabled = NO;
+            CCMenu *menuLevelRibbon = [CCMenu menuWithItems: itemLevelRibbon, nil];
+            menuLevelRibbon.position = ccp(s.width/2.5, s.height/3.5);
+            [self addChild:menuLevelRibbon z:4];
+            
+            //Clown face
+            CCSprite *spriteFromImageNormal = [CCSprite spriteWithSpriteFrameName: @"clown-face-happy.png"];
+            CCSprite *spriteFromImageSelected = [CCSprite spriteWithSpriteFrameName: @"clown-face-happy.png"];
             [self setUserPictureForNormalState: spriteFromImageNormal
                                  selectedState: spriteFromImageSelected];
             
+            //Score ribbon
+            CCMenuItem *itemScoreRibbon = [SoundMenuItem itemFromNormalSpriteFrameName:@"score-frame.png" selectedSpriteFrameName:@"score-frame.png" target:nil selector:nil];
+            itemScoreRibbon.isEnabled = NO;
+            CCMenu *menuScoreRibbon = [CCMenu menuWithItems: itemScoreRibbon, nil];
+            menuScoreRibbon.position = ccp(s.width/1.70, s.height/2);
+            [self addChild:menuScoreRibbon z:4];
             
             // Score
-            _scoreLabel = [CCLabelBMFont labelWithString:[NSString stringWithFormat:@"H I G H  S C O R E:  %d", [p.score intValue]] fntFile:@"sticky.fnt"];
-            [_scoreLabel.texture setAliasTexParameters];
-            [self addChild:_scoreLabel z:1];
-            [_scoreLabel setPosition:ccp(s.width/2 - 40, s.height/2)];
+            float fontSize = 28.0;
+            if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+                fontSize = 56.0;
+            }
+            _scoreLabel = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", [p.score intValue]] fontName:@"BosoxRevised.ttf" fontSize:fontSize];
+            _scoreLabel.color = ccc3(204, 0, 0);
+            [self addChild:_scoreLabel z:5];
+            [_scoreLabel setPosition:ccp(s.width/1.65, s.height/2)];
             _scoreLabel.rotation = 90;
             
-            
             // Expirience
-            _experienceLabel = [CCLabelBMFont labelWithString:[NSString stringWithFormat:@"E X P E R I E N C E  L E V E L:  %d", [p.experienceLevel intValue]] fntFile:@"sticky.fnt"];
-            [_experienceLabel.texture setAliasTexParameters];
+            _experienceLabel = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"E X P E R I E N C E  L E V E L:  %d", [p.experienceLevel intValue]] fontName:@"BosoxRevised.ttf" fontSize:28.0];
+            _experienceLabel.color = ccc3(204, 0, 0);
             [self addChild:_experienceLabel z:1];
             [_experienceLabel setPosition:ccp(s.width/2 - 80, s.height/2)];
             _experienceLabel.rotation = 90;
+            _experienceLabel.visible = NO;
             
             // Current level
-            _currentLevelLabel = [CCLabelBMFont labelWithString:[NSString stringWithFormat:@"C U R R E N T  L E V E L:  %d", [p.currentLevel intValue]] fntFile:@"sticky.fnt"];
-            [_currentLevelLabel.texture setAliasTexParameters];
-            [self addChild:_currentLevelLabel z:1];
-            [_currentLevelLabel setPosition:ccp(s.width/2 - 120, s.height/2)];
+            fontSize = 26.0;
+            if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+                fontSize = 52.0;
+            }
+            _currentLevelLabel = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", [p.currentLevel intValue] + 1] fontName:@"BosoxRevised.ttf" fontSize:fontSize];
+            _currentLevelLabel.color = ccc3(204, 0, 0);
+            [self addChild:_currentLevelLabel z:5];
+            [_currentLevelLabel setPosition:ccp(s.width/2.35, s.height/3.5)];
             _currentLevelLabel.rotation = 90;
             
-            CCMenuItem *itemGameCenter = [SoundMenuItem itemFromNormalSpriteFrameName:@"hero-gamecenter.png" selectedSpriteFrameName:@"hero-gamecenter.png" target:self selector:@selector(highScoreGameCenter:)];
+            //Game center
+            CCMenuItem *itemGameCenter = [SoundMenuItem itemFromNormalSpriteFrameName:@"game-center-off.png" selectedSpriteFrameName:@"game-center-on.png" target:self selector:@selector(highScoreGameCenter:)];
             CCMenu *menuGameCenter = [CCMenu menuWithItems: itemGameCenter, nil];
-            menuGameCenter.position = ccp(s.width/2 - 40, s.height - 44);
+            menuGameCenter.position = ccp(s.width/9, s.height/2);
             id scaleGameCenterButtonTo = [CCScaleTo actionWithDuration:0.5f scale:0.9f];
             id scaleGameCenterButtonBack = [CCScaleTo actionWithDuration:0.5f scale:1.0f];
             seq = [CCSequence actions:scaleGameCenterButtonTo, scaleGameCenterButtonBack, nil];
@@ -134,11 +178,11 @@
     NSLog(@"MainScene reloadGameData called.");
 #endif
     Player *p = [[GameController sharedController] player];    
-    [_scoreLabel setString: [NSString stringWithFormat:@"H I G H  S C O R E:  %d", [p.score intValue]]];
+    [_scoreLabel setString: [NSString stringWithFormat:@"%d", [p.score intValue]]];
     
     [_experienceLabel setString: [NSString stringWithFormat:@"E X P E R I E N C E  L E V E L:  %d", [p.experienceLevel intValue]]];
     
-    [_currentLevelLabel setString: [NSString stringWithFormat:@"C U R R E N T  L E V E L:  %d", [p.currentLevel intValue]]];
+    [_currentLevelLabel setString: [NSString stringWithFormat:@"%d", [p.currentLevel intValue]]];
 }
 
 - (void)highScoreGameCenter:(id)sender {
@@ -166,11 +210,12 @@
                                                         target:self
                                                       selector:nil
                             ];
+    self.itemUserPicture.isEnabled = NO;
     self.playerPictureMenu = [CCMenu menuWithItems: self.itemUserPicture, nil];
-    self.playerPictureMenu.position = ccp(s.width/2 + 100, s.height/2);
+    self.playerPictureMenu.position = ccp(s.width/1.4, s.height/2);
     self.playerPictureMenu.isTouchEnabled = YES;
     [itemUserPicture runAction:[CCRepeatForever actionWithAction:seq]];
-    [self addChild:self.playerPictureMenu z:10];
+    [self addChild:self.playerPictureMenu z:3];
 }
 
 #pragma mark GameCenter View Controllers

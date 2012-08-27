@@ -12,9 +12,9 @@
 
 @interface MainScene : CCLayer <GKLeaderboardViewControllerDelegate>
 {
-    CCLabelBMFont *_scoreLabel;
-    CCLabelBMFont *_experienceLabel;
-    CCLabelBMFont *_currentLevelLabel;
+    CCLabelTTF *_scoreLabel;
+    CCLabelTTF *_experienceLabel;
+    CCLabelTTF *_currentLevelLabel;
 }
 +(id) scene;
 @end

@@ -37,7 +37,11 @@
 
 -(id) init {
 	if((self=[super init])) {
-		[[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"buttons.plist"];
+        NSString *buttonsPlist = @"buttons.plist";
+        if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+            buttonsPlist = @"buttons-ipad.plist";
+        }
+        [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:buttonsPlist];
 		
 		CGSize s = [[CCDirector sharedDirector] winSize];
 		CCSprite *background = [BackgroundUtils genBackground];
@@ -55,8 +59,12 @@
             challengeText = @"P O I N T S  C H A L L E N G E";
         }
         
-        CCLabelBMFont *challengeLabel = [CCLabelBMFont labelWithString:challengeText fntFile:@"sticky.fnt"];
-        [challengeLabel.texture setAliasTexParameters];
+        float fontSize = 30.0;
+        if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+            fontSize = 60.0;
+        }
+        CCLabelTTF *challengeLabel = [CCLabelTTF labelWithString:challengeText fontName:@"BosoxRevised.ttf" fontSize:fontSize];
+        challengeLabel.color = ccc3(204, 0, 0);
         [self addChild:challengeLabel z:1];
         [challengeLabel setPosition:ccp(s.width/2, s.height/2)];
         challengeLabel.rotation = 90;

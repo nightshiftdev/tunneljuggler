@@ -13,9 +13,9 @@
 
 @interface HUD : CCLayer {
     Game *game_;
-    CCLabelBMFont *scoreLabel_;
-    CCLabelBMFont *_timeLabel;
-    CCLabelBMFont *_scoreChallengeLabel;
+    CCLabelTTF *scoreLabel_;
+    CCLabelTTF *_timeLabel;
+    CCLabelTTF *_scoreChallengeLabel;
     CCMenu *menu_;
     int _minutes;
     int _seconds;
