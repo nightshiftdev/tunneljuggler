@@ -18,7 +18,7 @@ NSString * kPlayeriCloudPersistentStoreFilename = @"PlayeriCloudStore.sqlite";
 NSString * kPlayerFallbackPersistentStoreFilename = @"PlayerFallbackStore.sqlite"; //used when iCloud is not available
 NSString * kLevelsLocalStoreFilename = @"LevelsLocalStore.sqlite"; //holds local information
 
-static int gNumberOfLevels = 2;
+static int gNumberOfLevels = 3;
 static NSOperationQueue *_presentedItemOperationQueue;
 
 @interface GameController (Private)

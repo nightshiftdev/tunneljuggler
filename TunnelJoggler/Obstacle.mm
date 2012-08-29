@@ -43,9 +43,6 @@
 - (id)initWithWorld:(b2World *)world position: (CGPoint) position game: (Game *) g {
     int iconIndex = arc4random() % 2;
     NSString *blockGraphicName =  [NSString stringWithFormat:@"block-%d.png", iconIndex];
-    if (([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)) {
-        blockGraphicName = [NSString stringWithFormat:@"block-%d_ipad.png", iconIndex];
-    }
     if ((self = [super initWithSpriteFrameName:blockGraphicName])) {
         self.game = g;
         self.isMoving = NO;

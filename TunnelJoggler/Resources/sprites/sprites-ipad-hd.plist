@@ -7,80 +7,80 @@
             <key>ball-0.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{24,166},{20,20}}</string>
+                <string>{{44,206},{40,40}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{20,20}}</string>
+                <string>{{0,0},{40,40}}</string>
                 <key>sourceSize</key>
-                <string>{20,20}</string>
+                <string>{40,40}</string>
             </dict>
             <key>ball-1.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,166},{20,20}}</string>
+                <string>{{86,164},{40,40}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{20,20}}</string>
+                <string>{{0,0},{40,40}}</string>
                 <key>sourceSize</key>
-                <string>{20,20}</string>
+                <string>{40,40}</string>
             </dict>
             <key>ball-2.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,144},{20,20}}</string>
+                <string>{{44,164},{40,40}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{20,20}}</string>
+                <string>{{0,0},{40,40}}</string>
                 <key>sourceSize</key>
-                <string>{20,20}</string>
+                <string>{40,40}</string>
             </dict>
             <key>block-0.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{24,84},{20,80}}</string>
+                <string>{{86,2},{40,160}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{20,80}}</string>
+                <string>{{0,0},{40,160}}</string>
                 <key>sourceSize</key>
-                <string>{20,80}</string>
+                <string>{40,160}</string>
             </dict>
             <key>block-1.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{24,2},{20,80}}</string>
+                <string>{{44,2},{40,160}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{20,80}}</string>
+                <string>{{0,0},{40,160}}</string>
                 <key>sourceSize</key>
-                <string>{20,80}</string>
+                <string>{40,160}</string>
             </dict>
             <key>paddle-1.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,2},{20,140}}</string>
+                <string>{{2,2},{40,280}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{20,140}}</string>
+                <string>{{0,0},{40,280}}</string>
                 <key>sourceSize</key>
-                <string>{20,140}</string>
+                <string>{40,280}</string>
             </dict>
         </dict>
         <key>metadata</key>
@@ -88,13 +88,13 @@
             <key>format</key>
             <integer>2</integer>
             <key>realTextureFileName</key>
-            <string>sprites-hd.png</string>
+            <string>sprites-ipad-hd.png</string>
             <key>size</key>
-            <string>{64,256}</string>
+            <string>{128,512}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:5b040e832dbb1314d12a497020ac77d0$</string>
+            <string>$TexturePacker:SmartUpdate:dd1c21385f06ff46d6043459a2a96bf4$</string>
             <key>textureFileName</key>
-            <string>sprites-hd.png</string>
+            <string>sprites-ipad-hd.png</string>
         </dict>
     </dict>
 </plist>

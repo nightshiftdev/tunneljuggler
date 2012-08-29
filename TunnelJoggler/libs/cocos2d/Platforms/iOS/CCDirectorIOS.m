@@ -187,42 +187,53 @@ CGFloat	__ccContentScaleFactor = 1;
 
 -(void) setProjection:(ccDirectorProjection)projection
 {
-	CGSize size = winSizeInPixels_;
-	
-	switch (projection) {
-		case kCCDirectorProjection2D:
-			glViewport(0, 0, size.width, size.height);
-			glMatrixMode(GL_PROJECTION);
-			glLoadIdentity();
-			ccglOrtho(0, size.width, 0, size.height, -1024 * CC_CONTENT_SCALE_FACTOR(), 1024 * CC_CONTENT_SCALE_FACTOR());
-			glMatrixMode(GL_MODELVIEW);
-			glLoadIdentity();
-			break;
-			
-		case kCCDirectorProjection3D:
-			glViewport(0, 0, size.width, size.height);
-			glMatrixMode(GL_PROJECTION);
-			glLoadIdentity();
-			gluPerspective(60, (GLfloat)size.width/size.height, 0.5f, 1500.0f);
-			
-			glMatrixMode(GL_MODELVIEW);	
-			glLoadIdentity();
-			gluLookAt( size.width/2, size.height/2, [self getZEye],
-					  size.width/2, size.height/2, 0,
-					  0.0f, 1.0f, 0.0f);			
-			break;
-			
-		case kCCDirectorProjectionCustom:
-			if( projectionDelegate_ )
-				[projectionDelegate_ updateProjection];
-			break;
-			
-		default:
-			CCLOG(@"cocos2d: Director: unrecognized projecgtion");
-			break;
-	}
-	
-	projection_ = projection;
+    CGSize size = winSizeInPixels_;
+    
+    switch (projection) {
+        case kCCDirectorProjection2D:
+            glViewport(0, 0, size.width, size.height);
+            glMatrixMode(GL_PROJECTION);
+            glLoadIdentity();
+            ccglOrtho(0, size.width, 0, size.height, -1024 * CC_CONTENT_SCALE_FACTOR(), 1024 * CC_CONTENT_SCALE_FACTOR());
+            glMatrixMode(GL_MODELVIEW);
+            glLoadIdentity();
+            break;
+            
+        case kCCDirectorProjection3D:
+        {
+            float zeye = [self getZEye];
+            
+            glViewport(0, 0, size.width, size.height);
+            glMatrixMode(GL_PROJECTION);
+            glLoadIdentity();
+            // accommodate iPad retina while keep backward compatibility
+            if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad &&
+                [[UIScreen mainScreen] scale] > 1.0 )
+            {
+                gluPerspective(60, (GLfloat)size.width/size.height, zeye-size.height/2, zeye+size.height/2 );
+            } else {
+                gluPerspective(60, (GLfloat)size.width/size.height, 0.5f, 1500);
+            }
+            
+            glMatrixMode(GL_MODELVIEW);	
+            glLoadIdentity();
+            gluLookAt( size.width/2, size.height/2, zeye,
+                      size.width/2, size.height/2, 0,
+                      0.0f, 1.0f, 0.0f);
+            break;
+        }
+            
+        case kCCDirectorProjectionCustom:
+            if( projectionDelegate_ )
+                [projectionDelegate_ updateProjection];
+            break;
+            
+        default:
+            CCLOG(@"cocos2d: Director: unrecognized projecgtion");
+            break;
+    }
+    
+    projection_ = projection;
 }
 
 #pragma mark Director Integration with a UIKit view
@@ -297,9 +308,6 @@ CGFloat	__ccContentScaleFactor = 1;
 	// SD device
 	if ([[UIScreen mainScreen] scale] == 1.0)
 		return NO;
-    
-    if ((UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad))
-        return NO;
 
 	float newScale = enabled ? 2 : 1;
 	[self setContentScaleFactor:newScale];

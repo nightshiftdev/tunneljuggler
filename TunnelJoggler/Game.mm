@@ -507,9 +507,8 @@
     glEnable(GL_TEXTURE_2D);
     
     CCSprite *noise = [CCSprite spriteWithFile:@"Noise.png"];
-    if (([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) ||
-        [CCDirector sharedDirector].contentScaleFactor == 2) {
-        noise = [CCSprite spriteWithFile:@"Noise_iPad.png"];
+    if (([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)) {
+        noise = [CCSprite spriteWithFile:@"Noise_ipad.png"];
     }
     [noise setBlendFunc:(ccBlendFunc){GL_DST_COLOR, GL_ZERO}];
     noise.position = ccp(textureSize/2, textureSize/2);
@@ -609,9 +608,8 @@
     
     // Layer 2: Noise    
     CCSprite *noise = [CCSprite spriteWithFile:@"Noise.png"];
-    if (([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) ||
-        [CCDirector sharedDirector].contentScaleFactor == 2) {
-        noise = [CCSprite spriteWithFile:@"Noise_iPad.png"];
+    if (([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)) {
+        noise = [CCSprite spriteWithFile:@"Noise_ipad.png"];
     }
     [noise setBlendFunc:(ccBlendFunc){GL_DST_COLOR, GL_ZERO}];
     noise.position = ccp(textureSize/2, textureSize/2);

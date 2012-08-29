@@ -7,522 +7,522 @@
             <key>prealoader1.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{136,836},{153,132}}</string>
+                <string>{{1108,1260},{304,264}}</string>
                 <key>offset</key>
-                <string>{7,-1}</string>
+                <string>{15,-2}</string>
                 <key>rotated</key>
-                <true/>
+                <false/>
                 <key>sourceColorRect</key>
-                <string>{{52,13},{153,132}}</string>
+                <string>{{106,26},{304,264}}</string>
                 <key>sourceSize</key>
-                <string>{243,156}</string>
+                <string>{486,312}</string>
             </dict>
             <key>prealoader10.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{615,242},{191,132}}</string>
+                <string>{{780,600},{380,264}}</string>
                 <key>offset</key>
-                <string>{17,-1}</string>
+                <string>{35,-2}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{43,13},{191,132}}</string>
+                <string>{{88,26},{380,264}}</string>
                 <key>sourceSize</key>
-                <string>{243,156}</string>
+                <string>{486,312}</string>
             </dict>
             <key>prealoader11.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{587,376},{189,130}}</string>
+                <string>{{384,982},{376,260}}</string>
                 <key>offset</key>
-                <string>{16,-2}</string>
+                <string>{33,-4}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{43,15},{189,130}}</string>
+                <string>{{88,30},{376,260}}</string>
                 <key>sourceSize</key>
-                <string>{243,156}</string>
+                <string>{486,312}</string>
             </dict>
             <key>prealoader12.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{647,116},{203,124}}</string>
+                <string>{{1286,228},{406,246}}</string>
                 <key>offset</key>
-                <string>{11,-5}</string>
+                <string>{22,-11}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{31,21},{203,124}}</string>
+                <string>{{62,44},{406,246}}</string>
                 <key>sourceSize</key>
-                <string>{243,156}</string>
+                <string>{486,312}</string>
             </dict>
             <key>prealoader13.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{434,2},{211,114}}</string>
+                <string>{{862,2},{422,226}}</string>
                 <key>offset</key>
-                <string>{5,-10}</string>
+                <string>{10,-21}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{21,31},{211,114}}</string>
+                <string>{{42,64},{422,226}}</string>
                 <key>sourceSize</key>
-                <string>{243,156}</string>
+                <string>{486,312}</string>
             </dict>
             <key>prealoader14.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,92},{213,100}}</string>
+                <string>{{2,178},{426,198}}</string>
                 <key>offset</key>
-                <string>{-3,-16}</string>
+                <string>{-6,-33}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{12,44},{213,100}}</string>
+                <string>{{24,90},{426,198}}</string>
                 <key>sourceSize</key>
-                <string>{243,156}</string>
+                <string>{486,312}</string>
             </dict>
             <key>prealoader15.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,2},{215,88}}</string>
+                <string>{{2,2},{430,174}}</string>
                 <key>offset</key>
-                <string>{-14,-22}</string>
+                <string>{-28,-45}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{0,56},{215,88}}</string>
+                <string>{{0,114},{430,174}}</string>
                 <key>sourceSize</key>
-                <string>{243,156}</string>
+                <string>{486,312}</string>
             </dict>
             <key>prealoader16.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{434,118},{199,102}}</string>
+                <string>{{430,248},{396,204}}</string>
                 <key>offset</key>
-                <string>{-15,-16}</string>
+                <string>{-29,-32}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{7,43},{199,102}}</string>
+                <string>{{16,86},{396,204}}</string>
                 <key>sourceSize</key>
-                <string>{243,156}</string>
+                <string>{486,312}</string>
             </dict>
             <key>prealoader17.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,592},{185,116}}</string>
+                <string>{{2,1164},{370,230}}</string>
                 <key>offset</key>
-                <string>{-13,-9}</string>
+                <string>{-26,-19}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{16,29},{185,116}}</string>
+                <string>{{32,60},{370,230}}</string>
                 <key>sourceSize</key>
-                <string>{243,156}</string>
+                <string>{486,312}</string>
             </dict>
             <key>prealoader18.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,710},{165,124}}</string>
+                <string>{{374,1244},{328,248}}</string>
                 <key>offset</key>
-                <string>{-15,-5}</string>
+                <string>{-29,-10}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{24,21},{165,124}}</string>
+                <string>{{50,42},{328,248}}</string>
                 <key>sourceSize</key>
-                <string>{243,156}</string>
+                <string>{486,312}</string>
             </dict>
             <key>prealoader19.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{806,628},{145,130}}</string>
+                <string>{{1610,1592},{288,260}}</string>
                 <key>offset</key>
-                <string>{-17,-2}</string>
+                <string>{-33,-4}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{32,15},{145,130}}</string>
+                <string>{{66,30},{288,260}}</string>
                 <key>sourceSize</key>
-                <string>{243,156}</string>
+                <string>{486,312}</string>
             </dict>
             <key>prealoader2.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{270,834},{153,130}}</string>
+                <string>{{1414,1292},{304,260}}</string>
                 <key>offset</key>
-                <string>{-5,-2}</string>
+                <string>{-9,-4}</string>
                 <key>rotated</key>
-                <true/>
+                <false/>
                 <key>sourceColorRect</key>
-                <string>{{40,15},{153,130}}</string>
+                <string>{{82,30},{304,260}}</string>
                 <key>sourceSize</key>
-                <string>{243,156}</string>
+                <string>{486,312}</string>
             </dict>
             <key>prealoader20.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{670,642},{149,134}}</string>
+                <string>{{1310,1554},{298,266}}</string>
                 <key>offset</key>
-                <string>{-6,0}</string>
+                <string>{-12,-1}</string>
                 <key>rotated</key>
-                <true/>
+                <false/>
                 <key>sourceColorRect</key>
-                <string>{{41,11},{149,134}}</string>
+                <string>{{82,24},{298,266}}</string>
                 <key>sourceSize</key>
-                <string>{243,156}</string>
+                <string>{486,312}</string>
             </dict>
             <key>prealoader21.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{526,830},{151,132}}</string>
+                <string>{{704,1320},{302,262}}</string>
                 <key>offset</key>
-                <string>{7,-1}</string>
+                <string>{14,-3}</string>
                 <key>rotated</key>
-                <true/>
+                <false/>
                 <key>sourceColorRect</key>
-                <string>{{53,13},{151,132}}</string>
+                <string>{{106,28},{302,262}}</string>
                 <key>sourceSize</key>
-                <string>{243,156}</string>
+                <string>{486,312}</string>
             </dict>
             <key>prealoader22.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{364,706},{153,124}}</string>
+                <string>{{1498,1042},{306,248}}</string>
+                <key>offset</key>
+                <string>{38,-10}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{128,42},{306,248}}</string>
+                <key>sourceSize</key>
+                <string>{486,312}</string>
+            </dict>
+            <key>prealoader23.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{1806,1042},{302,224}}</string>
+                <key>offset</key>
+                <string>{58,-20}</string>
+                <key>rotated</key>
+                <true/>
+                <key>sourceColorRect</key>
+                <string>{{150,64},{302,224}}</string>
+                <key>sourceSize</key>
+                <string>{486,312}</string>
+            </dict>
+            <key>prealoader24.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{2,1618},{310,234}}</string>
+                <key>offset</key>
+                <string>{66,-15}</string>
+                <key>rotated</key>
+                <true/>
+                <key>sourceColorRect</key>
+                <string>{{154,54},{310,234}}</string>
+                <key>sourceSize</key>
+                <string>{486,312}</string>
+            </dict>
+            <key>prealoader25.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{1150,1002},{346,256}}</string>
+                <key>offset</key>
+                <string>{68,-6}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{138,34},{346,256}}</string>
+                <key>sourceSize</key>
+                <string>{486,312}</string>
+            </dict>
+            <key>prealoader26.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{1694,252},{348,264}}</string>
+                <key>offset</key>
+                <string>{53,-2}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{122,26},{348,264}}</string>
+                <key>sourceSize</key>
+                <string>{486,312}</string>
+            </dict>
+            <key>prealoader27.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{1542,778},{362,262}}</string>
+                <key>offset</key>
+                <string>{32,-3}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{94,28},{362,262}}</string>
+                <key>sourceSize</key>
+                <string>{486,312}</string>
+            </dict>
+            <key>prealoader28.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{770,866},{378,252}}</string>
+                <key>offset</key>
+                <string>{12,-8}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{66,38},{378,252}}</string>
+                <key>sourceSize</key>
+                <string>{486,312}</string>
+            </dict>
+            <key>prealoader29.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{392,454},{386,260}}</string>
+                <key>offset</key>
+                <string>{-6,-4}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{44,30},{386,260}}</string>
+                <key>sourceSize</key>
+                <string>{486,312}</string>
+            </dict>
+            <key>prealoader3.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{1720,1346},{304,244}}</string>
+                <key>offset</key>
+                <string>{-35,-12}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{56,46},{304,244}}</string>
+                <key>sourceSize</key>
+                <string>{486,312}</string>
+            </dict>
+            <key>prealoader30.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{2,378},{388,264}}</string>
+                <key>offset</key>
+                <string>{-19,-2}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{30,26},{388,264}}</string>
+                <key>sourceSize</key>
+                <string>{486,312}</string>
+            </dict>
+            <key>prealoader31.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{2,644},{384,258}}</string>
+                <key>offset</key>
+                <string>{-27,-5}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{24,32},{384,258}}</string>
+                <key>sourceSize</key>
+                <string>{486,312}</string>
+            </dict>
+            <key>prealoader32.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{434,2},{426,244}}</string>
+                <key>offset</key>
+                <string>{-24,-12}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{6,46},{426,244}}</string>
+                <key>sourceSize</key>
+                <string>{486,312}</string>
+            </dict>
+            <key>prealoader33.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{1286,2},{416,224}}</string>
+                <key>offset</key>
+                <string>{-1,-22}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{34,66},{416,224}}</string>
+                <key>sourceSize</key>
+                <string>{486,312}</string>
+            </dict>
+            <key>prealoader34.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{862,230},{398,196}}</string>
+                <key>offset</key>
+                <string>{20,-34}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{64,92},{398,196}}</string>
+                <key>sourceSize</key>
+                <string>{486,312}</string>
+            </dict>
+            <key>prealoader35.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{828,428},{388,170}}</string>
+                <key>offset</key>
+                <string>{41,-47}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{90,118},{388,170}}</string>
+                <key>sourceSize</key>
+                <string>{486,312}</string>
+            </dict>
+            <key>prealoader36.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{762,1120},{344,198}}</string>
+                <key>offset</key>
+                <string>{49,-35}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{120,92},{344,198}}</string>
+                <key>sourceSize</key>
+                <string>{486,312}</string>
+            </dict>
+            <key>prealoader37.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{2,1396},{314,220}}</string>
+                <key>offset</key>
+                <string>{50,-22}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{136,68},{314,220}}</string>
+                <key>sourceSize</key>
+                <string>{486,312}</string>
+            </dict>
+            <key>prealoader38.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{504,1788},{296,242}}</string>
+                <key>offset</key>
+                <string>{47,-13}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{142,48},{296,242}}</string>
+                <key>sourceSize</key>
+                <string>{486,312}</string>
+            </dict>
+            <key>prealoader39.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{1008,1526},{300,260}}</string>
+                <key>offset</key>
+                <string>{31,-4}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{124,30},{300,260}}</string>
+                <key>sourceSize</key>
+                <string>{486,312}</string>
+            </dict>
+            <key>prealoader4.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{1704,2},{332,248}}</string>
+                <key>offset</key>
+                <string>{-47,-10}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{30,42},{332,248}}</string>
+                <key>sourceSize</key>
+                <string>{486,312}</string>
+            </dict>
+            <key>prealoader40.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{238,1618},{306,264}}</string>
+                <key>offset</key>
+                <string>{16,-2}</string>
+                <key>rotated</key>
+                <true/>
+                <key>sourceColorRect</key>
+                <string>{{106,26},{306,264}}</string>
+                <key>sourceSize</key>
+                <string>{486,312}</string>
+            </dict>
+            <key>prealoader5.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{1602,518},{380,258}}</string>
+                <key>offset</key>
+                <string>{-47,-5}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{6,32},{380,258}}</string>
+                <key>sourceSize</key>
+                <string>{486,312}</string>
+            </dict>
+            <key>prealoader6.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{388,716},{380,264}}</string>
+                <key>offset</key>
+                <string>{-31,-2}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{22,26},{380,264}}</string>
+                <key>sourceSize</key>
+                <string>{486,312}</string>
+            </dict>
+            <key>prealoader7.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{1218,476},{382,264}}</string>
+                <key>offset</key>
+                <string>{-16,-2}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{36,26},{382,264}}</string>
+                <key>sourceSize</key>
+                <string>{486,312}</string>
+            </dict>
+            <key>prealoader8.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{1162,742},{378,258}}</string>
+                <key>offset</key>
+                <string>{2,-5}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{56,32},{378,258}}</string>
+                <key>sourceSize</key>
+                <string>{486,312}</string>
+            </dict>
+            <key>prealoader9.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{2,904},{380,258}}</string>
                 <key>offset</key>
                 <string>{19,-5}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{64,21},{153,124}}</string>
+                <string>{{72,32},{380,258}}</string>
                 <key>sourceSize</key>
-                <string>{243,156}</string>
-            </dict>
-            <key>prealoader23.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{169,720},{151,112}}</string>
-                <key>offset</key>
-                <string>{29,-10}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{75,32},{151,112}}</string>
-                <key>sourceSize</key>
-                <string>{243,156}</string>
-            </dict>
-            <key>prealoader24.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{858,114},{155,118}}</string>
-                <key>offset</key>
-                <string>{33,-7}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{77,26},{155,118}}</string>
-                <key>sourceSize</key>
-                <string>{243,156}</string>
-            </dict>
-            <key>prealoader25.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{386,576},{173,128}}</string>
-                <key>offset</key>
-                <string>{34,-3}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{69,17},{173,128}}</string>
-                <key>sourceSize</key>
-                <string>{243,156}</string>
-            </dict>
-            <key>prealoader26.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{581,508},{175,132}}</string>
-                <key>offset</key>
-                <string>{26,-1}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{60,13},{175,132}}</string>
-                <key>sourceSize</key>
-                <string>{243,156}</string>
-            </dict>
-            <key>prealoader27.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{778,494},{181,132}}</string>
-                <key>offset</key>
-                <string>{16,-1}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{47,13},{181,132}}</string>
-                <key>sourceSize</key>
-                <string>{243,156}</string>
-            </dict>
-            <key>prealoader28.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{195,490},{189,126}}</string>
-                <key>offset</key>
-                <string>{6,-4}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{33,19},{189,126}}</string>
-                <key>sourceSize</key>
-                <string>{243,156}</string>
-            </dict>
-            <key>prealoader29.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{2,328},{193,130}}</string>
-                <key>offset</key>
-                <string>{-3,-2}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{22,15},{193,130}}</string>
-                <key>sourceSize</key>
-                <string>{243,156}</string>
-            </dict>
-            <key>prealoader3.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{402,832},{153,122}}</string>
-                <key>offset</key>
-                <string>{-18,-6}</string>
-                <key>rotated</key>
-                <true/>
-                <key>sourceColorRect</key>
-                <string>{{27,23},{153,122}}</string>
-                <key>sourceSize</key>
-                <string>{243,156}</string>
-            </dict>
-            <key>prealoader30.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{2,194},{195,132}}</string>
-                <key>offset</key>
-                <string>{-10,-1}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{14,13},{195,132}}</string>
-                <key>sourceSize</key>
-                <string>{243,156}</string>
-            </dict>
-            <key>prealoader31.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{199,226},{193,130}}</string>
-                <key>offset</key>
-                <string>{-14,-2}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{11,15},{193,130}}</string>
-                <key>sourceSize</key>
-                <string>{243,156}</string>
-            </dict>
-            <key>prealoader32.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{219,2},{213,122}}</string>
-                <key>offset</key>
-                <string>{-12,-6}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{3,23},{213,122}}</string>
-                <key>sourceSize</key>
-                <string>{243,156}</string>
-            </dict>
-            <key>prealoader33.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{647,2},{209,112}}</string>
-                <key>offset</key>
-                <string>{-1,-11}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{16,33},{209,112}}</string>
-                <key>sourceSize</key>
-                <string>{243,156}</string>
-            </dict>
-            <key>prealoader34.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{217,126},{199,98}}</string>
-                <key>offset</key>
-                <string>{10,-17}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{32,46},{199,98}}</string>
-                <key>sourceSize</key>
-                <string>{243,156}</string>
-            </dict>
-            <key>prealoader35.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{418,222},{195,86}}</string>
-                <key>offset</key>
-                <string>{20,-23}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{44,58},{195,86}}</string>
-                <key>sourceSize</key>
-                <string>{243,156}</string>
-            </dict>
-            <key>prealoader36.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{189,618},{173,100}}</string>
-                <key>offset</key>
-                <string>{24,-17}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{59,45},{173,100}}</string>
-                <key>sourceSize</key>
-                <string>{243,156}</string>
-            </dict>
-            <key>prealoader37.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{858,2},{157,110}}</string>
-                <key>offset</key>
-                <string>{25,-11}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{68,34},{157,110}}</string>
-                <key>sourceSize</key>
-                <string>{243,156}</string>
-            </dict>
-            <key>prealoader38.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{519,706},{149,122}}</string>
-                <key>offset</key>
-                <string>{23,-6}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{70,23},{149,122}}</string>
-                <key>sourceSize</key>
-                <string>{243,156}</string>
-            </dict>
-            <key>prealoader39.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{660,830},{151,130}}</string>
-                <key>offset</key>
-                <string>{15,-2}</string>
-                <key>rotated</key>
-                <true/>
-                <key>sourceColorRect</key>
-                <string>{{61,15},{151,130}}</string>
-                <key>sourceSize</key>
-                <string>{243,156}</string>
-            </dict>
-            <key>prealoader4.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{852,234},{167,124}}</string>
-                <key>offset</key>
-                <string>{-24,-5}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{14,21},{167,124}}</string>
-                <key>sourceSize</key>
-                <string>{243,156}</string>
-            </dict>
-            <key>prealoader40.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{2,836},{153,132}}</string>
-                <key>offset</key>
-                <string>{8,-1}</string>
-                <key>rotated</key>
-                <true/>
-                <key>sourceColorRect</key>
-                <string>{{53,13},{153,132}}</string>
-                <key>sourceSize</key>
-                <string>{243,156}</string>
-            </dict>
-            <key>prealoader5.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{2,460},{191,130}}</string>
-                <key>offset</key>
-                <string>{-24,-2}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{2,15},{191,130}}</string>
-                <key>sourceSize</key>
-                <string>{243,156}</string>
-            </dict>
-            <key>prealoader6.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{394,310},{191,132}}</string>
-                <key>offset</key>
-                <string>{-16,-1}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{10,13},{191,132}}</string>
-                <key>sourceSize</key>
-                <string>{243,156}</string>
-            </dict>
-            <key>prealoader7.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{808,360},{191,132}}</string>
-                <key>offset</key>
-                <string>{-8,-1}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{18,13},{191,132}}</string>
-                <key>sourceSize</key>
-                <string>{243,156}</string>
-            </dict>
-            <key>prealoader8.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{390,444},{189,130}}</string>
-                <key>offset</key>
-                <string>{1,-2}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{28,15},{189,130}}</string>
-                <key>sourceSize</key>
-                <string>{243,156}</string>
-            </dict>
-            <key>prealoader9.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{197,358},{191,130}}</string>
-                <key>offset</key>
-                <string>{9,-2}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{35,15},{191,130}}</string>
-                <key>sourceSize</key>
-                <string>{243,156}</string>
+                <string>{486,312}</string>
             </dict>
         </dict>
         <key>metadata</key>
@@ -532,9 +532,9 @@
             <key>realTextureFileName</key>
             <string>preloader-ipad-hd.png</string>
             <key>size</key>
-            <string>{1024,1024}</string>
+            <string>{2048,2048}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:389f490f03e1977bd759e89228c4ff87$</string>
+            <string>$TexturePacker:SmartUpdate:f04f2ca5b1f6181f9a85e7c4ba6a1e8b$</string>
             <key>textureFileName</key>
             <string>preloader-ipad-hd.png</string>
         </dict>

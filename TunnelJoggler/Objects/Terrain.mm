@@ -38,9 +38,15 @@
         [self generateHills];
         [self resetHillVertices];
         
-        _batchNode = [CCSpriteBatchNode batchNodeWithFile:@"sprites.png"];
+        NSString *spritesPlist = @"sprites.plist";
+        NSString *spritesPng = @"sprites.png";
+        if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+            spritesPlist = @"sprites-ipad.plist";
+            spritesPng = @"sprites-ipad.png";
+        }
+        _batchNode = [CCSpriteBatchNode batchNodeWithFile:spritesPng];
         [self addChild:_batchNode];
-        [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"sprites.plist"];
+        [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:spritesPlist];
     }
     return self;
 }

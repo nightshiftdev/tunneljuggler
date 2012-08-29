@@ -88,13 +88,13 @@
             <key>format</key>
             <integer>2</integer>
             <key>realTextureFileName</key>
-            <string>sprites-hd.png</string>
+            <string>sprites-ipad.png</string>
             <key>size</key>
             <string>{64,256}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:5b040e832dbb1314d12a497020ac77d0$</string>
+            <string>$TexturePacker:SmartUpdate:873545e74a9ca0d6ba9503ebab8b6dc7$</string>
             <key>textureFileName</key>
-            <string>sprites-hd.png</string>
+            <string>sprites-ipad.png</string>
         </dict>
     </dict>
 </plist>

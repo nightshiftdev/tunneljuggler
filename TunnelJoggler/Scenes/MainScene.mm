@@ -142,8 +142,8 @@
             CCMenuItem *itemGameCenter = [SoundMenuItem itemFromNormalSpriteFrameName:@"game-center-off.png" selectedSpriteFrameName:@"game-center-on.png" target:self selector:@selector(highScoreGameCenter:)];
             CCMenu *menuGameCenter = [CCMenu menuWithItems: itemGameCenter, nil];
             menuGameCenter.position = ccp(s.width/9, s.height/2);
-            id scaleGameCenterButtonTo = [CCScaleTo actionWithDuration:0.5f scale:0.9f];
-            id scaleGameCenterButtonBack = [CCScaleTo actionWithDuration:0.5f scale:1.0f];
+            id scaleGameCenterButtonTo = [CCScaleTo actionWithDuration:1.0f scale:0.9f];
+            id scaleGameCenterButtonBack = [CCScaleTo actionWithDuration:1.0f scale:1.0f];
             seq = [CCSequence actions:scaleGameCenterButtonTo, scaleGameCenterButtonBack, nil];
             [itemGameCenter runAction:[CCRepeatForever actionWithAction:seq]];
             [self addChild:menuGameCenter];
@@ -199,10 +199,12 @@
     [self.itemUserPicture stopAllActions];
     [self removeChild: self.playerPictureMenu cleanup: YES];
     
-    id rotateLeft = [CCRotateBy actionWithDuration:0.2f angle:-5.0f];
-    id rotateRight = [CCRotateBy actionWithDuration:0.4f angle:10.0f];
+    id rotateLeft = [CCRotateBy actionWithDuration:0.2f angle:-1.0f];
+    id rotateRight = [CCRotateBy actionWithDuration:0.4f angle:2.0f];
+    id scaleTo = [CCScaleTo actionWithDuration:0.5f scale:0.98f];
+    id scaleBack = [CCScaleTo actionWithDuration:0.5f scale:1.0f];
     
-    id seq = [CCSequence actions:rotateLeft, rotateRight, rotateLeft, nil];
+    id seq = [CCSequence actions:rotateLeft, rotateRight, rotateLeft, scaleTo, scaleBack, nil];
     
     CGSize s = [[CCDirector sharedDirector] winSize];
     self.itemUserPicture = [SoundMenuItem itemFromNormalSprite:normalStateSprite
