@@ -113,6 +113,7 @@
 
 -(void) gameOver:(BOOL)didWin touchedFatalObject:(BOOL) fatalObjectTouched {
     if (!self.isGameOver) {
+        game_.state = kGameStatePaused;
         self.isGameOver = YES;
         CCMenuItem *item0 = [SoundMenuItem itemFromNormalSpriteFrameName:@"exit-off.png" selectedSpriteFrameName:@"exit-on.png" target:self selector:@selector(onMainMenuPressed:)];
         CCMenuItem *item2, *item1 = nil;
@@ -247,6 +248,7 @@
 }
 
 -(void) pause {
+    game_.state = kGameStatePaused;
 	CGSize s = [[CCDirector sharedDirector] winSize];
 	CCMenuItem *item2 = [SoundMenuItem itemFromNormalSpriteFrameName:@"play-off.png" selectedSpriteFrameName:@"play-on.png" target:self selector:@selector(onResumePressed:)];
 	CCMenuItem *item1 = [SoundMenuItem itemFromNormalSpriteFrameName:@"retry-off.png" selectedSpriteFrameName:@"retry-on.png" target:self selector:@selector(onPlayAgainPressed:)];
@@ -261,6 +263,7 @@
 -(void)resume {
     [self removeChild:menu_ cleanup: YES];
     [[CCDirector sharedDirector] resume];
+    game_.state = kGameStateRunning;
 }
 
 -(void) showHowToPlay {

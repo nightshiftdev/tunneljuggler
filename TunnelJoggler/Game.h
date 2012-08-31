@@ -21,6 +21,11 @@
 #define DEBUG_LOG NO
 #endif
 
+typedef enum {
+    kGameStatePaused = 0,
+    kGameStateRunning,
+} GameState;
+
 static const double UPDATE_INTERVAL = 1.0f/60.0f;
 static const double MAX_CYCLES_PER_FRAME = 5;
 
@@ -55,5 +60,6 @@ static const double MAX_CYCLES_PER_FRAME = 5;
 
 @property (readwrite, nonatomic, assign) HUD *hud;
 @property (readonly, nonatomic) Terrain *terrain;
+@property (readwrite, nonatomic, assign) GameState state;
 
 @end

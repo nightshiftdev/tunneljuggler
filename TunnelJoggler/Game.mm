@@ -25,6 +25,7 @@
 @synthesize player = _player;
 @synthesize levels;
 @synthesize currentLevel = _currentLevel;
+@synthesize state;
 
 +(CCScene *) scene {
 	CCScene *scene = [CCScene node];
@@ -81,6 +82,7 @@
         paddle_.speedIncreaseAmount = [_currentLevel.speedIncreaseValue floatValue];
 
         [self scheduleUpdate];
+        self.state = kGameStateRunning;
     }
     return self;
 }
@@ -258,6 +260,10 @@
 }
 
 - (void)update:(ccTime)dt {
+    if (self.state != kGameStateRunning) {
+        return;
+    }
+    
     [self addNextObstacle: dt];
     [self addNextBounusBall:dt];
     [self increasePaddleSpeed:dt];
