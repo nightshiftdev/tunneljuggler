@@ -101,7 +101,9 @@ static NSOperationQueue *_presentedItemOperationQueue;
         NSFileManager *fileManager = [NSFileManager defaultManager];
         if ([fileManager respondsToSelector:@selector(ubiquityIdentityToken)]) {
             _currentUbiquityToken = [fileManager ubiquityIdentityToken];
-            NSLog(@"_currentUbiquityToken: %@", _currentUbiquityToken);
+            if (DEBUG_LOG) {
+                NSLog(@"_currentUbiquityToken: %@", _currentUbiquityToken);
+            }
         }
         
         //subscribe to the account change notification
