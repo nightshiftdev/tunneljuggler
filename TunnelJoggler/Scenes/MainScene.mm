@@ -18,6 +18,8 @@
 @interface MainScene()
 - (void) setUserPictureForNormalState: (CCSprite *) normalStateSprite selectedState: (CCSprite *) selectedStateSprite;
 - (void) showLeaderboard;
+- (void) createScoreLabelWithScore: (int) score;
+- (void) createCurrentLevelLabelWithLevel: (int) level;
 
 @property (retain, nonatomic, readwrite) CCMenuItem *itemUserPicture;
 @property (retain, nonatomic, readwrite) CCMenu *playerPictureMenu;
@@ -109,34 +111,18 @@
             [self addChild:menuScoreRibbon z:4];
             
             // Score
-            float fontSize = 28.0;
-            if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-                fontSize = 56.0;
-            }
-            _scoreLabel = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", [p.score intValue]] fontName:@"BosoxRevised.ttf" fontSize:fontSize];
-            _scoreLabel.color = ccc3(204, 0, 0);
-            [self addChild:_scoreLabel z:5];
-            [_scoreLabel setPosition:ccp(s.width/1.65, s.height/2)];
-            _scoreLabel.rotation = 90;
+            [self createScoreLabelWithScore:[p.score intValue]];
             
             // Expirience
-            _experienceLabel = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"E X P E R I E N C E  L E V E L:  %d", [p.experienceLevel intValue]] fontName:@"BosoxRevised.ttf" fontSize:28.0];
-            _experienceLabel.color = ccc3(204, 0, 0);
-            [self addChild:_experienceLabel z:1];
-            [_experienceLabel setPosition:ccp(s.width/2 - 80, s.height/2)];
-            _experienceLabel.rotation = 90;
-            _experienceLabel.visible = NO;
+//            _experienceLabel = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"E X P E R I E N C E  L E V E L:  %d", [p.experienceLevel intValue]] fontName:@"BosoxRevised.ttf" fontSize:28.0];
+//            _experienceLabel.color = ccc3(204, 0, 0);
+//            [self addChild:_experienceLabel z:1];
+//            [_experienceLabel setPosition:ccp(s.width/2 - 80, s.height/2)];
+//            _experienceLabel.rotation = 90;
+//            _experienceLabel.visible = NO;
             
             // Current level
-            fontSize = 26.0;
-            if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-                fontSize = 52.0;
-            }
-            _currentLevelLabel = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", [p.currentLevel intValue] + 1] fontName:@"BosoxRevised.ttf" fontSize:fontSize];
-            _currentLevelLabel.color = ccc3(204, 0, 0);
-            [self addChild:_currentLevelLabel z:5];
-            [_currentLevelLabel setPosition:ccp(s.width/2.35, s.height/3.5)];
-            _currentLevelLabel.rotation = 90;
+            [self createCurrentLevelLabelWithLevel:[p.currentLevel intValue]];
             
             //Game center
             CCMenuItem *itemGameCenter = [SoundMenuItem itemFromNormalSpriteFrameName:@"game-center-off.png" selectedSpriteFrameName:@"game-center-on.png" target:self selector:@selector(highScoreGameCenter:)];
@@ -173,16 +159,47 @@
     [[CCDirector sharedDirector] replaceScene:[CCTransitionFade transitionWithDuration:0.1f scene:[ChallengeScene scene]]];
 }
 
+- (void) createScoreLabelWithScore: (int) score {
+    if (nil != _scoreLabel) {
+        [self removeChild: _scoreLabel cleanup: YES];
+    }
+    float fontSize = 28.0;
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+        fontSize = 56.0;
+    }
+    _scoreLabel = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", score] fontName:@"BosoxRevised.ttf" fontSize:fontSize];
+    _scoreLabel.color = ccc3(204, 0, 0);
+    [self addChild:_scoreLabel z:5];
+    CGSize s = [[CCDirector sharedDirector] winSize];
+    [_scoreLabel setPosition:ccp(s.width/1.65, s.height/2)];
+    _scoreLabel.rotation = 90;
+}
+
+- (void) createCurrentLevelLabelWithLevel: (int) level {
+    if (nil != _currentLevelLabel) {
+        [self removeChild:_currentLevelLabel cleanup: YES];
+    }
+    float fontSize = 26.0;
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+        fontSize = 52.0;
+    }
+    _currentLevelLabel = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", level + 1] fontName:@"BosoxRevised.ttf" fontSize:fontSize];
+    _currentLevelLabel.color = ccc3(204, 0, 0);
+    [self addChild:_currentLevelLabel z:5];
+    CGSize s = [[CCDirector sharedDirector] winSize];
+    [_currentLevelLabel setPosition:ccp(s.width/2.35, s.height/3.5)];
+    _currentLevelLabel.rotation = 90;
+}
+
 -(void)reloadGameData:(id)sender {
 #ifdef DEBUG
+    Player *p = [[GameController sharedController] player];
     NSLog(@"MainScene reloadGameData called.");
+    NSLog(@"MainScene reloadGameData score %d", [p.score intValue]);
+    NSLog(@"MainScene reloadGameData current level %d", [p.currentLevel intValue]);
 #endif
-    Player *p = [[GameController sharedController] player];    
-    [_scoreLabel setString: [NSString stringWithFormat:@"%d", [p.score intValue]]];
-    
-    [_experienceLabel setString: [NSString stringWithFormat:@"E X P E R I E N C E  L E V E L:  %d", [p.experienceLevel intValue]]];
-    
-    [_currentLevelLabel setString: [NSString stringWithFormat:@"%d", [p.currentLevel intValue]]];
+//    [_experienceLabel setString: [NSString stringWithFormat:@"E X P E R I E N C E  L E V E L:  %d", [p.experienceLevel intValue]]];
+    [self scheduleUpdate];
 }
 
 - (void)highScoreGameCenter:(id)sender {
@@ -240,6 +257,13 @@
 {
 	[[[UIApplication sharedApplication] delegate].window.rootViewController dismissModalViewControllerAnimated: YES];
 	[viewController release];
+}
+
+- (void)update:(ccTime)dt {
+    Player *p = [[GameController sharedController] player];
+    [_scoreLabel  setString: [NSString stringWithFormat: @"%@", p.score]];
+    [_currentLevelLabel setString: [NSString stringWithFormat:@"%d",  [p.currentLevel intValue] + 1]];
+    [self unscheduleUpdate];
 }
 
 @end
