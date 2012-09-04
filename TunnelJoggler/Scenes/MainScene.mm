@@ -20,6 +20,7 @@
 - (void) showLeaderboard;
 - (void) createScoreLabelWithScore: (int) score;
 - (void) createCurrentLevelLabelWithLevel: (int) level;
+- (void) createExperienceDisplay: (int) experienceLevel;
 
 @property (retain, nonatomic, readwrite) CCMenuItem *itemUserPicture;
 @property (retain, nonatomic, readwrite) CCMenu *playerPictureMenu;
@@ -113,13 +114,8 @@
             // Score
             [self createScoreLabelWithScore:[p.score intValue]];
             
-            // Expirience
-//            _experienceLabel = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"E X P E R I E N C E  L E V E L:  %d", [p.experienceLevel intValue]] fontName:@"BosoxRevised.ttf" fontSize:28.0];
-//            _experienceLabel.color = ccc3(204, 0, 0);
-//            [self addChild:_experienceLabel z:1];
-//            [_experienceLabel setPosition:ccp(s.width/2 - 80, s.height/2)];
-//            _experienceLabel.rotation = 90;
-//            _experienceLabel.visible = NO;
+            // Experience
+            [self createExperienceDisplay:[p.experienceLevel intValue]];
             
             // Current level
             [self createCurrentLevelLabelWithLevel:[p.currentLevel intValue]];
@@ -191,14 +187,68 @@
     _currentLevelLabel.rotation = 90;
 }
 
+- (void) createExperienceDisplay: (int) experienceLevel {
+    if (nil != _experienceDisplayLevel0) {
+        [self removeChild:_experienceDisplayLevel0 cleanup:YES];
+    }
+    
+    _experienceDisplayLevel0 = [SoundMenuItem itemFromNormalSpriteFrameName:@"expirience-on.png" selectedSpriteFrameName:@"expirience-on.png" disabledSpriteFrameName:@"expirience-off.png" target:nil selector:nil];
+    if (experienceLevel > 10) {
+        _experienceDisplayLevel0.isEnabled = YES;
+    } else {
+        _experienceDisplayLevel0.isEnabled = NO;
+    }
+    
+    _experienceDisplayLevel1 = [SoundMenuItem itemFromNormalSpriteFrameName:@"expirience-on.png" selectedSpriteFrameName:@"expirience-on.png" disabledSpriteFrameName:@"expirience-off.png" target:nil selector:nil];
+    if (experienceLevel > 100) {
+        _experienceDisplayLevel1.isEnabled = YES;
+    } else {
+        _experienceDisplayLevel1.isEnabled = NO;
+    }
+    
+    _experienceDisplayLevel2 = [SoundMenuItem itemFromNormalSpriteFrameName:@"expirience-on.png" selectedSpriteFrameName:@"expirience-on.png" disabledSpriteFrameName:@"expirience-off.png" target:nil selector:nil];
+    if (experienceLevel > 1000) {
+        _experienceDisplayLevel2.isEnabled = YES;
+    } else {
+        _experienceDisplayLevel2.isEnabled = NO;
+    }
+
+    _experienceDisplayLevel3 = [SoundMenuItem itemFromNormalSpriteFrameName:@"expirience-on.png" selectedSpriteFrameName:@"expirience-on.png" disabledSpriteFrameName:@"expirience-off.png" target:nil selector:nil];
+    if (experienceLevel > 10000) {
+        _experienceDisplayLevel3.isEnabled = YES;
+    } else {
+        _experienceDisplayLevel3.isEnabled = NO;
+    }
+    
+    _experienceDisplayLevel4 = [SoundMenuItem itemFromNormalSpriteFrameName:@"expirience-on.png" selectedSpriteFrameName:@"expirience-on.png" disabledSpriteFrameName:@"expirience-off.png" target:nil selector:nil];
+    if (experienceLevel > 100000) {
+        _experienceDisplayLevel4.isEnabled = YES;
+    } else {
+        _experienceDisplayLevel4.isEnabled = NO;
+    }
+    
+    CCMenu *menuExperienceLevel = [CCMenu menuWithItems: _experienceDisplayLevel0,
+                                   _experienceDisplayLevel1,
+                                   _experienceDisplayLevel2,
+                                   _experienceDisplayLevel3,
+                                   _experienceDisplayLevel4,
+                                   nil];
+    [menuExperienceLevel alignItemsVertically];
+    
+    CGSize s = [[CCDirector sharedDirector] winSize];
+    menuExperienceLevel.position = ccp(s.width/2, s.height/2);
+    [self addChild:menuExperienceLevel z:4];
+    
+}
+
 -(void)reloadGameData:(id)sender {
 #ifdef DEBUG
     Player *p = [[GameController sharedController] player];
     NSLog(@"MainScene reloadGameData called.");
     NSLog(@"MainScene reloadGameData score %d", [p.score intValue]);
     NSLog(@"MainScene reloadGameData current level %d", [p.currentLevel intValue]);
+    NSLog(@"MainScene reloadGameData experience level %d", [p.experienceLevel intValue]);
 #endif
-//    [_experienceLabel setString: [NSString stringWithFormat:@"E X P E R I E N C E  L E V E L:  %d", [p.experienceLevel intValue]]];
     [self scheduleUpdate];
 }
 
@@ -263,6 +313,34 @@
     Player *p = [[GameController sharedController] player];
     [_scoreLabel  setString: [NSString stringWithFormat: @"%@", p.score]];
     [_currentLevelLabel setString: [NSString stringWithFormat:@"%d",  [p.currentLevel intValue] + 1]];
+    
+    int experienceLevel = [p.experienceLevel intValue];
+    if (experienceLevel > 10) {
+        _experienceDisplayLevel0.isEnabled = YES;
+    } else {
+        _experienceDisplayLevel0.isEnabled = NO;
+    }
+    if (experienceLevel > 100) {
+        _experienceDisplayLevel1.isEnabled = YES;
+    } else {
+        _experienceDisplayLevel1.isEnabled = NO;
+    }
+    if (experienceLevel > 1000) {
+        _experienceDisplayLevel2.isEnabled = YES;
+    } else {
+        _experienceDisplayLevel2.isEnabled = NO;
+    }
+    if (experienceLevel > 10000) {
+        _experienceDisplayLevel3.isEnabled = YES;
+    } else {
+        _experienceDisplayLevel3.isEnabled = NO;
+    }
+    if (experienceLevel > 100000) {
+        _experienceDisplayLevel4.isEnabled = YES;
+    } else {
+        _experienceDisplayLevel4.isEnabled = NO;
+    }
+    
     [self unscheduleUpdate];
 }
 

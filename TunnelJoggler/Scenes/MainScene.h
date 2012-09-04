@@ -15,6 +15,11 @@
     CCLabelTTF *_scoreLabel;
     CCLabelTTF *_experienceLabel;
     CCLabelTTF *_currentLevelLabel;
+    CCMenuItem *_experienceDisplayLevel0;
+    CCMenuItem *_experienceDisplayLevel1;
+    CCMenuItem *_experienceDisplayLevel2;
+    CCMenuItem *_experienceDisplayLevel3;
+    CCMenuItem *_experienceDisplayLevel4;
 }
 +(id) scene;
 @end
