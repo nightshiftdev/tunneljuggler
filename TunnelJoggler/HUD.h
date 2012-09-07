@@ -16,13 +16,20 @@
     CCLabelTTF *scoreLabel_;
     CCLabelTTF *_timeLabel;
     CCLabelTTF *_scoreChallengeLabel;
+    CCLabelTTF *_scoreToPassChallengeLabel;
+    CCLabelTTF *_lengthChallengeLabel;
     CCMenu *menu_;
     int _minutes;
     int _seconds;
     Level* _currentLevel;
+    CCLayerColor *_pauseBackgroundColor;
+    CCSprite *_happyClown;
+    CCSprite *_sadClown;
+    float _lastOffset;
 }
 
 @property (assign, nonatomic, readonly) BOOL isShowingHowToPlay;
+@property (nonatomic, assign) float lengthRemainingToPassLevel;
 
 +(id) HUDWithGameNode:(Game*)game;
 -(id) initWithGameNode:(Game*)game;
@@ -32,5 +39,7 @@
 -(void) showHowToPlay;
 -(void) dismissHowToPlay:(id)sender;
 -(void) onUpdateCountDownTimer;
+-(void) onUpdateLengthCounter: (float) offset;
+-(void)onLevelLenghtEnd;
 
 @end

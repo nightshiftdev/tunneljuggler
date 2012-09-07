@@ -58,24 +58,12 @@
             // main frame
             CCMenuItem *itemFrame = [SoundMenuItem itemFromNormalSpriteFrameName:@"main-frame.png" selectedSpriteFrameName:@"main-frame.png" target:nil selector:nil];
             itemFrame.isEnabled = NO;
+            if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
+                itemFrame.scale = 0.88;
+            }
             CCMenu *menuFrame = [CCMenu menuWithItems: itemFrame, nil];
             menuFrame.position = ccp(s.width/2, s.height/2);
             [self addChild:menuFrame z:0];
-            
-            //game title
-            CCMenuItem *itemTitle = [SoundMenuItem itemFromNormalSpriteFrameName:@"main-title.png" selectedSpriteFrameName:@"main-title.png" target:nil selector:nil];
-            itemTitle.isEnabled = NO;
-            CCMenu *menuTitle = [CCMenu menuWithItems: itemTitle, nil];
-            menuTitle.position = ccp(s.width/1.12, s.height/2);
-            [self addChild:menuTitle z:2];
-            
-            
-            // clown frame
-            CCMenuItem *itemUserPictureFrame = [SoundMenuItem itemFromNormalSpriteFrameName:@"picture-frame.png" selectedSpriteFrameName:@"picture-frame.png" target:nil selector:nil];
-            itemUserPictureFrame.isEnabled = NO;
-            CCMenu *menuUserPictureFrame = [CCMenu menuWithItems: itemUserPictureFrame, nil];
-            menuUserPictureFrame.position = ccp(s.width/1.35, s.height/2);
-            [self addChild:menuUserPictureFrame z:1];
             
             id scaleTo = [CCScaleTo actionWithDuration:0.5f scale:0.9f];
             id scaleBack = [CCScaleTo actionWithDuration:0.5f scale:1.0f];
@@ -87,16 +75,9 @@
             //Play button
             CCMenuItem *itemPlay = [SoundMenuItem itemFromNormalSpriteFrameName:@"start-game-off.png" selectedSpriteFrameName:@"start-game-on.png" target:self selector:@selector(playGame:)];
             CCMenu *menuPlay = [CCMenu menuWithItems: itemPlay, nil];
-            menuPlay.position = ccp(s.width/3, s.height/2);
+            menuPlay.position = ccp(s.width/2.4, s.height/2);
             [itemPlay runAction:[CCRepeatForever actionWithAction:seq]];
             [self addChild:menuPlay];
-            
-            //Level ribbon
-            CCMenuItem *itemLevelRibbon = [SoundMenuItem itemFromNormalSpriteFrameName:@"level-indicator.png" selectedSpriteFrameName:@"level-indicator.png" target:nil selector:nil];
-            itemLevelRibbon.isEnabled = NO;
-            CCMenu *menuLevelRibbon = [CCMenu menuWithItems: itemLevelRibbon, nil];
-            menuLevelRibbon.position = ccp(s.width/2.5, s.height/3.5);
-            [self addChild:menuLevelRibbon z:4];
             
             //Clown face
             CCSprite *spriteFromImageNormal = [CCSprite spriteWithSpriteFrameName: @"clown-face-happy.png"];
@@ -108,7 +89,7 @@
             CCMenuItem *itemScoreRibbon = [SoundMenuItem itemFromNormalSpriteFrameName:@"score-frame.png" selectedSpriteFrameName:@"score-frame.png" target:nil selector:nil];
             itemScoreRibbon.isEnabled = NO;
             CCMenu *menuScoreRibbon = [CCMenu menuWithItems: itemScoreRibbon, nil];
-            menuScoreRibbon.position = ccp(s.width/1.70, s.height/2);
+            menuScoreRibbon.position = ccp(s.width/1.58, s.height/2);
             [self addChild:menuScoreRibbon z:4];
             
             // Score
@@ -124,7 +105,7 @@
             CCMenuItem *itemGameCenter = [SoundMenuItem itemFromNormalSpriteFrameName:@"game-center-off.png" selectedSpriteFrameName:@"game-center-on.png" target:self selector:@selector(highScoreGameCenter:)];
             CCMenu *menuGameCenter = [CCMenu menuWithItems: itemGameCenter, nil];
             menuGameCenter.position = ccp(s.width/9, s.height/2);
-            id scaleGameCenterButtonTo = [CCScaleTo actionWithDuration:1.0f scale:0.9f];
+            id scaleGameCenterButtonTo = [CCScaleTo actionWithDuration:1.0f scale:0.95f];
             id scaleGameCenterButtonBack = [CCScaleTo actionWithDuration:1.0f scale:1.0f];
             seq = [CCSequence actions:scaleGameCenterButtonTo, scaleGameCenterButtonBack, nil];
             [itemGameCenter runAction:[CCRepeatForever actionWithAction:seq]];
@@ -167,7 +148,7 @@
     _scoreLabel.color = ccc3(204, 0, 0);
     [self addChild:_scoreLabel z:5];
     CGSize s = [[CCDirector sharedDirector] winSize];
-    [_scoreLabel setPosition:ccp(s.width/1.65, s.height/2)];
+    [_scoreLabel setPosition:ccp(s.width/1.55, s.height/2)];
     _scoreLabel.rotation = 90;
 }
 
@@ -179,11 +160,11 @@
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
         fontSize = 52.0;
     }
-    _currentLevelLabel = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", level + 1] fontName:@"BosoxRevised.ttf" fontSize:fontSize];
-    _currentLevelLabel.color = ccc3(204, 0, 0);
+    _currentLevelLabel = [CCLabelTTF labelWithString:[NSString stringWithFormat:@" %d ", level + 1] fontName:@"BosoxRevised.ttf" fontSize:fontSize];
+    _currentLevelLabel.color = ccc3(255, 255, 255);
     [self addChild:_currentLevelLabel z:5];
     CGSize s = [[CCDirector sharedDirector] winSize];
-    [_currentLevelLabel setPosition:ccp(s.width/2.35, s.height/3.5)];
+    [_currentLevelLabel setPosition:ccp(s.width/2.48, s.height/2)];
     _currentLevelLabel.rotation = 90;
 }
 
@@ -192,35 +173,35 @@
         [self removeChild:_experienceDisplayLevel0 cleanup:YES];
     }
     
-    _experienceDisplayLevel0 = [SoundMenuItem itemFromNormalSpriteFrameName:@"expirience-on.png" selectedSpriteFrameName:@"expirience-on.png" disabledSpriteFrameName:@"expirience-off.png" target:nil selector:nil];
+    _experienceDisplayLevel0 = [SoundMenuItem itemFromNormalSpriteFrameName:@"experience-on.png" selectedSpriteFrameName:@"experience-on.png" disabledSpriteFrameName:@"experience-off.png" target:nil selector:nil];
     if (experienceLevel > 10) {
         _experienceDisplayLevel0.isEnabled = YES;
     } else {
         _experienceDisplayLevel0.isEnabled = NO;
     }
     
-    _experienceDisplayLevel1 = [SoundMenuItem itemFromNormalSpriteFrameName:@"expirience-on.png" selectedSpriteFrameName:@"expirience-on.png" disabledSpriteFrameName:@"expirience-off.png" target:nil selector:nil];
+    _experienceDisplayLevel1 = [SoundMenuItem itemFromNormalSpriteFrameName:@"experience-on.png" selectedSpriteFrameName:@"experience-on.png" disabledSpriteFrameName:@"experience-off.png" target:nil selector:nil];
     if (experienceLevel > 100) {
         _experienceDisplayLevel1.isEnabled = YES;
     } else {
         _experienceDisplayLevel1.isEnabled = NO;
     }
     
-    _experienceDisplayLevel2 = [SoundMenuItem itemFromNormalSpriteFrameName:@"expirience-on.png" selectedSpriteFrameName:@"expirience-on.png" disabledSpriteFrameName:@"expirience-off.png" target:nil selector:nil];
+    _experienceDisplayLevel2 = [SoundMenuItem itemFromNormalSpriteFrameName:@"experience-on.png" selectedSpriteFrameName:@"experience-off.png" disabledSpriteFrameName:@"experience-off.png" target:nil selector:nil];
     if (experienceLevel > 1000) {
         _experienceDisplayLevel2.isEnabled = YES;
     } else {
         _experienceDisplayLevel2.isEnabled = NO;
     }
 
-    _experienceDisplayLevel3 = [SoundMenuItem itemFromNormalSpriteFrameName:@"expirience-on.png" selectedSpriteFrameName:@"expirience-on.png" disabledSpriteFrameName:@"expirience-off.png" target:nil selector:nil];
+    _experienceDisplayLevel3 = [SoundMenuItem itemFromNormalSpriteFrameName:@"experience-on.png" selectedSpriteFrameName:@"experience-on.png" disabledSpriteFrameName:@"experience-off.png" target:nil selector:nil];
     if (experienceLevel > 10000) {
         _experienceDisplayLevel3.isEnabled = YES;
     } else {
         _experienceDisplayLevel3.isEnabled = NO;
     }
     
-    _experienceDisplayLevel4 = [SoundMenuItem itemFromNormalSpriteFrameName:@"expirience-on.png" selectedSpriteFrameName:@"expirience-on.png" disabledSpriteFrameName:@"expirience-off.png" target:nil selector:nil];
+    _experienceDisplayLevel4 = [SoundMenuItem itemFromNormalSpriteFrameName:@"experience-on.png" selectedSpriteFrameName:@"experience-on.png" disabledSpriteFrameName:@"experience-off.png" target:nil selector:nil];
     if (experienceLevel > 100000) {
         _experienceDisplayLevel4.isEnabled = YES;
     } else {
@@ -236,7 +217,7 @@
     [menuExperienceLevel alignItemsVertically];
     
     CGSize s = [[CCDirector sharedDirector] winSize];
-    menuExperienceLevel.position = ccp(s.width/2, s.height/2);
+    menuExperienceLevel.position = ccp(s.width/1.75, s.height/2);
     [self addChild:menuExperienceLevel z:4];
     
 }
@@ -281,7 +262,7 @@
                             ];
     self.itemUserPicture.isEnabled = NO;
     self.playerPictureMenu = [CCMenu menuWithItems: self.itemUserPicture, nil];
-    self.playerPictureMenu.position = ccp(s.width/1.4, s.height/2);
+    self.playerPictureMenu.position = ccp(s.width/1.33, s.height/2);
     self.playerPictureMenu.isTouchEnabled = YES;
     [itemUserPicture runAction:[CCRepeatForever actionWithAction:seq]];
     [self addChild:self.playerPictureMenu z:3];

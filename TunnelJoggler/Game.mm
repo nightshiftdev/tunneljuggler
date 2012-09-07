@@ -16,6 +16,8 @@
 @property (readwrite, nonatomic, retain) Level *currentLevel;
 -(void)setupGamePlay;
 - (BOOL)isTimeChallengeLevel;
+- (BOOL)isPointsChallengeLevel;
+- (BOOL)isLengthChallengeLevel;
 @end
 
 @implementation Game
@@ -44,6 +46,7 @@
             abort();
         }
         _oneSecond = 1.0;
+        _updateLengthCounterInterval = 1.0;
         
         _paddleScreenPosOffset = 30.0;
         if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
@@ -139,16 +142,6 @@
         NSLog(@"timeToSurviveToPass %@", self.currentLevel.timeToSurviveToPass);
         NSLog(@"===================================");
     }
-    
-//    double delayInSeconds = 1.0;
-//    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
-//    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-//        if ([self isTimeChallengeLevel]) {
-//            [self.hud showLevelTimeChallenge];
-//        } else {
-//            [self.hud showLengthTimeChallenge];
-//        }
-//    });
 }
 
 - (BOOL)isTimeChallengeLevel {
@@ -167,6 +160,14 @@
         isPointsChallengeLevel = YES;
     }
     return isPointsChallengeLevel;
+}
+
+-(BOOL)isLengthChallengeLevel {
+    if (![self isPointsChallengeLevel] &&
+        ![self isTimeChallengeLevel]) {
+        return YES;
+    }
+    return NO;
 }
 
 - (void)createBallBulletAtPosition:(CGPoint)position {
@@ -252,6 +253,15 @@
     }
 }
 
+- (void) updateLevelLengthCounter:(ccTime)dt withOffset: (float) offset {
+    if ([self isLengthChallengeLevel]) {
+        if ((_updateLengthCounterInterval -= dt) < 0) {
+            [self.hud onUpdateLengthCounter: offset];
+            _updateLengthCounterInterval = 1.0;
+        }
+    }
+}
+
 - (void) increasePaddleSpeed:(ccTime)dt {
     if ((increasePaddleSpeedInterval_ -= dt) < 0) {
         increasePaddleSpeedInterval_ = [self.currentLevel.speedIncreaseInterval floatValue];
@@ -333,6 +343,7 @@
     [background_ setTextureRect:CGRectMake(offset, 0, textureSize.width, textureSize.height)];
     
     [terrain_ setOffsetX:offset];
+    [self updateLevelLengthCounter:dt withOffset: offset];
     
     std::vector<b2Body *>toDestroy;
     std::vector<MyContact>::iterator pos;
@@ -702,6 +713,9 @@
 #pragma mark - TerrainObserver
 
 -(void)onTerrainEnd:(Terrain *)terrain {
+    if ([self isLengthChallengeLevel]) {
+        [self.hud onLevelLenghtEnd];
+    }
     if ([self isPointsChallengeLevel]) {
         [self.hud gameOver:NO touchedFatalObject:NO];
     } else {

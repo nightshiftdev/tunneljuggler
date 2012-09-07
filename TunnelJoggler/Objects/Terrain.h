@@ -43,6 +43,7 @@
 
 @property (retain) CCSprite * stripes;
 @property (retain) CCSpriteBatchNode * batchNode;
+@property (assign, nonatomic, readonly) float levelLength;
 @property (nonatomic, retain) id<TerrainObserver> terrainObserver;
 //@property (nonatomic, assign) int nBorderVertices;
 //@property (nonatomic, assign) int nOppositeBorderVertices;

@@ -9,6 +9,7 @@
 
 @interface Terrain()
 @property (nonatomic, assign, readwrite) int maxHillKeyPoints;
+@property (assign, nonatomic, readwrite) float levelLength;
 @end
 
 @implementation Terrain
@@ -17,6 +18,7 @@
 @synthesize batchNode = _batchNode;
 @synthesize terrainObserver;
 @synthesize maxHillKeyPoints;
+@synthesize levelLength;
 
 - (void)setupDebugDraw {
     _debugDraw = new GLESDebugDraw(PTM_RATIO*[[CCDirector sharedDirector] contentScaleFactor]);
@@ -221,6 +223,7 @@
         }
         sign *= -1;
     }
+    self.levelLength = [[_hillKeyPoints objectAtIndex: self.maxHillKeyPoints - 1]CGPointValue].x;
 }
 
 - (void) draw {

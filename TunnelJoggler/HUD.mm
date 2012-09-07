@@ -21,10 +21,13 @@
 @property (assign, nonatomic, readwrite) BOOL isShowingHowToPlay;
 @property (assign, nonatomic, readwrite) BOOL pointsLevelChallenge;
 @property (assign, nonatomic, readwrite) BOOL timeLevelChallenge;
+@property (assign, nonatomic, readwrite) BOOL lengthLevelChallenge;
 @property (retain, nonatomic, readwrite) Level* currentLevel;
 @property (nonatomic, assign) int scoreToPassLevel;
+@property (nonatomic, assign) BOOL levelEnd;
 -(void) setupCountDownTimer;
 -(void) setupAdditionalScoreCounter;
+-(void) setupLengthCounter;
 -(void) resume;
 @end
 
@@ -37,6 +40,9 @@
 @synthesize timeLevelChallenge;
 @synthesize currentLevel = _currentLevel;
 @synthesize scoreToPassLevel;
+@synthesize lengthLevelChallenge;
+@synthesize lengthRemainingToPassLevel;
+@synthesize levelEnd;
 
 +(id) HUDWithGameNode:(Game*)game {
 	return [[[self alloc] initWithGameNode:game] autorelease];
@@ -46,6 +52,8 @@
 	if( (self=[super init])) {
 		self.isTouchEnabled = YES;
 		game_ = game;
+        _lastOffset = 0;
+        self.levelEnd = NO;
         
 		CGSize s = [[CCDirector sharedDirector] winSize];
 		
@@ -59,6 +67,28 @@
 		[color setPosition:ccp(s.width-80,0)];
 		[self addChild:color z:0];
         
+        _pauseBackgroundColor = [CCLayerColor layerWithColor:ccc4(0,0,0,128) width:s.width height:s.height];
+        [_pauseBackgroundColor setPosition:ccp(0,0)];
+        [self addChild:_pauseBackgroundColor z:1];
+        _pauseBackgroundColor.visible = NO;
+        
+        _happyClown = [CCSprite spriteWithSpriteFrameName:@"clown-face-happy.png"];
+        [_happyClown setPosition:ccp(s.width/1.3, s.height/2)];
+        [self addChild:_happyClown z:2];
+        _happyClown.visible = NO;
+        
+        _sadClown = [CCSprite spriteWithSpriteFrameName:@"clown-face-sad.png"];
+        [_sadClown setPosition:ccp(s.width/1.3, s.height/2)];
+        [self addChild:_sadClown z:2];
+        _sadClown.visible = NO;
+        
+        //Score ribbon
+        CCMenuItem *itemScoreRibbon = [SoundMenuItem itemFromNormalSpriteFrameName:@"score-frame.png" selectedSpriteFrameName:@"score-frame.png" target:nil selector:nil];
+        itemScoreRibbon.isEnabled = NO;
+        CCMenu *menuScoreRibbon = [CCMenu menuWithItems: itemScoreRibbon, nil];
+        menuScoreRibbon.position = ccp(s.width/1.05, s.height/2);
+        [self addChild:menuScoreRibbon z:1];
+        
         // Menu Button
 		CCMenuItem *itemPause = [SoundMenuItem itemFromNormalSpriteFrameName:@"pause-off.png" selectedSpriteFrameName:@"pause-on.png" target:self selector:@selector(onButtonPausePressed:)];
 		CCMenu *menu = [CCMenu menuWithItems:itemPause,nil];
@@ -66,6 +96,11 @@
 		[menu setPosition:ccp(s.width/1.05, s.height/1.08)];
         self.isGameOver = NO;
         
+        CCMenuItem *itemChallenge = [SoundMenuItem itemFromNormalSpriteFrameName:@"level-indicator.png" selectedSpriteFrameName:@"level-indicator.png" target:nil selector:nil];
+        itemChallenge.isEnabled = NO;
+		CCMenu *menuChallenge = [CCMenu menuWithItems:itemChallenge, nil];
+		[self addChild:menuChallenge z:1];
+		[menuChallenge setPosition:ccp(s.width/1.05, s.height/12.5)];
         
         // Score
         float fontSize = 25.0;
@@ -76,13 +111,15 @@
 		scoreLabel_ = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", self.score] fontName:@"BosoxRevised.ttf" fontSize:fontSize];
         scoreLabel_.color = ccc3(204, 0, 0);
 		[self addChild:scoreLabel_ z:1];
-		[scoreLabel_ setPosition:ccp(s.width/1.05, s.height/2)];
+		[scoreLabel_ setPosition:ccp(s.width/1.04, s.height/2)];
         scoreLabel_.rotation = 90;
-
         
         [self setupCountDownTimer];
         
         [self setupAdditionalScoreCounter];
+        
+        [self setupLengthCounter];
+        
 	}
 	return self;
 }
@@ -114,27 +151,30 @@
 -(void) gameOver:(BOOL)didWin touchedFatalObject:(BOOL) fatalObjectTouched {
     if (!self.isGameOver) {
         game_.state = kGameStatePaused;
+        _pauseBackgroundColor.visible = YES;
         self.isGameOver = YES;
-        CCMenuItem *item0 = [SoundMenuItem itemFromNormalSpriteFrameName:@"exit-off.png" selectedSpriteFrameName:@"exit-on.png" target:self selector:@selector(onMainMenuPressed:)];
-        CCMenuItem *item2, *item1 = nil;
+        CCMenuItem *item1 = [SoundMenuItem itemFromNormalSpriteFrameName:@"exit-off.png" selectedSpriteFrameName:@"exit-on.png" target:self selector:@selector(onMainMenuPressed:)];
+        CCMenuItem *item0 = nil;
         if (fatalObjectTouched) {
-            item1 = [SoundMenuItem itemFromNormalSpriteFrameName:@"retry-off.png" selectedSpriteFrameName:@"retry-on.png" target:self selector:@selector(onPlayAgainPressed:)];
-            item2 = [SoundMenuItem itemFromNormalSpriteFrameName:@"clown-face-sad.png" selectedSpriteFrameName:@"clown-face-sad.png" target:nil selector:nil];
+            item0 = [SoundMenuItem itemFromNormalSpriteFrameName:@"retry-off.png" selectedSpriteFrameName:@"retry-on.png" target:self selector:@selector(onPlayAgainPressed:)];
+            _sadClown.visible = YES;
         } else {
-            item1 = [SoundMenuItem itemFromNormalSpriteFrameName:@"play-off.png" selectedSpriteFrameName:@"play-on.png" target:self selector:@selector(onNextLevelPressed:)];
-            item2 = [SoundMenuItem itemFromNormalSpriteFrameName:@"clown-face-happy.png" selectedSpriteFrameName:@"clown-face-happy.png" target:nil selector:nil];
+            item0 = [SoundMenuItem itemFromNormalSpriteFrameName:@"play-off.png" selectedSpriteFrameName:@"play-on.png" target:self selector:@selector(onNextLevelPressed:)];
+            _happyClown.visible = YES;
         }
-        
+        item0.rotation = -25;
+        item1.rotation = 25;
+        item0.scale = 0.7;
+        item1.scale = 0.7;
         if (!fatalObjectTouched && didWin) {
             [self savePlayerScoreAndIncreaseExperienceLevel];
             [self advancePlayerToNextLevel];
         }
         
-        [item2 setIsEnabled:NO];
-        menu_ = [CCMenu menuWithItems:item0, item1, item2, nil];
+        menu_ = [CCMenu menuWithItems:item0, item1, nil];
         CGSize s = [[CCDirector sharedDirector] winSize];
-        [menu_ alignItemsHorizontallyWithPadding: 25.0];
-        [menu_ setPosition:ccp(s.width/2, s.height/2)];
+        [menu_ alignItemsVertically];
+        [menu_ setPosition:ccp(s.width/2.4, s.height/2)];
         [self addChild:menu_ z:10];
         
         double delayInSeconds = 0.1;
@@ -157,7 +197,7 @@
     
     if (self.pointsLevelChallenge) {
         self.scoreToPassLevel += addScore;
-        [_scoreChallengeLabel setString: [NSString stringWithFormat:@"%d ( %d )", self.scoreToPassLevel, [self.currentLevel.scoreToPass intValue]]];
+        [_scoreChallengeLabel setString: [NSString stringWithFormat:@"%d", self.scoreToPassLevel]];
         if (self.scoreToPassLevel >= [self.currentLevel.scoreToPass intValue]) {
             [self gameOver:YES touchedFatalObject:NO];
         }
@@ -189,6 +229,14 @@
     return NO;
 }
 
+-(BOOL)lengthLevelChallenge {
+    if (!self.timeLevelChallenge &&
+        !self.pointsLevelChallenge) {
+        return YES;
+    }
+    return NO;
+}
+
 -(void) setupCountDownTimer {
     if (self.timeLevelChallenge == YES) {
         int time = [self.currentLevel.timeToSurviveToPass intValue];
@@ -201,14 +249,14 @@
         } else {
             counterLabelFormat = [NSString stringWithFormat:@"%d : %d", _minutes, _seconds];
         }
-        float fontSize = 25.0;
+        float fontSize = 17.0;
         if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-            fontSize = 50.0;
+            fontSize = 34.0;
         }
         _timeLabel = [CCLabelTTF labelWithString:counterLabelFormat fontName:@"BosoxRevised.ttf" fontSize:fontSize];
-        _timeLabel.color = ccc3(204, 0, 0);
-        [self addChild:_timeLabel z:1];
-        [_timeLabel setPosition:ccp(s.width/1.1, s.height/2)];
+        _timeLabel.color = ccc3(255, 255, 255);
+        [self addChild:_timeLabel z:2];
+        [_timeLabel setPosition:ccp(s.width/1.05, s.height/7.5)];
         _timeLabel.rotation = 90;
     }
 }
@@ -217,15 +265,37 @@
     if (self.pointsLevelChallenge == YES) {
         self.scoreToPassLevel = 0;
         CGSize s = [[CCDirector sharedDirector] winSize];
-        float fontSize = 25.0;
+        float fontSize = 17.0;
         if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-            fontSize = 50.0;
+            fontSize = 34.0;
         }
-        _scoreChallengeLabel = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d ( %d )", self.scoreToPassLevel, [self.currentLevel.scoreToPass intValue]] fontName:@"BosoxRevised.ttf" fontSize:fontSize];
-        _scoreChallengeLabel.color = ccc3(204, 0, 0);
-        [self addChild:_scoreChallengeLabel z:1];
-        [_scoreChallengeLabel setPosition:ccp(s.width/1.1, s.height/2)];
+        _scoreChallengeLabel = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", self.scoreToPassLevel] fontName:@"BosoxRevised.ttf" fontSize:fontSize];
+        _scoreToPassChallengeLabel = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"(%d)", [self.currentLevel.scoreToPass intValue]] fontName:@"BosoxRevised.ttf" fontSize:fontSize];
+        _scoreChallengeLabel.color = ccc3(255, 255, 255);
+        _scoreToPassChallengeLabel.color = ccc3(255, 255, 255);
+        [self addChild:_scoreChallengeLabel z:2];
+        [self addChild:_scoreToPassChallengeLabel z:2];
+        [_scoreChallengeLabel setPosition:ccp(s.width/1.03, s.height/7.5)];
+        [_scoreToPassChallengeLabel setPosition:ccp(s.width/1.06, s.height/7.5)];
         _scoreChallengeLabel.rotation = 90;
+        _scoreToPassChallengeLabel.rotation = 90;
+        
+    }
+}
+
+-(void) setupLengthCounter {
+    if (YES == self.lengthLevelChallenge) {
+        CGSize s = [[CCDirector sharedDirector] winSize];
+        self.lengthRemainingToPassLevel = game_.terrain.levelLength - (s.width + (s.width * 0.4));
+        float fontSize = 17.0;
+        if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+            fontSize = 34.0;
+        }
+        _lengthChallengeLabel = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", (int)self.lengthRemainingToPassLevel] fontName:@"BosoxRevised.ttf" fontSize:fontSize];
+        _lengthChallengeLabel.color = ccc3(255, 255, 255);
+        [self addChild:_lengthChallengeLabel z:2];
+        [_lengthChallengeLabel setPosition:ccp(s.width/1.05, s.height/7.5)];
+        _lengthChallengeLabel.rotation = 90;
     }
 }
 
@@ -247,20 +317,49 @@
     }
 }
 
+-(void) onUpdateLengthCounter:(float)offset {
+    if (!self.levelEnd) {
+        float dy = offset - _lastOffset;
+        self.lengthRemainingToPassLevel -= dy;
+        if (self.lengthRemainingToPassLevel < 0) {
+            self.lengthRemainingToPassLevel = 0;
+        }
+        [_lengthChallengeLabel setString:[NSString stringWithFormat:@"%d", (int)self.lengthRemainingToPassLevel]];
+        _lastOffset = offset;
+    }
+}
+
+-(void)onLevelLenghtEnd {
+    self.lengthRemainingToPassLevel = 0;
+    _lastOffset = 0;
+    self.levelEnd = YES;
+    [_lengthChallengeLabel setString:[NSString stringWithFormat:@"%d", (int)self.lengthRemainingToPassLevel]];
+}
+
 -(void) pause {
     game_.state = kGameStatePaused;
 	CGSize s = [[CCDirector sharedDirector] winSize];
-	CCMenuItem *item2 = [SoundMenuItem itemFromNormalSpriteFrameName:@"play-off.png" selectedSpriteFrameName:@"play-on.png" target:self selector:@selector(onResumePressed:)];
+    
+    _pauseBackgroundColor.visible = YES;
+    
+	CCMenuItem *item0 = [SoundMenuItem itemFromNormalSpriteFrameName:@"play-off.png" selectedSpriteFrameName:@"play-on.png" target:self selector:@selector(onResumePressed:)];
+    item0.rotation = -25;
+    item0.scale = 0.7;
 	CCMenuItem *item1 = [SoundMenuItem itemFromNormalSpriteFrameName:@"retry-off.png" selectedSpriteFrameName:@"retry-on.png" target:self selector:@selector(onPlayAgainPressed:)];
-	CCMenuItem *item0 = [SoundMenuItem itemFromNormalSpriteFrameName:@"exit-off.png" selectedSpriteFrameName:@"exit-on.png" target:self selector:@selector(onMainMenuPressed:)];
+	CCMenuItem *item2 = [SoundMenuItem itemFromNormalSpriteFrameName:@"exit-off.png" selectedSpriteFrameName:@"exit-on.png" target:self selector:@selector(onMainMenuPressed:)];
+    item1.scale = 0.7;
+    item2.scale = 0.7;
+    item2.rotation = 25;
 	menu_ = [CCMenu menuWithItems:item0, item1, item2, nil];
-	[menu_ alignItemsHorizontallyWithPadding: 25.0];
-	[menu_ setPosition:ccp(s.width/2, s.height/2)];
+    [menu_ alignItemsVertically];
+	[menu_ setPosition:ccp(s.width/2.4, s.height/2)];
 	[self addChild:menu_ z:10];
+    
     [[CCDirector sharedDirector] pause];
 }
 
 -(void)resume {
+    _pauseBackgroundColor.visible = NO;
     [self removeChild:menu_ cleanup: YES];
     [[CCDirector sharedDirector] resume];
     game_.state = kGameStateRunning;

@@ -51,6 +51,7 @@ static const double MAX_CYCLES_PER_FRAME = 5;
     double timeAccumulator_;
     float _paddleScreenPosOffset;
     float _oneSecond;
+    float _updateLengthCounterInterval;
 }
 
 +(CCScene *)scene;
