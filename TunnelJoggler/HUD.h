@@ -26,6 +26,7 @@
     CCSprite *_happyClown;
     CCSprite *_sadClown;
     float _lastOffset;
+    float _labelPosFactor;
 }
 
 @property (assign, nonatomic, readonly) BOOL isShowingHowToPlay;

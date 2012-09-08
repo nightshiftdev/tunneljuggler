@@ -58,8 +58,10 @@
 		CGSize s = [[CCDirector sharedDirector] winSize];
 		
         NSString *buttonsPlist = @"buttons.plist";
+        _labelPosFactor = 9.5;
         if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
             buttonsPlist = @"buttons-ipad.plist";
+            _labelPosFactor = 11;
         }
         [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:buttonsPlist];
 		
@@ -93,14 +95,14 @@
 		CCMenuItem *itemPause = [SoundMenuItem itemFromNormalSpriteFrameName:@"pause-off.png" selectedSpriteFrameName:@"pause-on.png" target:self selector:@selector(onButtonPausePressed:)];
 		CCMenu *menu = [CCMenu menuWithItems:itemPause,nil];
 		[self addChild:menu z:1];
-		[menu setPosition:ccp(s.width/1.05, s.height/1.08)];
+		[menu setPosition:ccp(s.width/1.05, s.height/1.04)];
         self.isGameOver = NO;
         
         CCMenuItem *itemChallenge = [SoundMenuItem itemFromNormalSpriteFrameName:@"level-indicator.png" selectedSpriteFrameName:@"level-indicator.png" target:nil selector:nil];
         itemChallenge.isEnabled = NO;
 		CCMenu *menuChallenge = [CCMenu menuWithItems:itemChallenge, nil];
 		[self addChild:menuChallenge z:1];
-		[menuChallenge setPosition:ccp(s.width/1.05, s.height/12.5)];
+		[menuChallenge setPosition:ccp(s.width/1.05, s.height/23)];
         
         // Score
         float fontSize = 25.0;
@@ -256,7 +258,7 @@
         _timeLabel = [CCLabelTTF labelWithString:counterLabelFormat fontName:@"BosoxRevised.ttf" fontSize:fontSize];
         _timeLabel.color = ccc3(255, 255, 255);
         [self addChild:_timeLabel z:2];
-        [_timeLabel setPosition:ccp(s.width/1.05, s.height/7.5)];
+        [_timeLabel setPosition:ccp(s.width/1.05, s.height/_labelPosFactor)];
         _timeLabel.rotation = 90;
     }
 }
@@ -275,8 +277,8 @@
         _scoreToPassChallengeLabel.color = ccc3(255, 255, 255);
         [self addChild:_scoreChallengeLabel z:2];
         [self addChild:_scoreToPassChallengeLabel z:2];
-        [_scoreChallengeLabel setPosition:ccp(s.width/1.03, s.height/7.5)];
-        [_scoreToPassChallengeLabel setPosition:ccp(s.width/1.06, s.height/7.5)];
+        [_scoreChallengeLabel setPosition:ccp(s.width/1.03, s.height/_labelPosFactor)];
+        [_scoreToPassChallengeLabel setPosition:ccp(s.width/1.06, s.height/_labelPosFactor)];
         _scoreChallengeLabel.rotation = 90;
         _scoreToPassChallengeLabel.rotation = 90;
         
@@ -294,7 +296,7 @@
         _lengthChallengeLabel = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", (int)self.lengthRemainingToPassLevel] fontName:@"BosoxRevised.ttf" fontSize:fontSize];
         _lengthChallengeLabel.color = ccc3(255, 255, 255);
         [self addChild:_lengthChallengeLabel z:2];
-        [_lengthChallengeLabel setPosition:ccp(s.width/1.05, s.height/7.5)];
+        [_lengthChallengeLabel setPosition:ccp(s.width/1.05, s.height/_labelPosFactor)];
         _lengthChallengeLabel.rotation = 90;
     }
 }
