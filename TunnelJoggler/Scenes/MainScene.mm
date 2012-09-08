@@ -144,7 +144,7 @@
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
         fontSize = 56.0;
     }
-    _scoreLabel = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", score] fontName:@"BosoxRevised.ttf" fontSize:fontSize];
+    _scoreLabel = [CCLabelTTF labelWithString:[NSString stringWithFormat:@" %d ", score] fontName:@"BosoxRevised.ttf" fontSize:fontSize];
     _scoreLabel.color = ccc3(204, 0, 0);
     [self addChild:_scoreLabel z:5];
     CGSize s = [[CCDirector sharedDirector] winSize];

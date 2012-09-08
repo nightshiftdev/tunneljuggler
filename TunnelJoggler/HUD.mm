@@ -108,7 +108,7 @@
             fontSize = 50.0;
         }
         self.score = [[[GameController sharedController] player].score intValue];
-		scoreLabel_ = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", self.score] fontName:@"BosoxRevised.ttf" fontSize:fontSize];
+		scoreLabel_ = [CCLabelTTF labelWithString:[NSString stringWithFormat:@" %d ", self.score] fontName:@"BosoxRevised.ttf" fontSize:fontSize];
         scoreLabel_.color = ccc3(204, 0, 0);
 		[self addChild:scoreLabel_ z:1];
 		[scoreLabel_ setPosition:ccp(s.width/1.04, s.height/2)];
@@ -188,7 +188,7 @@
 
 -(void) onUpdateScore:(int)addScore {
 	self.score += addScore;
-	[scoreLabel_ setString: [NSString stringWithFormat:@"%d", self.score]];
+	[scoreLabel_ setString: [NSString stringWithFormat:@" %d ", self.score]];
 	[scoreLabel_ stopAllActions];
 	id scaleTo = [CCScaleTo actionWithDuration:0.1f scale:1.2f];
 	id scaleBack = [CCScaleTo actionWithDuration:0.1f scale:1];
@@ -197,7 +197,7 @@
     
     if (self.pointsLevelChallenge) {
         self.scoreToPassLevel += addScore;
-        [_scoreChallengeLabel setString: [NSString stringWithFormat:@"%d", self.scoreToPassLevel]];
+        [_scoreChallengeLabel setString: [NSString stringWithFormat:@" %d ", self.scoreToPassLevel]];
         if (self.scoreToPassLevel >= [self.currentLevel.scoreToPass intValue]) {
             [self gameOver:YES touchedFatalObject:NO];
         }
@@ -269,7 +269,7 @@
         if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
             fontSize = 34.0;
         }
-        _scoreChallengeLabel = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", self.scoreToPassLevel] fontName:@"BosoxRevised.ttf" fontSize:fontSize];
+        _scoreChallengeLabel = [CCLabelTTF labelWithString:[NSString stringWithFormat:@" %d ", self.scoreToPassLevel] fontName:@"BosoxRevised.ttf" fontSize:fontSize];
         _scoreToPassChallengeLabel = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"(%d)", [self.currentLevel.scoreToPass intValue]] fontName:@"BosoxRevised.ttf" fontSize:fontSize];
         _scoreChallengeLabel.color = ccc3(255, 255, 255);
         _scoreToPassChallengeLabel.color = ccc3(255, 255, 255);

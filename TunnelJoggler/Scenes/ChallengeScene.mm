@@ -52,21 +52,41 @@
         }
 		[self addChild:background z:-10];
         
-        NSString *challengeText = @"L E N G T H  C H A L L E N G E";
-        if (self.timeLevelChallenge) {
-            challengeText = @"T I M E  C H A L L E N G E";
-        } else if (self.pointsLevelChallenge) {
-            challengeText = @"P O I N T S  C H A L L E N G E";
-        }
+        CCSprite *challengeBackground = [CCSprite spriteWithSpriteFrameName:@"challenge-background.png"];
+        challengeBackground.position = ccp(s.width/2, s.height/2);
+        [self addChild:challengeBackground z:1];
         
-        float fontSize = 30.0;
+        NSString *challengeText = nil;
+        CCSprite *challengeIcon = nil;
+        if (self.timeLevelChallenge) {
+            int time = [self.currentLevel.timeToSurviveToPass intValue];
+            int minutes = time / 60;
+            int seconds = time - (minutes * 60);
+            challengeIcon = [CCSprite spriteWithSpriteFrameName:@"time-challenge.png"];
+            if (seconds < 10) {
+                challengeText = [NSString stringWithFormat:@" %d : 0%d ", minutes, seconds];
+            } else {
+                challengeText = [NSString stringWithFormat:@" %d : %d ", minutes, seconds];
+            }
+            
+        } else if (self.pointsLevelChallenge) {
+            challengeIcon = [CCSprite spriteWithSpriteFrameName:@"points-challenge.png"];
+            challengeText = [NSString stringWithFormat:@" (%d) ", [self.currentLevel.scoreToPass intValue]];
+        } else {
+            challengeIcon = [CCSprite spriteWithSpriteFrameName:@"length-challenge.png"];
+            challengeText = [NSString stringWithFormat:@" %d ", [self.currentLevel.length intValue] * 60];
+        }
+        challengeIcon.position = ccp(s.width/1.6, s.height/2.3);
+        [self addChild:challengeIcon z:2];
+        
+        float fontSize = 60.0;
         if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-            fontSize = 60.0;
+            fontSize = 120.0;
         }
         CCLabelTTF *challengeLabel = [CCLabelTTF labelWithString:challengeText fontName:@"BosoxRevised.ttf" fontSize:fontSize];
         challengeLabel.color = ccc3(204, 0, 0);
-        [self addChild:challengeLabel z:1];
-        [challengeLabel setPosition:ccp(s.width/2, s.height/2)];
+        [self addChild:challengeLabel z:2];
+        [challengeLabel setPosition:ccp(s.width/4, s.height/1.9)];
         challengeLabel.rotation = 90;
         
         double delayInSeconds = 1.0;
