@@ -2,7 +2,7 @@
 //  Level.m
 //  TunnelJoggler
 //
-//  Created by pawel on 8/24/12.
+//  Created by pawel on 9/10/12.
 //
 //
 
@@ -15,6 +15,7 @@
 @dynamic bonusItemFrequency;
 @dynamic haveMovingObstacles;
 @dynamic length;
+@dynamic levelNumber;
 @dynamic maxSpeed;
 @dynamic minSpeed;
 @dynamic mustReachEndOfLevelToPass;
@@ -23,6 +24,6 @@
 @dynamic speedIncreaseInterval;
 @dynamic speedIncreaseValue;
 @dynamic timeToSurviveToPass;
-@dynamic levelNumber;
+@dynamic isBossLevel;
 
 @end

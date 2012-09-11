@@ -53,12 +53,11 @@
         }
         CCAnimation *jugglingAnim = [CCAnimation animationWithFrames:juggleAnimFrames delay:0.05f];
         
-        CGSize s = [[CCDirector sharedDirector] winSize];
         self.preloader = [CCSprite spriteWithSpriteFrameName:@"prealoader1.png"];
         if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
             _preloader.position = ccp(400, 384);
         } else {
-            _preloader.position = ccp(s.width/2.5, s.height/2);
+            _preloader.position = ccp(200, 160);
         }
         self.jugglingAction = [CCRepeatForever actionWithAction:[CCAnimate actionWithAnimation:jugglingAnim restoreOriginalFrame:NO]];
         _preloader.rotation = 90;
@@ -71,7 +70,7 @@
         if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
             menuTitle.position = ccp(600, 384);
         } else {
-            menuTitle.position = ccp(s.width/1.5, s.height/2);
+            menuTitle.position = ccp(300, 160);
         }
         [self addChild:menuTitle z:2];
         
@@ -80,7 +79,7 @@
         if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
             background.position = ccp(512, 384);
         } else {
-            background.position = ccp(s.width/2, s.height/2);
+            background.position = ccp(240, 160);
         }
 		[self addChild:background z:-10];
         

@@ -18,7 +18,7 @@ NSString * kPlayeriCloudPersistentStoreFilename = @"PlayeriCloudStore.sqlite";
 NSString * kPlayerFallbackPersistentStoreFilename = @"PlayerFallbackStore.sqlite"; //used when iCloud is not available
 NSString * kLevelsLocalStoreFilename = @"LevelsLocalStore.sqlite"; //holds local information
 
-static int gNumberOfLevels = 3;
+static int gNumberOfLevels = 30;
 static NSOperationQueue *_presentedItemOperationQueue;
 
 @interface GameController (Private)
@@ -240,10 +240,14 @@ static NSOperationQueue *_presentedItemOperationQueue;
     }
     NSURL *storeURL = [self levelsStoreURL];
     //add the store, use the "LocalConfiguration" to make sure level entities all end up in this store and that no iCloud entities end up in it
+    NSDictionary *options = [NSDictionary dictionaryWithObjectsAndKeys:
+                             [NSNumber numberWithBool:YES], NSMigratePersistentStoresAutomaticallyOption,
+                             [NSNumber numberWithBool:YES], NSInferMappingModelAutomaticallyOption,
+                             nil];
     _levelsLocalStore = [_psc addPersistentStoreWithType:NSSQLiteStoreType
                                            configuration:@"LocalConfig"
                                                      URL:storeURL
-                                                 options:nil
+                                                 options:options
                                                    error:&localError];
     success = (_levelsLocalStore != nil);
     if (success == NO) {
@@ -264,10 +268,14 @@ static NSOperationQueue *_presentedItemOperationQueue;
         return YES;
     }
     NSURL *storeURL = [self playerFallbackStoreURL];
+    NSDictionary *options = [NSDictionary dictionaryWithObjectsAndKeys:
+                             [NSNumber numberWithBool:YES], NSMigratePersistentStoresAutomaticallyOption,
+                             [NSNumber numberWithBool:YES], NSInferMappingModelAutomaticallyOption,
+                             nil];
     _playerFallbackStore = [_psc addPersistentStoreWithType:NSSQLiteStoreType
                                               configuration:@"CloudConfig"
                                                         URL:storeURL
-                                                    options:nil
+                                                    options:options
                                                       error:&localError];
     success = (_playerFallbackStore != nil);
     if (NO == success) {
@@ -289,13 +297,11 @@ static NSOperationQueue *_presentedItemOperationQueue;
     
     NSURL *iCloudStoreURL = [self playeriCloudStoreURL];
     NSURL *iCloudDataURL = [self.ubiquityURL URLByAppendingPathComponent:@"iCloudData"];
-    NSNumber *timeout = [NSNumber numberWithInt: 15];
     NSDictionary *options = [NSDictionary dictionaryWithObjectsAndKeys:
                              @"PlayeriCloudStore", NSPersistentStoreUbiquitousContentNameKey,
                              iCloudDataURL, NSPersistentStoreUbiquitousContentURLKey,
                              [NSNumber numberWithBool:YES], NSMigratePersistentStoresAutomaticallyOption,
                              [NSNumber numberWithBool:YES], NSInferMappingModelAutomaticallyOption,
-                             timeout, NSPersistentStoreTimeoutOption,
                              nil];
     _playeriCloudStore = [self.psc addPersistentStoreWithType:NSSQLiteStoreType
                                                 configuration:@"CloudConfig"
@@ -653,10 +659,10 @@ static NSOperationQueue *_presentedItemOperationQueue;
     NSManagedObjectContext *levelsMOC = [[[NSManagedObjectContext alloc] init] autorelease];
     [levelsMOC setPersistentStoreCoordinator:_psc];
     
-    // regular level must reach end of level to pass, easy
+    // length challenge 1
     Level *l1 = [NSEntityDescription insertNewObjectForEntityForName:@"Level" inManagedObjectContext: levelsMOC];
     l1.levelNumber = [NSNumber numberWithInt: 0];
-    l1.length = [NSNumber numberWithInt: 100];
+    l1.length = [NSNumber numberWithInt: 50];
     l1.mustReachEndOfLevelToPass = [NSNumber numberWithBool:YES];
     l1.timeToSurviveToPass = [NSNumber numberWithInteger:0];
     l1.scoreToPass = [NSNumber numberWithInt:0];
@@ -664,48 +670,565 @@ static NSOperationQueue *_presentedItemOperationQueue;
     l1.minSpeed = [NSNumber numberWithFloat:MIN_PADDLE_SPEED];
     l1.speedIncreaseInterval = [NSNumber numberWithFloat:2.0f];
     l1.speedIncreaseValue = [NSNumber numberWithFloat:0.1f];
-    l1.obstacleFrequency = [NSNumber numberWithFloat:2.5f];
-    l1.bonusBallFrequency = [NSNumber numberWithFloat:2.0f];
-    l1.bonusItemFrequency = [NSNumber numberWithFloat:10.0f];
+    l1.obstacleFrequency = [NSNumber numberWithFloat:1.5f];
+    l1.bonusBallFrequency = [NSNumber numberWithFloat:4.0f];
+    l1.bonusItemFrequency = [NSNumber numberWithFloat:0.0f];
     l1.haveMovingObstacles = [NSNumber numberWithBool:NO];
+    l1.isBossLevel = [NSNumber numberWithBool:NO];
     
     [levelsMOC assignObject:l1 toPersistentStore: _levelsLocalStore];
     
-    // time challenge level, normal difficulty
+    // time challenge 1
     Level *l2 = [NSEntityDescription insertNewObjectForEntityForName:@"Level" inManagedObjectContext: levelsMOC];
     l2.levelNumber = [NSNumber numberWithInt: 1];
     l2.length = [NSNumber numberWithInt: 500];
     l2.mustReachEndOfLevelToPass = [NSNumber numberWithBool:NO];
-    l2.timeToSurviveToPass = [NSNumber numberWithInteger:45];
+    l2.timeToSurviveToPass = [NSNumber numberWithInteger: 30];
     l2.scoreToPass = [NSNumber numberWithInt:0];
-    l2.maxSpeed = [NSNumber numberWithFloat:MAX_PADDLE_SPEED];
-    l2.minSpeed = [NSNumber numberWithFloat:MIN_PADDLE_SPEED*2];
+    l2.maxSpeed = [NSNumber numberWithFloat:MAX_PADDLE_SPEED/4];
+    l2.minSpeed = [NSNumber numberWithFloat:MIN_PADDLE_SPEED];
     l2.speedIncreaseInterval = [NSNumber numberWithFloat:2.0f];
-    l2.speedIncreaseValue = [NSNumber numberWithFloat:0.2f];
-    l2.obstacleFrequency = [NSNumber numberWithFloat:2.0f];
-    l2.bonusBallFrequency = [NSNumber numberWithFloat:1.0f];
-    l2.bonusItemFrequency = [NSNumber numberWithFloat:10.0f];
+    l2.speedIncreaseValue = [NSNumber numberWithFloat:0.1f];
+    l2.obstacleFrequency = [NSNumber numberWithFloat:1.5f];
+    l2.bonusBallFrequency = [NSNumber numberWithFloat:4.0f];
+    l2.bonusItemFrequency = [NSNumber numberWithFloat:0.0f];
     l2.haveMovingObstacles = [NSNumber numberWithBool:NO];
+    l2.isBossLevel = [NSNumber numberWithBool:NO];
     
     [levelsMOC assignObject:l2 toPersistentStore: _levelsLocalStore];
     
-    // points challenge level, easy
+    // points challenge 1
     Level *l3 = [NSEntityDescription insertNewObjectForEntityForName:@"Level" inManagedObjectContext: levelsMOC];
     l3.levelNumber = [NSNumber numberWithInt: 2];
-    l3.length = [NSNumber numberWithInt: 1000];
+    l3.length = [NSNumber numberWithInt: 500];
     l3.mustReachEndOfLevelToPass = [NSNumber numberWithBool:NO];
     l3.timeToSurviveToPass = [NSNumber numberWithInteger: 0];
     l3.scoreToPass = [NSNumber numberWithInt: 100];
-    l3.maxSpeed = [NSNumber numberWithFloat:MAX_PADDLE_SPEED/2];
+    l3.maxSpeed = [NSNumber numberWithFloat:MAX_PADDLE_SPEED/4];
     l3.minSpeed = [NSNumber numberWithFloat:MIN_PADDLE_SPEED];
-    l3.speedIncreaseInterval = [NSNumber numberWithFloat:0.5f];
-    l3.speedIncreaseValue = [NSNumber numberWithFloat:0.2f];
-    l3.obstacleFrequency = [NSNumber numberWithFloat:2.0f];
-    l3.bonusBallFrequency = [NSNumber numberWithFloat:1.0f];
-    l3.bonusItemFrequency = [NSNumber numberWithFloat:10.0f];
+    l3.speedIncreaseInterval = [NSNumber numberWithFloat:2.0f];
+    l3.speedIncreaseValue = [NSNumber numberWithFloat:0.1f];
+    l3.obstacleFrequency = [NSNumber numberWithFloat:1.5f];
+    l3.bonusBallFrequency = [NSNumber numberWithFloat:4.0f];
+    l3.bonusItemFrequency = [NSNumber numberWithFloat:0.0f];
     l3.haveMovingObstacles = [NSNumber numberWithBool:NO];
+    l3.isBossLevel = [NSNumber numberWithBool:NO];
     
-    [levelsMOC assignObject:l2 toPersistentStore: _levelsLocalStore];
+    [levelsMOC assignObject:l3 toPersistentStore: _levelsLocalStore];
+    
+    // length challenge 2
+    Level *l4 = [NSEntityDescription insertNewObjectForEntityForName:@"Level" inManagedObjectContext: levelsMOC];
+    l4.levelNumber = [NSNumber numberWithInt: 3];
+    l4.length = [NSNumber numberWithInt: 60];
+    l4.mustReachEndOfLevelToPass = [NSNumber numberWithBool:YES];
+    l4.timeToSurviveToPass = [NSNumber numberWithInteger:0];
+    l4.scoreToPass = [NSNumber numberWithInt:0];
+    l4.maxSpeed = [NSNumber numberWithFloat:MAX_PADDLE_SPEED/4];
+    l4.minSpeed = [NSNumber numberWithFloat:MIN_PADDLE_SPEED];
+    l4.speedIncreaseInterval = [NSNumber numberWithFloat:2.0f];
+    l4.speedIncreaseValue = [NSNumber numberWithFloat:0.1f];
+    l4.obstacleFrequency = [NSNumber numberWithFloat:1.5f];
+    l4.bonusBallFrequency = [NSNumber numberWithFloat:4.0f];
+    l4.bonusItemFrequency = [NSNumber numberWithFloat:0.0f];
+    l4.haveMovingObstacles = [NSNumber numberWithBool:NO];
+    l4.isBossLevel = [NSNumber numberWithBool:NO];
+    
+    [levelsMOC assignObject:l4 toPersistentStore: _levelsLocalStore];
+    
+    // time challenge 2
+    Level *l5 = [NSEntityDescription insertNewObjectForEntityForName:@"Level" inManagedObjectContext: levelsMOC];
+    l5.levelNumber = [NSNumber numberWithInt: 4];
+    l5.length = [NSNumber numberWithInt: 500];
+    l5.mustReachEndOfLevelToPass = [NSNumber numberWithBool:NO];
+    l5.timeToSurviveToPass = [NSNumber numberWithInteger: 35];
+    l5.scoreToPass = [NSNumber numberWithInt:0];
+    l5.maxSpeed = [NSNumber numberWithFloat:MAX_PADDLE_SPEED/4];
+    l5.minSpeed = [NSNumber numberWithFloat:MIN_PADDLE_SPEED];
+    l5.speedIncreaseInterval = [NSNumber numberWithFloat:2.0f];
+    l5.speedIncreaseValue = [NSNumber numberWithFloat:0.1f];
+    l5.obstacleFrequency = [NSNumber numberWithFloat:1.5f];
+    l5.bonusBallFrequency = [NSNumber numberWithFloat:4.0f];
+    l5.bonusItemFrequency = [NSNumber numberWithFloat:0.0f];
+    l5.haveMovingObstacles = [NSNumber numberWithBool:NO];
+    l5.isBossLevel = [NSNumber numberWithBool:NO];
+    
+    [levelsMOC assignObject:l5 toPersistentStore: _levelsLocalStore];
+    
+    // points challenge 2
+    Level *l6 = [NSEntityDescription insertNewObjectForEntityForName:@"Level" inManagedObjectContext: levelsMOC];
+    l6.levelNumber = [NSNumber numberWithInt: 5];
+    l6.length = [NSNumber numberWithInt: 500];
+    l6.mustReachEndOfLevelToPass = [NSNumber numberWithBool:NO];
+    l6.timeToSurviveToPass = [NSNumber numberWithInteger: 0];
+    l6.scoreToPass = [NSNumber numberWithInt: 200];
+    l6.maxSpeed = [NSNumber numberWithFloat:MAX_PADDLE_SPEED/4];
+    l6.minSpeed = [NSNumber numberWithFloat:MIN_PADDLE_SPEED];
+    l6.speedIncreaseInterval = [NSNumber numberWithFloat:2.0f];
+    l6.speedIncreaseValue = [NSNumber numberWithFloat:0.1f];
+    l6.obstacleFrequency = [NSNumber numberWithFloat:1.5f];
+    l6.bonusBallFrequency = [NSNumber numberWithFloat:4.0f];
+    l6.bonusItemFrequency = [NSNumber numberWithFloat:0.0f];
+    l6.haveMovingObstacles = [NSNumber numberWithBool:NO];
+    l6.isBossLevel = [NSNumber numberWithBool:NO];
+    
+    [levelsMOC assignObject:l6 toPersistentStore: _levelsLocalStore];
+
+    
+    // length challenge 3
+    Level *l7 = [NSEntityDescription insertNewObjectForEntityForName:@"Level" inManagedObjectContext: levelsMOC];
+    l7.levelNumber = [NSNumber numberWithInt: 6];
+    l7.length = [NSNumber numberWithInt: 70];
+    l7.mustReachEndOfLevelToPass = [NSNumber numberWithBool:YES];
+    l7.timeToSurviveToPass = [NSNumber numberWithInteger:0];
+    l7.scoreToPass = [NSNumber numberWithInt:0];
+    l7.maxSpeed = [NSNumber numberWithFloat:MAX_PADDLE_SPEED/3];
+    l7.minSpeed = [NSNumber numberWithFloat:MIN_PADDLE_SPEED];
+    l7.speedIncreaseInterval = [NSNumber numberWithFloat:1.5f];
+    l7.speedIncreaseValue = [NSNumber numberWithFloat:0.2f];
+    l7.obstacleFrequency = [NSNumber numberWithFloat:1.5f];
+    l7.bonusBallFrequency = [NSNumber numberWithFloat:4.0f];
+    l7.bonusItemFrequency = [NSNumber numberWithFloat:0.0f];
+    l7.haveMovingObstacles = [NSNumber numberWithBool:NO];
+    l7.isBossLevel = [NSNumber numberWithBool:NO];
+    
+    [levelsMOC assignObject:l7 toPersistentStore: _levelsLocalStore];
+    
+    // time challenge 3
+    Level *l8 = [NSEntityDescription insertNewObjectForEntityForName:@"Level" inManagedObjectContext: levelsMOC];
+    l8.levelNumber = [NSNumber numberWithInt: 7];
+    l8.length = [NSNumber numberWithInt: 500];
+    l8.mustReachEndOfLevelToPass = [NSNumber numberWithBool:NO];
+    l8.timeToSurviveToPass = [NSNumber numberWithInteger: 40];
+    l8.scoreToPass = [NSNumber numberWithInt:0];
+    l8.maxSpeed = [NSNumber numberWithFloat:MAX_PADDLE_SPEED/3];
+    l8.minSpeed = [NSNumber numberWithFloat:MIN_PADDLE_SPEED];
+    l8.speedIncreaseInterval = [NSNumber numberWithFloat:1.5f];
+    l8.speedIncreaseValue = [NSNumber numberWithFloat:0.2f];
+    l8.obstacleFrequency = [NSNumber numberWithFloat:1.5f];
+    l8.bonusBallFrequency = [NSNumber numberWithFloat:4.0f];
+    l8.bonusItemFrequency = [NSNumber numberWithFloat:0.0f];
+    l8.haveMovingObstacles = [NSNumber numberWithBool:NO];
+    l8.isBossLevel = [NSNumber numberWithBool:NO];
+    
+    [levelsMOC assignObject:l8 toPersistentStore: _levelsLocalStore];
+    
+    // points challenge 3
+    Level *l9 = [NSEntityDescription insertNewObjectForEntityForName:@"Level" inManagedObjectContext: levelsMOC];
+    l9.levelNumber = [NSNumber numberWithInt: 8];
+    l9.length = [NSNumber numberWithInt: 500];
+    l9.mustReachEndOfLevelToPass = [NSNumber numberWithBool:NO];
+    l9.timeToSurviveToPass = [NSNumber numberWithInteger: 0];
+    l9.scoreToPass = [NSNumber numberWithInt: 300];
+    l9.maxSpeed = [NSNumber numberWithFloat:MAX_PADDLE_SPEED/3];
+    l9.minSpeed = [NSNumber numberWithFloat:MIN_PADDLE_SPEED];
+    l9.speedIncreaseInterval = [NSNumber numberWithFloat:1.5f];
+    l9.speedIncreaseValue = [NSNumber numberWithFloat:0.2f];
+    l9.obstacleFrequency = [NSNumber numberWithFloat:1.5f];
+    l9.bonusBallFrequency = [NSNumber numberWithFloat:4.0f];
+    l9.bonusItemFrequency = [NSNumber numberWithFloat:0.0f];
+    l9.haveMovingObstacles = [NSNumber numberWithBool:NO];
+    l9.isBossLevel = [NSNumber numberWithBool:NO];
+    
+    [levelsMOC assignObject:l9 toPersistentStore: _levelsLocalStore];
+    
+    // length challenge 4
+    Level *l10 = [NSEntityDescription insertNewObjectForEntityForName:@"Level" inManagedObjectContext: levelsMOC];
+    l10.levelNumber = [NSNumber numberWithInt: 9];
+    l10.length = [NSNumber numberWithInt: 80];
+    l10.mustReachEndOfLevelToPass = [NSNumber numberWithBool:YES];
+    l10.timeToSurviveToPass = [NSNumber numberWithInteger:0];
+    l10.scoreToPass = [NSNumber numberWithInt:0];
+    l10.maxSpeed = [NSNumber numberWithFloat:MAX_PADDLE_SPEED/2.5];
+    l10.minSpeed = [NSNumber numberWithFloat:MIN_PADDLE_SPEED];
+    l10.speedIncreaseInterval = [NSNumber numberWithFloat:1.5f];
+    l10.speedIncreaseValue = [NSNumber numberWithFloat:0.3f];
+    l10.obstacleFrequency = [NSNumber numberWithFloat:1.0f];
+    l10.bonusBallFrequency = [NSNumber numberWithFloat:4.0f];
+    l10.bonusItemFrequency = [NSNumber numberWithFloat:0.0f];
+    l10.haveMovingObstacles = [NSNumber numberWithBool:NO];
+    l10.isBossLevel = [NSNumber numberWithBool:NO];
+    
+    [levelsMOC assignObject:l10 toPersistentStore: _levelsLocalStore];
+    
+    // time challenge 4
+    Level *l11 = [NSEntityDescription insertNewObjectForEntityForName:@"Level" inManagedObjectContext: levelsMOC];
+    l11.levelNumber = [NSNumber numberWithInt: 10];
+    l11.length = [NSNumber numberWithInt: 500];
+    l11.mustReachEndOfLevelToPass = [NSNumber numberWithBool:NO];
+    l11.timeToSurviveToPass = [NSNumber numberWithInteger: 45];
+    l11.scoreToPass = [NSNumber numberWithInt:0];
+    l11.maxSpeed = [NSNumber numberWithFloat:MAX_PADDLE_SPEED/2.5];
+    l11.minSpeed = [NSNumber numberWithFloat:MIN_PADDLE_SPEED];
+    l11.speedIncreaseInterval = [NSNumber numberWithFloat:1.5f];
+    l11.speedIncreaseValue = [NSNumber numberWithFloat:0.3f];
+    l11.obstacleFrequency = [NSNumber numberWithFloat:1.0f];
+    l11.bonusBallFrequency = [NSNumber numberWithFloat:4.0f];
+    l11.bonusItemFrequency = [NSNumber numberWithFloat:0.0f];
+    l11.haveMovingObstacles = [NSNumber numberWithBool:NO];
+    l11.isBossLevel = [NSNumber numberWithBool:NO];
+    
+    [levelsMOC assignObject:l11 toPersistentStore: _levelsLocalStore];
+    
+    // points challenge 4
+    Level *l12 = [NSEntityDescription insertNewObjectForEntityForName:@"Level" inManagedObjectContext: levelsMOC];
+    l12.levelNumber = [NSNumber numberWithInt: 11];
+    l12.length = [NSNumber numberWithInt: 500];
+    l12.mustReachEndOfLevelToPass = [NSNumber numberWithBool:NO];
+    l12.timeToSurviveToPass = [NSNumber numberWithInteger: 0];
+    l12.scoreToPass = [NSNumber numberWithInt: 400];
+    l12.maxSpeed = [NSNumber numberWithFloat:MAX_PADDLE_SPEED/2.5];
+    l12.minSpeed = [NSNumber numberWithFloat:MIN_PADDLE_SPEED];
+    l12.speedIncreaseInterval = [NSNumber numberWithFloat:1.5f];
+    l12.speedIncreaseValue = [NSNumber numberWithFloat:0.3f];
+    l12.obstacleFrequency = [NSNumber numberWithFloat:1.0f];
+    l12.bonusBallFrequency = [NSNumber numberWithFloat:4.0f];
+    l12.bonusItemFrequency = [NSNumber numberWithFloat:0.0f];
+    l12.haveMovingObstacles = [NSNumber numberWithBool:NO];
+    l12.isBossLevel = [NSNumber numberWithBool:NO];
+    
+    [levelsMOC assignObject:l12 toPersistentStore: _levelsLocalStore];
+    
+    // length challenge 5
+    Level *l13 = [NSEntityDescription insertNewObjectForEntityForName:@"Level" inManagedObjectContext: levelsMOC];
+    l13.levelNumber = [NSNumber numberWithInt: 12];
+    l13.length = [NSNumber numberWithInt: 90];
+    l13.mustReachEndOfLevelToPass = [NSNumber numberWithBool:YES];
+    l13.timeToSurviveToPass = [NSNumber numberWithInteger:0];
+    l13.scoreToPass = [NSNumber numberWithInt:0];
+    l13.maxSpeed = [NSNumber numberWithFloat:MAX_PADDLE_SPEED/2];
+    l13.minSpeed = [NSNumber numberWithFloat:MIN_PADDLE_SPEED*2];
+    l13.speedIncreaseInterval = [NSNumber numberWithFloat:1.0f];
+    l13.speedIncreaseValue = [NSNumber numberWithFloat:0.5f];
+    l13.obstacleFrequency = [NSNumber numberWithFloat:1.0f];
+    l13.bonusBallFrequency = [NSNumber numberWithFloat:4.0f];
+    l13.bonusItemFrequency = [NSNumber numberWithFloat:0.0f];
+    l13.haveMovingObstacles = [NSNumber numberWithBool:YES];
+    l13.isBossLevel = [NSNumber numberWithBool:NO];
+    
+    [levelsMOC assignObject:l13 toPersistentStore: _levelsLocalStore];
+    
+    // time challenge 5
+    Level *l14 = [NSEntityDescription insertNewObjectForEntityForName:@"Level" inManagedObjectContext: levelsMOC];
+    l14.levelNumber = [NSNumber numberWithInt: 13];
+    l14.length = [NSNumber numberWithInt: 500];
+    l14.mustReachEndOfLevelToPass = [NSNumber numberWithBool:NO];
+    l14.timeToSurviveToPass = [NSNumber numberWithInteger: 50];
+    l14.scoreToPass = [NSNumber numberWithInt:0];
+    l14.maxSpeed = [NSNumber numberWithFloat:MAX_PADDLE_SPEED/2];
+    l14.minSpeed = [NSNumber numberWithFloat:MIN_PADDLE_SPEED*2];
+    l14.speedIncreaseInterval = [NSNumber numberWithFloat:1.0f];
+    l14.speedIncreaseValue = [NSNumber numberWithFloat:0.5f];
+    l14.obstacleFrequency = [NSNumber numberWithFloat:1.0f];
+    l14.bonusBallFrequency = [NSNumber numberWithFloat:4.0f];
+    l14.bonusItemFrequency = [NSNumber numberWithFloat:0.0f];
+    l14.haveMovingObstacles = [NSNumber numberWithBool:YES];
+    l14.isBossLevel = [NSNumber numberWithBool:NO];
+    
+    [levelsMOC assignObject:l14 toPersistentStore: _levelsLocalStore];
+    
+    // points challenge 5
+    Level *l15 = [NSEntityDescription insertNewObjectForEntityForName:@"Level" inManagedObjectContext: levelsMOC];
+    l15.levelNumber = [NSNumber numberWithInt: 14];
+    l15.length = [NSNumber numberWithInt: 500];
+    l15.mustReachEndOfLevelToPass = [NSNumber numberWithBool:NO];
+    l15.timeToSurviveToPass = [NSNumber numberWithInteger: 0];
+    l15.scoreToPass = [NSNumber numberWithInt: 500];
+    l15.maxSpeed = [NSNumber numberWithFloat:MAX_PADDLE_SPEED/2];
+    l15.minSpeed = [NSNumber numberWithFloat:MIN_PADDLE_SPEED*2];
+    l15.speedIncreaseInterval = [NSNumber numberWithFloat:1.0f];
+    l15.speedIncreaseValue = [NSNumber numberWithFloat:0.5f];
+    l15.obstacleFrequency = [NSNumber numberWithFloat:1.0f];
+    l15.bonusBallFrequency = [NSNumber numberWithFloat:4.0f];
+    l15.bonusItemFrequency = [NSNumber numberWithFloat:0.0f];
+    l15.haveMovingObstacles = [NSNumber numberWithBool:YES];
+    l15.isBossLevel = [NSNumber numberWithBool:NO];
+    
+    [levelsMOC assignObject:l15 toPersistentStore: _levelsLocalStore];
+    
+    // length challenge 6
+    Level *l16 = [NSEntityDescription insertNewObjectForEntityForName:@"Level" inManagedObjectContext: levelsMOC];
+    l16.levelNumber = [NSNumber numberWithInt: 15];
+    l16.length = [NSNumber numberWithInt: 100];
+    l16.mustReachEndOfLevelToPass = [NSNumber numberWithBool:YES];
+    l16.timeToSurviveToPass = [NSNumber numberWithInteger:0];
+    l16.scoreToPass = [NSNumber numberWithInt:0];
+    l16.maxSpeed = [NSNumber numberWithFloat:MAX_PADDLE_SPEED/1.5];
+    l16.minSpeed = [NSNumber numberWithFloat:MIN_PADDLE_SPEED*2];
+    l16.speedIncreaseInterval = [NSNumber numberWithFloat:1.0f];
+    l16.speedIncreaseValue = [NSNumber numberWithFloat:0.5f];
+    l16.obstacleFrequency = [NSNumber numberWithFloat:1.0f];
+    l16.bonusBallFrequency = [NSNumber numberWithFloat:4.0f];
+    l16.bonusItemFrequency = [NSNumber numberWithFloat:0.0f];
+    l16.haveMovingObstacles = [NSNumber numberWithBool:YES];
+    l16.isBossLevel = [NSNumber numberWithBool:NO];
+    
+    [levelsMOC assignObject:l16 toPersistentStore: _levelsLocalStore];
+    
+    // time challenge 6
+    Level *l17 = [NSEntityDescription insertNewObjectForEntityForName:@"Level" inManagedObjectContext: levelsMOC];
+    l17.levelNumber = [NSNumber numberWithInt: 16];
+    l17.length = [NSNumber numberWithInt: 1000];
+    l17.mustReachEndOfLevelToPass = [NSNumber numberWithBool:NO];
+    l17.timeToSurviveToPass = [NSNumber numberWithInteger: 60];
+    l17.scoreToPass = [NSNumber numberWithInt:0];
+    l17.maxSpeed = [NSNumber numberWithFloat:MAX_PADDLE_SPEED/2];
+    l17.minSpeed = [NSNumber numberWithFloat:MIN_PADDLE_SPEED*2];
+    l17.speedIncreaseInterval = [NSNumber numberWithFloat:1.0f];
+    l17.speedIncreaseValue = [NSNumber numberWithFloat:0.5f];
+    l17.obstacleFrequency = [NSNumber numberWithFloat:1.0f];
+    l17.bonusBallFrequency = [NSNumber numberWithFloat:4.0f];
+    l17.bonusItemFrequency = [NSNumber numberWithFloat:0.0f];
+    l17.haveMovingObstacles = [NSNumber numberWithBool:YES];
+    l17.isBossLevel = [NSNumber numberWithBool:NO];
+    
+    [levelsMOC assignObject:l17 toPersistentStore: _levelsLocalStore];
+    
+    // points challenge 6
+    Level *l18 = [NSEntityDescription insertNewObjectForEntityForName:@"Level" inManagedObjectContext: levelsMOC];
+    l18.levelNumber = [NSNumber numberWithInt: 17];
+    l18.length = [NSNumber numberWithInt: 1000];
+    l18.mustReachEndOfLevelToPass = [NSNumber numberWithBool:NO];
+    l18.timeToSurviveToPass = [NSNumber numberWithInteger: 0];
+    l18.scoreToPass = [NSNumber numberWithInt: 600];
+    l18.maxSpeed = [NSNumber numberWithFloat:MAX_PADDLE_SPEED/2];
+    l18.minSpeed = [NSNumber numberWithFloat:MIN_PADDLE_SPEED*2];
+    l18.speedIncreaseInterval = [NSNumber numberWithFloat:1.0f];
+    l18.speedIncreaseValue = [NSNumber numberWithFloat:0.5f];
+    l18.obstacleFrequency = [NSNumber numberWithFloat:1.0f];
+    l18.bonusBallFrequency = [NSNumber numberWithFloat:4.0f];
+    l18.bonusItemFrequency = [NSNumber numberWithFloat:0.0f];
+    l18.haveMovingObstacles = [NSNumber numberWithBool:YES];
+    l18.isBossLevel = [NSNumber numberWithBool:NO];
+    
+    [levelsMOC assignObject:l18 toPersistentStore: _levelsLocalStore];
+
+    // length challenge 7
+    Level *l19 = [NSEntityDescription insertNewObjectForEntityForName:@"Level" inManagedObjectContext: levelsMOC];
+    l19.levelNumber = [NSNumber numberWithInt: 18];
+    l19.length = [NSNumber numberWithInt: 110];
+    l19.mustReachEndOfLevelToPass = [NSNumber numberWithBool:YES];
+    l19.timeToSurviveToPass = [NSNumber numberWithInteger:0];
+    l19.scoreToPass = [NSNumber numberWithInt:0];
+    l19.maxSpeed = [NSNumber numberWithFloat:MAX_PADDLE_SPEED/1.4];
+    l19.minSpeed = [NSNumber numberWithFloat:MIN_PADDLE_SPEED*3];
+    l19.speedIncreaseInterval = [NSNumber numberWithFloat:0.75f];
+    l19.speedIncreaseValue = [NSNumber numberWithFloat:0.5f];
+    l19.obstacleFrequency = [NSNumber numberWithFloat:1.0f];
+    l19.bonusBallFrequency = [NSNumber numberWithFloat:5.0f];
+    l19.bonusItemFrequency = [NSNumber numberWithFloat:0.0f];
+    l19.haveMovingObstacles = [NSNumber numberWithBool:YES];
+    l19.isBossLevel = [NSNumber numberWithBool:NO];
+    
+    [levelsMOC assignObject:l19 toPersistentStore: _levelsLocalStore];
+    
+    // time challenge 7
+    Level *l20 = [NSEntityDescription insertNewObjectForEntityForName:@"Level" inManagedObjectContext: levelsMOC];
+    l20.levelNumber = [NSNumber numberWithInt: 19];
+    l20.length = [NSNumber numberWithInt: 1000];
+    l20.mustReachEndOfLevelToPass = [NSNumber numberWithBool:NO];
+    l20.timeToSurviveToPass = [NSNumber numberWithInteger: 75];
+    l20.scoreToPass = [NSNumber numberWithInt:0];
+    l20.maxSpeed = [NSNumber numberWithFloat:MAX_PADDLE_SPEED/1.4];
+    l20.minSpeed = [NSNumber numberWithFloat:MIN_PADDLE_SPEED*3];
+    l20.speedIncreaseInterval = [NSNumber numberWithFloat:0.75f];
+    l20.speedIncreaseValue = [NSNumber numberWithFloat:0.5f];
+    l20.obstacleFrequency = [NSNumber numberWithFloat:1.0f];
+    l20.bonusBallFrequency = [NSNumber numberWithFloat:5.0f];
+    l20.bonusItemFrequency = [NSNumber numberWithFloat:0.0f];
+    l20.haveMovingObstacles = [NSNumber numberWithBool:YES];
+    l20.isBossLevel = [NSNumber numberWithBool:NO];
+    
+    [levelsMOC assignObject:l20 toPersistentStore: _levelsLocalStore];
+    
+    // points challenge 7
+    Level *l21 = [NSEntityDescription insertNewObjectForEntityForName:@"Level" inManagedObjectContext: levelsMOC];
+    l21.levelNumber = [NSNumber numberWithInt: 20];
+    l21.length = [NSNumber numberWithInt: 1000];
+    l21.mustReachEndOfLevelToPass = [NSNumber numberWithBool:NO];
+    l21.timeToSurviveToPass = [NSNumber numberWithInteger: 0];
+    l21.scoreToPass = [NSNumber numberWithInt: 700];
+    l21.maxSpeed = [NSNumber numberWithFloat:MAX_PADDLE_SPEED/1.4];
+    l21.minSpeed = [NSNumber numberWithFloat:MIN_PADDLE_SPEED*3];
+    l21.speedIncreaseInterval = [NSNumber numberWithFloat:0.75f];
+    l21.speedIncreaseValue = [NSNumber numberWithFloat:0.5f];
+    l21.obstacleFrequency = [NSNumber numberWithFloat:1.0f];
+    l21.bonusBallFrequency = [NSNumber numberWithFloat:5.0f];
+    l21.bonusItemFrequency = [NSNumber numberWithFloat:0.0f];
+    l21.haveMovingObstacles = [NSNumber numberWithBool:YES];
+    l21.isBossLevel = [NSNumber numberWithBool:NO];
+    
+    [levelsMOC assignObject:l21 toPersistentStore: _levelsLocalStore];
+
+    // length challenge 8
+    Level *l22 = [NSEntityDescription insertNewObjectForEntityForName:@"Level" inManagedObjectContext: levelsMOC];
+    l22.levelNumber = [NSNumber numberWithInt: 21];
+    l22.length = [NSNumber numberWithInt: 120];
+    l22.mustReachEndOfLevelToPass = [NSNumber numberWithBool:YES];
+    l22.timeToSurviveToPass = [NSNumber numberWithInteger:0];
+    l22.scoreToPass = [NSNumber numberWithInt:0];
+    l22.maxSpeed = [NSNumber numberWithFloat:MAX_PADDLE_SPEED/1.25];
+    l22.minSpeed = [NSNumber numberWithFloat:MIN_PADDLE_SPEED*3];
+    l22.speedIncreaseInterval = [NSNumber numberWithFloat:0.75f];
+    l22.speedIncreaseValue = [NSNumber numberWithFloat:0.6f];
+    l22.obstacleFrequency = [NSNumber numberWithFloat:0.75f];
+    l22.bonusBallFrequency = [NSNumber numberWithFloat:5.0f];
+    l22.bonusItemFrequency = [NSNumber numberWithFloat:0.0f];
+    l22.haveMovingObstacles = [NSNumber numberWithBool:YES];
+    l22.isBossLevel = [NSNumber numberWithBool:NO];
+    
+    [levelsMOC assignObject:l22 toPersistentStore: _levelsLocalStore];
+    
+    // time challenge 8
+    Level *l23 = [NSEntityDescription insertNewObjectForEntityForName:@"Level" inManagedObjectContext: levelsMOC];
+    l23.levelNumber = [NSNumber numberWithInt: 22];
+    l23.length = [NSNumber numberWithInt: 1000];
+    l23.mustReachEndOfLevelToPass = [NSNumber numberWithBool:NO];
+    l23.timeToSurviveToPass = [NSNumber numberWithInteger: 90];
+    l23.scoreToPass = [NSNumber numberWithInt:0];
+    l23.maxSpeed = [NSNumber numberWithFloat:MAX_PADDLE_SPEED/1.25];
+    l23.minSpeed = [NSNumber numberWithFloat:MIN_PADDLE_SPEED*3];
+    l23.speedIncreaseInterval = [NSNumber numberWithFloat:0.75f];
+    l23.speedIncreaseValue = [NSNumber numberWithFloat:0.6f];
+    l23.obstacleFrequency = [NSNumber numberWithFloat:0.75f];
+    l23.bonusBallFrequency = [NSNumber numberWithFloat:5.0f];
+    l23.bonusItemFrequency = [NSNumber numberWithFloat:0.0f];
+    l23.haveMovingObstacles = [NSNumber numberWithBool:YES];
+    l23.isBossLevel = [NSNumber numberWithBool:NO];
+    
+    [levelsMOC assignObject:l23 toPersistentStore: _levelsLocalStore];
+    
+    // points challenge 8
+    Level *l24 = [NSEntityDescription insertNewObjectForEntityForName:@"Level" inManagedObjectContext: levelsMOC];
+    l24.levelNumber = [NSNumber numberWithInt: 23];
+    l24.length = [NSNumber numberWithInt: 1000];
+    l24.mustReachEndOfLevelToPass = [NSNumber numberWithBool:NO];
+    l24.timeToSurviveToPass = [NSNumber numberWithInteger: 0];
+    l24.scoreToPass = [NSNumber numberWithInt: 800];
+    l24.maxSpeed = [NSNumber numberWithFloat:MAX_PADDLE_SPEED/1.25];
+    l24.minSpeed = [NSNumber numberWithFloat:MIN_PADDLE_SPEED*3];
+    l24.speedIncreaseInterval = [NSNumber numberWithFloat:0.75f];
+    l24.speedIncreaseValue = [NSNumber numberWithFloat:0.6f];
+    l24.obstacleFrequency = [NSNumber numberWithFloat:0.75f];
+    l24.bonusBallFrequency = [NSNumber numberWithFloat:5.0f];
+    l24.bonusItemFrequency = [NSNumber numberWithFloat:0.0f];
+    l24.haveMovingObstacles = [NSNumber numberWithBool:YES];
+    l24.isBossLevel = [NSNumber numberWithBool:NO];
+    
+    [levelsMOC assignObject:l24 toPersistentStore: _levelsLocalStore];
+    
+    // length challenge 9
+    Level *l25 = [NSEntityDescription insertNewObjectForEntityForName:@"Level" inManagedObjectContext: levelsMOC];
+    l25.levelNumber = [NSNumber numberWithInt: 24];
+    l25.length = [NSNumber numberWithInt: 130];
+    l25.mustReachEndOfLevelToPass = [NSNumber numberWithBool:YES];
+    l25.timeToSurviveToPass = [NSNumber numberWithInteger:0];
+    l25.scoreToPass = [NSNumber numberWithInt:0];
+    l25.maxSpeed = [NSNumber numberWithFloat:MAX_PADDLE_SPEED/1.1];
+    l25.minSpeed = [NSNumber numberWithFloat:MIN_PADDLE_SPEED*3];
+    l25.speedIncreaseInterval = [NSNumber numberWithFloat:0.5f];
+    l25.speedIncreaseValue = [NSNumber numberWithFloat:0.7f];
+    l25.obstacleFrequency = [NSNumber numberWithFloat:0.75f];
+    l25.bonusBallFrequency = [NSNumber numberWithFloat:6.0f];
+    l25.bonusItemFrequency = [NSNumber numberWithFloat:0.0f];
+    l25.haveMovingObstacles = [NSNumber numberWithBool:YES];
+    l25.isBossLevel = [NSNumber numberWithBool:NO];
+    
+    [levelsMOC assignObject:l25 toPersistentStore: _levelsLocalStore];
+    
+    // time challenge 9
+    Level *l26 = [NSEntityDescription insertNewObjectForEntityForName:@"Level" inManagedObjectContext: levelsMOC];
+    l26.levelNumber = [NSNumber numberWithInt: 25];
+    l26.length = [NSNumber numberWithInt: 1000];
+    l26.mustReachEndOfLevelToPass = [NSNumber numberWithBool:NO];
+    l26.timeToSurviveToPass = [NSNumber numberWithInteger: 105];
+    l26.scoreToPass = [NSNumber numberWithInt:0];
+    l26.maxSpeed = [NSNumber numberWithFloat:MAX_PADDLE_SPEED/1.1];
+    l26.minSpeed = [NSNumber numberWithFloat:MIN_PADDLE_SPEED*3];
+    l26.speedIncreaseInterval = [NSNumber numberWithFloat:0.5f];
+    l26.speedIncreaseValue = [NSNumber numberWithFloat:0.7f];
+    l26.obstacleFrequency = [NSNumber numberWithFloat:0.75f];
+    l26.bonusBallFrequency = [NSNumber numberWithFloat:6.0f];
+    l26.bonusItemFrequency = [NSNumber numberWithFloat:0.0f];
+    l26.haveMovingObstacles = [NSNumber numberWithBool:YES];
+    l26.isBossLevel = [NSNumber numberWithBool:NO];
+    
+    [levelsMOC assignObject:l26 toPersistentStore: _levelsLocalStore];
+    
+    // points challenge 9
+    Level *l27 = [NSEntityDescription insertNewObjectForEntityForName:@"Level" inManagedObjectContext: levelsMOC];
+    l27.levelNumber = [NSNumber numberWithInt: 26];
+    l27.length = [NSNumber numberWithInt: 1000];
+    l27.mustReachEndOfLevelToPass = [NSNumber numberWithBool:NO];
+    l27.timeToSurviveToPass = [NSNumber numberWithInteger: 0];
+    l27.scoreToPass = [NSNumber numberWithInt: 900];
+    l27.maxSpeed = [NSNumber numberWithFloat:MAX_PADDLE_SPEED/1.1];
+    l27.minSpeed = [NSNumber numberWithFloat:MIN_PADDLE_SPEED*3];
+    l27.speedIncreaseInterval = [NSNumber numberWithFloat:0.5f];
+    l27.speedIncreaseValue = [NSNumber numberWithFloat:0.7f];
+    l27.obstacleFrequency = [NSNumber numberWithFloat:0.75f];
+    l27.bonusBallFrequency = [NSNumber numberWithFloat:6.0f];
+    l27.bonusItemFrequency = [NSNumber numberWithFloat:0.0f];
+    l27.haveMovingObstacles = [NSNumber numberWithBool:YES];
+    l27.isBossLevel = [NSNumber numberWithBool:NO];
+    
+    [levelsMOC assignObject:l27 toPersistentStore: _levelsLocalStore];
+    
+    // length challenge 10
+    Level *l28 = [NSEntityDescription insertNewObjectForEntityForName:@"Level" inManagedObjectContext: levelsMOC];
+    l28.levelNumber = [NSNumber numberWithInt: 27];
+    l28.length = [NSNumber numberWithInt: 150];
+    l28.mustReachEndOfLevelToPass = [NSNumber numberWithBool:YES];
+    l28.timeToSurviveToPass = [NSNumber numberWithInteger:0];
+    l28.scoreToPass = [NSNumber numberWithInt:0];
+    l28.maxSpeed = [NSNumber numberWithFloat:MAX_PADDLE_SPEED];
+    l28.minSpeed = [NSNumber numberWithFloat:MIN_PADDLE_SPEED*3];
+    l28.speedIncreaseInterval = [NSNumber numberWithFloat:0.25f];
+    l28.speedIncreaseValue = [NSNumber numberWithFloat:1.0f];
+    l28.obstacleFrequency = [NSNumber numberWithFloat:0.5f];
+    l28.bonusBallFrequency = [NSNumber numberWithFloat:6.0f];
+    l28.bonusItemFrequency = [NSNumber numberWithFloat:0.0f];
+    l28.haveMovingObstacles = [NSNumber numberWithBool:YES];
+    l28.isBossLevel = [NSNumber numberWithBool:NO];
+    
+    [levelsMOC assignObject:l28 toPersistentStore: _levelsLocalStore];
+    
+    // time challenge 10
+    Level *l29 = [NSEntityDescription insertNewObjectForEntityForName:@"Level" inManagedObjectContext: levelsMOC];
+    l29.levelNumber = [NSNumber numberWithInt: 28];
+    l29.length = [NSNumber numberWithInt: 1000];
+    l29.mustReachEndOfLevelToPass = [NSNumber numberWithBool:NO];
+    l29.timeToSurviveToPass = [NSNumber numberWithInteger: 120];
+    l29.scoreToPass = [NSNumber numberWithInt:0];
+    l29.maxSpeed = [NSNumber numberWithFloat:MAX_PADDLE_SPEED];
+    l29.minSpeed = [NSNumber numberWithFloat:MIN_PADDLE_SPEED*3];
+    l29.speedIncreaseInterval = [NSNumber numberWithFloat:0.25f];
+    l29.speedIncreaseValue = [NSNumber numberWithFloat:1.0f];
+    l29.obstacleFrequency = [NSNumber numberWithFloat:0.5f];
+    l29.bonusBallFrequency = [NSNumber numberWithFloat:6.0f];
+    l29.bonusItemFrequency = [NSNumber numberWithFloat:0.0f];
+    l29.haveMovingObstacles = [NSNumber numberWithBool:YES];
+    l29.isBossLevel = [NSNumber numberWithBool:NO];
+    
+    [levelsMOC assignObject:l29 toPersistentStore: _levelsLocalStore];
+    
+    // points challenge 10
+    Level *l30 = [NSEntityDescription insertNewObjectForEntityForName:@"Level" inManagedObjectContext: levelsMOC];
+    l30.levelNumber = [NSNumber numberWithInt: 29];
+    l30.length = [NSNumber numberWithInt: 1000];
+    l30.mustReachEndOfLevelToPass = [NSNumber numberWithBool:NO];
+    l30.timeToSurviveToPass = [NSNumber numberWithInteger: 0];
+    l30.scoreToPass = [NSNumber numberWithInt: 1000];
+    l30.maxSpeed = [NSNumber numberWithFloat:MAX_PADDLE_SPEED];
+    l30.minSpeed = [NSNumber numberWithFloat:MIN_PADDLE_SPEED*3];
+    l30.speedIncreaseInterval = [NSNumber numberWithFloat:0.25f];
+    l30.speedIncreaseValue = [NSNumber numberWithFloat:1.0f];
+    l30.obstacleFrequency = [NSNumber numberWithFloat:0.5f];
+    l30.bonusBallFrequency = [NSNumber numberWithFloat:6.0f];
+    l30.bonusItemFrequency = [NSNumber numberWithFloat:0.0f];
+    l30.haveMovingObstacles = [NSNumber numberWithBool:YES];
+    l30.isBossLevel = [NSNumber numberWithBool:NO];
+    
+    [levelsMOC assignObject:l30 toPersistentStore: _levelsLocalStore];
     
     NSError *createLevelsError = nil;
     BOOL success = [levelsMOC save: &createLevelsError];
