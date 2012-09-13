@@ -24,7 +24,7 @@
 - (void)explode;
 
 @property (nonatomic, readwrite, retain) CCParticleSystem *emitter;
-@property (nonatomic, retain) Game *game;
+@property (nonatomic, assign) Game *game;
 @property (nonatomic, readwrite, assign) BOOL isMoving;
 @property (nonatomic, readwrite, assign) float horizontalForce;
 @property (nonatomic, readwrite, assign) float changeDirectionTimeIterval;

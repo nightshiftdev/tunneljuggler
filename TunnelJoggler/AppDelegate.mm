@@ -139,7 +139,7 @@
 #ifdef DEBUG
     NSLog(@"Did receive memory warning, purging cached data.");
 #endif
-	[[CCDirector sharedDirector] purgeCachedData];
+    [[CCDirector sharedDirector] purgeCachedData];
 }
 
 -(void) applicationDidEnterBackground:(UIApplication*)application {

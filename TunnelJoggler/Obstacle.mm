@@ -97,7 +97,6 @@
 
 - (void) dealloc {
 	[emitter release];
-    [game release];
 	[super dealloc];	
 }
 

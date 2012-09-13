@@ -22,6 +22,6 @@
 - (void)resetEmitter;
 - (b2Body *) body;
 @property (nonatomic, readwrite, retain) CCParticleSystem *emitter;
-@property (nonatomic, retain) Game *game;
+@property (nonatomic, assign) Game *game;
 
 @end

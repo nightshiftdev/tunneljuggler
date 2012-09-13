@@ -12,7 +12,7 @@
 
 @interface Game ()
 @property (readwrite, nonatomic, retain) Player *player;
-@property (readwrite, nonatomic, retain) NSArray *levels;
+@property (readwrite, nonatomic, assign) NSArray *levels;
 @property (readwrite, nonatomic, retain) Level *currentLevel;
 -(void)setupGamePlay;
 - (BOOL)isTimeChallengeLevel;
@@ -24,7 +24,7 @@
 
 @synthesize hud = _hud;
 @synthesize terrain = terrain_;
-@synthesize player = _player;
+@synthesize player= _player;
 @synthesize levels;
 @synthesize currentLevel = _currentLevel;
 @synthesize state;
@@ -42,9 +42,9 @@
 -(id) init {
     if((self=[super init])) {
         if (nil == [[GameController sharedController] player]) {
-            
             abort();
         }
+        
         _oneSecond = 1.0;
         _updateLengthCounterInterval = 1.0;
         
@@ -83,12 +83,28 @@
         paddle_.minSpeed = [_currentLevel.minSpeed floatValue];
         paddle_.maxSpeed = [_currentLevel.maxSpeed floatValue];
         paddle_.speedIncreaseAmount = [_currentLevel.speedIncreaseValue floatValue];
-
-        [self scheduleUpdate];
-        self.state = kGameStateRunning;
     }
     return self;
 }
+
+-(void)onEnter {
+    if (DEBUG_LOG) {
+        NSLog(@"Game onEnter.");
+    }
+    [self scheduleUpdate];
+    self.state = kGameStateRunning;
+    [super onEnter];
+}
+
+-(void)onExit {
+    if (DEBUG_LOG) {
+        NSLog(@"Game onExit.");
+    }
+    [self unscheduleUpdate];
+    [self unscheduleAllSelectors];
+    [super onExit];
+}
+
 - (void)setupWorld {    
     b2Vec2 gravity = b2Vec2(-7.0f, 0.0f);
     bool doSleep = true;
@@ -273,7 +289,7 @@
     if (self.state != kGameStateRunning) {
         return;
     }
-    
+
     [self addNextObstacle: dt];
     [self addNextBounusBall:dt];
     [self increasePaddleSpeed:dt];
@@ -476,9 +492,9 @@
 }
 
 - (void)dealloc {
-    self.player = nil;
-    self.levels = nil;
-    [_currentLevel release];
+    if (DEBUG_LOG) {
+        NSLog(@"Game dealloc.");
+    }
     [obstacles_ release];
     [ballBullets_ release];
     [terrain_ release];

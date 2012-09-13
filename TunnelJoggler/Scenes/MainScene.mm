@@ -125,6 +125,12 @@
 	return self;
 }
 
+-(void)onExit {
+    [self unscheduleUpdate];
+    [self unscheduleAllSelectors];
+    [super onExit];
+}
+
 - (void)dealloc {
     self.playerPictureMenu = nil;
     self.itemUserPicture = nil;

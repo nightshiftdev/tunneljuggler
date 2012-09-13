@@ -407,7 +407,7 @@
     if ([[CCDirector sharedDirector] isPaused]) {
 		[[CCDirector sharedDirector] resume];
 	}
-	[[CCDirector sharedDirector] replaceScene: [CCTransitionFade transitionWithDuration:0.1f scene:[[game_ class] scene]]];
+	[[CCDirector sharedDirector] replaceScene:[CCTransitionFade transitionWithDuration:0.1f scene:[Game scene]]];
 }
 
 -(void) onMainMenuPressed:(id)sender {

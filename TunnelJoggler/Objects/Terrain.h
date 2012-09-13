@@ -19,7 +19,6 @@
 @interface Terrain : CCNode {
     @private
     int _offsetX;
-//    CGPoint _hillKeyPoints[kMaxHillKeyPoints];
     CCSprite *_stripes;
     int _fromKeyPointI;
     int _toKeyPointI;
@@ -44,9 +43,7 @@
 @property (retain) CCSprite * stripes;
 @property (retain) CCSpriteBatchNode * batchNode;
 @property (assign, nonatomic, readonly) float levelLength;
-@property (nonatomic, retain) id<TerrainObserver> terrainObserver;
-//@property (nonatomic, assign) int nBorderVertices;
-//@property (nonatomic, assign) int nOppositeBorderVertices;
+@property (nonatomic, assign) id<TerrainObserver> terrainObserver;
 - (void)setOffsetX:(float)newOffsetX;
 - (void)generateHills;
 - (void)resetHillVertices;
