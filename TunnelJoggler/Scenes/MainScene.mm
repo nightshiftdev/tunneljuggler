@@ -180,35 +180,35 @@
     }
     
     _experienceDisplayLevel0 = [SoundMenuItem itemFromNormalSpriteFrameName:@"experience-on.png" selectedSpriteFrameName:@"experience-on.png" disabledSpriteFrameName:@"experience-off.png" target:nil selector:nil];
-    if (experienceLevel > 10) {
+    if (experienceLevel >= 10) {
         _experienceDisplayLevel0.isEnabled = YES;
     } else {
         _experienceDisplayLevel0.isEnabled = NO;
     }
     
     _experienceDisplayLevel1 = [SoundMenuItem itemFromNormalSpriteFrameName:@"experience-on.png" selectedSpriteFrameName:@"experience-on.png" disabledSpriteFrameName:@"experience-off.png" target:nil selector:nil];
-    if (experienceLevel > 100) {
+    if (experienceLevel >= 100) {
         _experienceDisplayLevel1.isEnabled = YES;
     } else {
         _experienceDisplayLevel1.isEnabled = NO;
     }
     
     _experienceDisplayLevel2 = [SoundMenuItem itemFromNormalSpriteFrameName:@"experience-on.png" selectedSpriteFrameName:@"experience-off.png" disabledSpriteFrameName:@"experience-off.png" target:nil selector:nil];
-    if (experienceLevel > 1000) {
+    if (experienceLevel >= 200) {
         _experienceDisplayLevel2.isEnabled = YES;
     } else {
         _experienceDisplayLevel2.isEnabled = NO;
     }
 
     _experienceDisplayLevel3 = [SoundMenuItem itemFromNormalSpriteFrameName:@"experience-on.png" selectedSpriteFrameName:@"experience-on.png" disabledSpriteFrameName:@"experience-off.png" target:nil selector:nil];
-    if (experienceLevel > 10000) {
+    if (experienceLevel >= 300) {
         _experienceDisplayLevel3.isEnabled = YES;
     } else {
         _experienceDisplayLevel3.isEnabled = NO;
     }
     
     _experienceDisplayLevel4 = [SoundMenuItem itemFromNormalSpriteFrameName:@"experience-on.png" selectedSpriteFrameName:@"experience-on.png" disabledSpriteFrameName:@"experience-off.png" target:nil selector:nil];
-    if (experienceLevel > 100000) {
+    if (experienceLevel >= 400) {
         _experienceDisplayLevel4.isEnabled = YES;
     } else {
         _experienceDisplayLevel4.isEnabled = NO;
@@ -302,27 +302,27 @@
     [_currentLevelLabel setString: [NSString stringWithFormat:@"%d",  [p.currentLevel intValue] + 1]];
     
     int experienceLevel = [p.experienceLevel intValue];
-    if (experienceLevel > 10) {
+    if (experienceLevel >= 10) {
         _experienceDisplayLevel0.isEnabled = YES;
     } else {
         _experienceDisplayLevel0.isEnabled = NO;
     }
-    if (experienceLevel > 100) {
+    if (experienceLevel >= 100) {
         _experienceDisplayLevel1.isEnabled = YES;
     } else {
         _experienceDisplayLevel1.isEnabled = NO;
     }
-    if (experienceLevel > 1000) {
+    if (experienceLevel >= 200) {
         _experienceDisplayLevel2.isEnabled = YES;
     } else {
         _experienceDisplayLevel2.isEnabled = NO;
     }
-    if (experienceLevel > 10000) {
+    if (experienceLevel >= 300) {
         _experienceDisplayLevel3.isEnabled = YES;
     } else {
         _experienceDisplayLevel3.isEnabled = NO;
     }
-    if (experienceLevel > 100000) {
+    if (experienceLevel >= 400) {
         _experienceDisplayLevel4.isEnabled = YES;
     } else {
         _experienceDisplayLevel4.isEnabled = NO;
