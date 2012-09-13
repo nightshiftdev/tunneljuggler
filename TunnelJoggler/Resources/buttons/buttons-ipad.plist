@@ -46,7 +46,7 @@
             <key>exit-off.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{952,1321},{754,209}}</string>
+                <string>{{532,1110},{754,209}}</string>
                 <key>offset</key>
                 <string>{-1,0}</string>
                 <key>rotated</key>
@@ -59,7 +59,7 @@
             <key>exit-on.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{532,1110},{754,209}}</string>
+                <string>{{1046,899},{754,209}}</string>
                 <key>offset</key>
                 <string>{-1,0}</string>
                 <key>rotated</key>
@@ -215,13 +215,13 @@
             <key>play-off.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{1046,899},{754,209}}</string>
+                <string>{{952,1321},{752,209}}</string>
                 <key>offset</key>
-                <string>{-1,0}</string>
+                <string>{0,0}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
-                <string>{{7,7},{754,209}}</string>
+                <string>{{9,7},{752,209}}</string>
                 <key>sourceSize</key>
                 <string>{770,223}</string>
             </dict>
@@ -339,7 +339,7 @@
             <key>size</key>
             <string>{2048,2048}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:ff6a0de10a12e78f7fb1d726d6b25443$</string>
+            <string>$TexturePacker:SmartUpdate:9ad5597d2bf899fabc13dae0ad7c6192$</string>
             <key>textureFileName</key>
             <string>buttons-ipad.png</string>
         </dict>
