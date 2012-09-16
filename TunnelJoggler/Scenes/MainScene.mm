@@ -188,7 +188,7 @@
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
         fontSize = 20.0;
     }
-    CCLabelTTF *verLabel = [CCLabelTTF labelWithString:@"v1.0.0 beta" fontName:@"BosoxRevised.ttf" fontSize:fontSize];
+    CCLabelTTF *verLabel = [CCLabelTTF labelWithString:@"v1.0.0" fontName:@"BosoxRevised.ttf" fontSize:fontSize];
     verLabel.color = ccc3(255, 255, 255);
     [self addChild:verLabel z:5];
     CGSize s = [[CCDirector sharedDirector] winSize];
