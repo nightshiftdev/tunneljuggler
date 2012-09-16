@@ -1,5 +1,5 @@
 //
-//  SplashScene.mm
+//  ChallengeScene.h.mm
 //  TunnelJuggler
 //
 //  Created by pawel on 4/21/11.

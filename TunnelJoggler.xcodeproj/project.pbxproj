@@ -213,6 +213,7 @@
 		E5A5DA0A15FF6B7300C631CE /* Default-Portrait~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = E5A5DA0515FF6B7300C631CE /* Default-Portrait~ipad.png */; };
 		E5A5DA0B15FF6B7300C631CE /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E5A5DA0615FF6B7300C631CE /* Default@2x.png */; };
 		E5A5DA1616037E1900C631CE /* Icon-144.png in Resources */ = {isa = PBXBuildFile; fileRef = E5A5DA1516037E1900C631CE /* Icon-144.png */; };
+		E5A5DA1916064A1000C631CE /* GameCompleteScene.mm in Sources */ = {isa = PBXBuildFile; fileRef = E5A5DA1816064A1000C631CE /* GameCompleteScene.mm */; };
 		E5AD299115BED2D100A43904 /* MainScene.mm in Sources */ = {isa = PBXBuildFile; fileRef = E5AD299015BED2D100A43904 /* MainScene.mm */; };
 		E5B3A14B15BD73D400667F70 /* GameData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E5B3A14915BD73D400667F70 /* GameData.xcdatamodeld */; };
 		E5B7D72D152A647800407342 /* Paddle.mm in Sources */ = {isa = PBXBuildFile; fileRef = E5B7D72C152A647800407342 /* Paddle.mm */; };
@@ -596,6 +597,8 @@
 		E5A5DA0515FF6B7300C631CE /* Default-Portrait~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-Portrait~ipad.png"; path = "Resources/Default-Portrait~ipad.png"; sourceTree = "<group>"; };
 		E5A5DA0615FF6B7300C631CE /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default@2x.png"; path = "Resources/Default@2x.png"; sourceTree = "<group>"; };
 		E5A5DA1516037E1900C631CE /* Icon-144.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-144.png"; path = "Resources/Icon-144.png"; sourceTree = "<group>"; };
+		E5A5DA1716064A0F00C631CE /* GameCompleteScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameCompleteScene.h; sourceTree = "<group>"; };
+		E5A5DA1816064A1000C631CE /* GameCompleteScene.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = GameCompleteScene.mm; sourceTree = "<group>"; };
 		E5AD298F15BED2D100A43904 /* MainScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainScene.h; sourceTree = "<group>"; };
 		E5AD299015BED2D100A43904 /* MainScene.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MainScene.mm; sourceTree = "<group>"; };
 		E5B3A14A15BD73D400667F70 /* GameData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = GameData.xcdatamodel; sourceTree = "<group>"; };
@@ -1121,6 +1124,8 @@
 		E5AD298E15BED2D100A43904 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				E5A5DA1716064A0F00C631CE /* GameCompleteScene.h */,
+				E5A5DA1816064A1000C631CE /* GameCompleteScene.mm */,
 				E50121FF15EA8A42002E17B0 /* ChallengeScene.h */,
 				E501220015EA8A43002E17B0 /* ChallengeScene.mm */,
 				E5342BEA15DBDFF600863A06 /* SplashScene.h */,
@@ -1403,6 +1408,7 @@
 				E50121F015E2FC3E002E17B0 /* LocalPlayer.m in Sources */,
 				E501220115EA8A43002E17B0 /* ChallengeScene.mm in Sources */,
 				E58EEB5315FE6C710086B3B0 /* Level.m in Sources */,
+				E5A5DA1916064A1000C631CE /* GameCompleteScene.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

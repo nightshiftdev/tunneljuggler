@@ -14,6 +14,7 @@
 #import "GameCenterManager.h"
 #import "Level.h"
 #import "ChallengeScene.h"
+#import "GameCompleteScene.h"
 
 @interface HUD()
 @property (nonatomic, assign) BOOL isGameOver;
@@ -78,19 +79,16 @@
         [_clownBody setPosition:ccp(s.width/1.7, s.height/2)];
         [self addChild:_clownBody z:2];
         _clownBody.visible = NO;
-//        _clownBody.scale = 2.0;
         
         _happyClown = [CCSprite spriteWithSpriteFrameName:@"clown-happy.png"];
         [_happyClown setPosition:ccp(s.width/1.3, s.height/2)];
         [self addChild:_happyClown z:2];
         _happyClown.visible = NO;
-//        _happyClown.scale = 2.0;
         
         _sadClown = [CCSprite spriteWithSpriteFrameName:@"clown-sad.png"];
         [_sadClown setPosition:ccp(s.width/1.3, s.height/2)];
         [self addChild:_sadClown z:2];
         _sadClown.visible = NO;
-//        _sadClown.scale = 2.0;
         
         //Score ribbon
         CCMenuItem *itemScoreRibbon = [SoundMenuItem itemFromNormalSpriteFrameName:@"score-frame.png" selectedSpriteFrameName:@"score-frame.png" target:nil selector:nil];
@@ -192,7 +190,7 @@
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
             [[CCDirector sharedDirector] pause];
-            self.currentLevel = nil;
+//            self.currentLevel = nil;
         });
     }
 }
@@ -430,7 +428,13 @@
     if ([[CCDirector sharedDirector] isPaused]) {
 		[[CCDirector sharedDirector] resume];
 	}
-    [[CCDirector sharedDirector] replaceScene:[CCTransitionFade transitionWithDuration:0.1f scene:[ChallengeScene scene]]];
+    int levelNumber = [self.currentLevel.levelNumber intValue];
+    NSArray *levels = [[GameController sharedController] levels];
+    if (levelNumber == [levels count] - 1) {
+        [[CCDirector sharedDirector] replaceScene:[CCTransitionFade transitionWithDuration:0.1f scene:[GameCompleteScene scene]]];
+    } else {
+        [[CCDirector sharedDirector] replaceScene:[CCTransitionFade transitionWithDuration:0.1f scene:[ChallengeScene scene]]];
+    }
 }
 
 @end
