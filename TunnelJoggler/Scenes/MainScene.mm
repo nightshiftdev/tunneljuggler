@@ -21,6 +21,7 @@
 - (void) createScoreLabelWithScore: (int) score;
 - (void) createCurrentLevelLabelWithLevel: (int) level;
 - (void) createExperienceDisplay: (int) experienceLevel;
+- (void) createVersionLabel;
 
 @property (retain, nonatomic, readwrite) CCMenuItem *itemUserPicture;
 @property (retain, nonatomic, readwrite) CCMenu *playerPictureMenu;
@@ -80,8 +81,14 @@
             [self addChild:menuPlay];
             
             //Clown face
-            CCSprite *spriteFromImageNormal = [CCSprite spriteWithSpriteFrameName: @"clown-face-happy.png"];
-            CCSprite *spriteFromImageSelected = [CCSprite spriteWithSpriteFrameName: @"clown-face-happy.png"];
+            CCSprite *spriteFromImageNormal = [CCSprite spriteWithSpriteFrameName: @"clown-happy.png"];
+            CCSprite *spriteFromImageSelected = [CCSprite spriteWithSpriteFrameName: @"clown-happy.png"];
+            spriteFromImageNormal.scale = 0.55;
+            spriteFromImageSelected.scale = 0.55;
+            if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+                spriteFromImageNormal.scale = 0.65;
+                spriteFromImageSelected.scale = 0.65;
+            }
             [self setUserPictureForNormalState: spriteFromImageNormal
                                  selectedState: spriteFromImageSelected];
             
@@ -100,6 +107,8 @@
             
             // Current level
             [self createCurrentLevelLabelWithLevel:[p.currentLevel intValue]];
+            
+            [self createVersionLabel];
             
             //Game center
             CCMenuItem *itemGameCenter = [SoundMenuItem itemFromNormalSpriteFrameName:@"game-center-off.png" selectedSpriteFrameName:@"game-center-on.png" target:self selector:@selector(highScoreGameCenter:)];
@@ -172,6 +181,19 @@
     CGSize s = [[CCDirector sharedDirector] winSize];
     [_currentLevelLabel setPosition:ccp(s.width/2.48, s.height/2)];
     _currentLevelLabel.rotation = 90;
+}
+
+- (void) createVersionLabel {
+    float fontSize = 10.0;
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+        fontSize = 20.0;
+    }
+    CCLabelTTF *verLabel = [CCLabelTTF labelWithString:@"v1.0.0 beta" fontName:@"BosoxRevised.ttf" fontSize:fontSize];
+    verLabel.color = ccc3(255, 255, 255);
+    [self addChild:verLabel z:5];
+    CGSize s = [[CCDirector sharedDirector] winSize];
+    [verLabel setPosition:ccp(fontSize, s.height/2)];
+    verLabel.rotation = 90;
 }
 
 - (void) createExperienceDisplay: (int) experienceLevel {
@@ -268,7 +290,10 @@
                             ];
     self.itemUserPicture.isEnabled = NO;
     self.playerPictureMenu = [CCMenu menuWithItems: self.itemUserPicture, nil];
-    self.playerPictureMenu.position = ccp(s.width/1.33, s.height/2);
+    self.playerPictureMenu.position = ccp(s.width/1.22, s.height/1.52);
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+        self.playerPictureMenu.position = ccp(s.width/1.23, s.height/1.65);
+    }
     self.playerPictureMenu.isTouchEnabled = YES;
     [itemUserPicture runAction:[CCRepeatForever actionWithAction:seq]];
     [self addChild:self.playerPictureMenu z:3];

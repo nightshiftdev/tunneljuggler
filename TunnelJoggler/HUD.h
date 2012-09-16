@@ -25,6 +25,7 @@
     CCLayerColor *_pauseBackgroundColor;
     CCSprite *_happyClown;
     CCSprite *_sadClown;
+    CCSprite *_clownBody;
     float _lastOffset;
     float _labelPosFactor;
 }

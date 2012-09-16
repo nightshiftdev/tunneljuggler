@@ -212,6 +212,7 @@
 		E5A5DA0915FF6B7300C631CE /* Default-Portrait@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = E5A5DA0415FF6B7300C631CE /* Default-Portrait@2x~ipad.png */; };
 		E5A5DA0A15FF6B7300C631CE /* Default-Portrait~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = E5A5DA0515FF6B7300C631CE /* Default-Portrait~ipad.png */; };
 		E5A5DA0B15FF6B7300C631CE /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E5A5DA0615FF6B7300C631CE /* Default@2x.png */; };
+		E5A5DA1616037E1900C631CE /* Icon-144.png in Resources */ = {isa = PBXBuildFile; fileRef = E5A5DA1516037E1900C631CE /* Icon-144.png */; };
 		E5AD299115BED2D100A43904 /* MainScene.mm in Sources */ = {isa = PBXBuildFile; fileRef = E5AD299015BED2D100A43904 /* MainScene.mm */; };
 		E5B3A14B15BD73D400667F70 /* GameData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E5B3A14915BD73D400667F70 /* GameData.xcdatamodeld */; };
 		E5B7D72D152A647800407342 /* Paddle.mm in Sources */ = {isa = PBXBuildFile; fileRef = E5B7D72C152A647800407342 /* Paddle.mm */; };
@@ -594,6 +595,7 @@
 		E5A5DA0415FF6B7300C631CE /* Default-Portrait@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-Portrait@2x~ipad.png"; path = "Resources/Default-Portrait@2x~ipad.png"; sourceTree = "<group>"; };
 		E5A5DA0515FF6B7300C631CE /* Default-Portrait~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-Portrait~ipad.png"; path = "Resources/Default-Portrait~ipad.png"; sourceTree = "<group>"; };
 		E5A5DA0615FF6B7300C631CE /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default@2x.png"; path = "Resources/Default@2x.png"; sourceTree = "<group>"; };
+		E5A5DA1516037E1900C631CE /* Icon-144.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-144.png"; path = "Resources/Icon-144.png"; sourceTree = "<group>"; };
 		E5AD298F15BED2D100A43904 /* MainScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainScene.h; sourceTree = "<group>"; };
 		E5AD299015BED2D100A43904 /* MainScene.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MainScene.mm; sourceTree = "<group>"; };
 		E5B3A14A15BD73D400667F70 /* GameData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = GameData.xcdatamodel; sourceTree = "<group>"; };
@@ -702,11 +704,6 @@
 		E53C612F150828860047EF66 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				E5A5DA0215FF6B7300C631CE /* Default-Landscape@2x~ipad.png */,
-				E5A5DA0315FF6B7300C631CE /* Default-Landscape~ipad.png */,
-				E5A5DA0415FF6B7300C631CE /* Default-Portrait@2x~ipad.png */,
-				E5A5DA0515FF6B7300C631CE /* Default-Portrait~ipad.png */,
-				E5A5DA0615FF6B7300C631CE /* Default@2x.png */,
 				E5342BED15DBE70000863A06 /* background-music.MP3 */,
 				E55237D61558A17A005B05D3 /* blip.caf */,
 				E501220E15EB9DBF002E17B0 /* BosoxRevised.ttf */,
@@ -718,10 +715,16 @@
 				E501220515EAAE5D002E17B0 /* buttons-ipad.png */,
 				E598D42615792A0600DF181A /* buttons.plist */,
 				E598D42715792A0600DF181A /* buttons.png */,
+				E5A5DA0215FF6B7300C631CE /* Default-Landscape@2x~ipad.png */,
+				E5A5DA0315FF6B7300C631CE /* Default-Landscape~ipad.png */,
+				E5A5DA0415FF6B7300C631CE /* Default-Portrait@2x~ipad.png */,
+				E5A5DA0515FF6B7300C631CE /* Default-Portrait~ipad.png */,
 				E53C6130150828860047EF66 /* Default.png */,
+				E5A5DA0615FF6B7300C631CE /* Default@2x.png */,
 				E55E3D43159A33A600CA5894 /* fire-hd.png */,
 				E55E3D40159A339400CA5894 /* fire.png */,
 				E53C6132150828860047EF66 /* fps_images.png */,
+				E5A5DA1516037E1900C631CE /* Icon-144.png */,
 				E53C6134150828860047EF66 /* Icon-72.png */,
 				E53C6136150828860047EF66 /* Icon-Small-50.png */,
 				E53C6138150828860047EF66 /* Icon-Small.png */,
@@ -1236,6 +1239,7 @@
 				E5A5DA0915FF6B7300C631CE /* Default-Portrait@2x~ipad.png in Resources */,
 				E5A5DA0A15FF6B7300C631CE /* Default-Portrait~ipad.png in Resources */,
 				E5A5DA0B15FF6B7300C631CE /* Default@2x.png in Resources */,
+				E5A5DA1616037E1900C631CE /* Icon-144.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -74,15 +74,23 @@
         [self addChild:_pauseBackgroundColor z:1];
         _pauseBackgroundColor.visible = NO;
         
-        _happyClown = [CCSprite spriteWithSpriteFrameName:@"clown-face-happy.png"];
+        _clownBody = [CCSprite spriteWithSpriteFrameName:@"clown-body.png"];
+        [_clownBody setPosition:ccp(s.width/1.7, s.height/2)];
+        [self addChild:_clownBody z:2];
+        _clownBody.visible = NO;
+//        _clownBody.scale = 2.0;
+        
+        _happyClown = [CCSprite spriteWithSpriteFrameName:@"clown-happy.png"];
         [_happyClown setPosition:ccp(s.width/1.3, s.height/2)];
         [self addChild:_happyClown z:2];
         _happyClown.visible = NO;
+//        _happyClown.scale = 2.0;
         
-        _sadClown = [CCSprite spriteWithSpriteFrameName:@"clown-face-sad.png"];
+        _sadClown = [CCSprite spriteWithSpriteFrameName:@"clown-sad.png"];
         [_sadClown setPosition:ccp(s.width/1.3, s.height/2)];
         [self addChild:_sadClown z:2];
         _sadClown.visible = NO;
+//        _sadClown.scale = 2.0;
         
         //Score ribbon
         CCMenuItem *itemScoreRibbon = [SoundMenuItem itemFromNormalSpriteFrameName:@"score-frame.png" selectedSpriteFrameName:@"score-frame.png" target:nil selector:nil];
@@ -164,6 +172,7 @@
             item0 = [SoundMenuItem itemFromNormalSpriteFrameName:@"play-off.png" selectedSpriteFrameName:@"play-on.png" target:self selector:@selector(onNextLevelPressed:)];
             _happyClown.visible = YES;
         }
+        _clownBody.visible = YES;
         item0.rotation = -25;
         item1.rotation = 25;
         item0.scale = 0.7;

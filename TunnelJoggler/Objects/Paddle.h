@@ -7,7 +7,7 @@
 #import "cocos2d.h"
 #import "Box2D.h"
 
-static const float MAX_PADDLE_SPEED = 10.0;
+static const float MAX_PADDLE_SPEED = 8.0;
 static const float MIN_PADDLE_SPEED = 1.0;
 
 @interface Paddle : CCSprite {
