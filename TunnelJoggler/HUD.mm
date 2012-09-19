@@ -76,7 +76,7 @@
         _pauseBackgroundColor.visible = NO;
         
         _clownBody = [CCSprite spriteWithSpriteFrameName:@"clown-body.png"];
-        [_clownBody setPosition:ccp(s.width/1.7, s.height/2)];
+        [_clownBody setPosition:ccp(s.width/1.75, s.height/2.1)];
         [self addChild:_clownBody z:2];
         _clownBody.visible = NO;
         

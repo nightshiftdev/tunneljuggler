@@ -20,41 +20,41 @@
             <key>clown-body.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{547,906},{119,113}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{119,113}}</string>
-                <key>sourceSize</key>
-                <string>{119,113}</string>
-            </dict>
-            <key>clown-happy.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{440,610},{144,227}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{144,227}}</string>
-                <key>sourceSize</key>
-                <string>{144,227}</string>
-            </dict>
-            <key>clown-sad.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{251,387},{144,227}}</string>
+                <string>{{547,524},{109,191}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
                 <true/>
                 <key>sourceColorRect</key>
-                <string>{{0,0},{144,227}}</string>
+                <string>{{1,0},{109,191}}</string>
                 <key>sourceSize</key>
-                <string>{144,227}</string>
+                <string>{111,191}</string>
+            </dict>
+            <key>clown-happy.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{251,387},{146,157}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <true/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{146,157}}</string>
+                <key>sourceSize</key>
+                <string>{146,157}</string>
+            </dict>
+            <key>clown-sad.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{547,853},{141,153}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{141,153}}</string>
+                <key>sourceSize</key>
+                <string>{141,153}</string>
             </dict>
             <key>exit-off.png</key>
             <dict>
@@ -111,11 +111,11 @@
             <key>finger.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{527,539},{168,66}}</string>
+                <string>{{440,524},{168,66}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
                 <string>{{0,0},{168,66}}</string>
                 <key>sourceSize</key>
@@ -150,11 +150,11 @@
             <key>length-challenge.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{440,839},{191,65}}</string>
+                <string>{{440,694},{191,65}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
                 <string>{{0,0},{191,65}}</string>
                 <key>sourceSize</key>
@@ -189,7 +189,7 @@
             <key>main-title.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{547,453},{69,344}}</string>
+                <string>{{410,453},{69,344}}</string>
                 <key>offset</key>
                 <string>{-4,-2}</string>
                 <key>rotated</key>
@@ -254,7 +254,7 @@
             <key>points-challenge.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{586,673},{126,152}}</string>
+                <string>{{641,635},{126,152}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -293,11 +293,11 @@
             <key>score-frame.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{480,387},{45,221}}</string>
+                <string>{{2,387},{45,221}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
                 <string>{{0,0},{45,221}}</string>
                 <key>sourceSize</key>
@@ -306,11 +306,11 @@
             <key>start-game-off.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{856,539},{132,157}}</string>
+                <string>{{507,694},{132,157}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
-                <true/>
+                <false/>
                 <key>sourceColorRect</key>
                 <string>{{0,0},{132,157}}</string>
                 <key>sourceSize</key>
@@ -319,7 +319,7 @@
             <key>start-game-on.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{697,524},{132,157}}</string>
+                <string>{{756,453},{132,157}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -352,7 +352,7 @@
             <key>size</key>
             <string>{1024,1024}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:b8b912e975080529ac6035ec9e1487ae$</string>
+            <string>$TexturePacker:SmartUpdate:ecaf42092a484caccca1f71bd8b90a18$</string>
             <key>textureFileName</key>
             <string>buttons.png</string>
         </dict>

@@ -290,9 +290,9 @@
                             ];
     self.itemUserPicture.isEnabled = NO;
     self.playerPictureMenu = [CCMenu menuWithItems: self.itemUserPicture, nil];
-    self.playerPictureMenu.position = ccp(s.width/1.22, s.height/1.52);
+    self.playerPictureMenu.position = ccp(s.width/1.21, s.height/1.65);
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-        self.playerPictureMenu.position = ccp(s.width/1.23, s.height/1.65);
+        self.playerPictureMenu.position = ccp(s.width/1.22, s.height/1.75);
     }
     self.playerPictureMenu.isTouchEnabled = YES;
     [itemUserPicture runAction:[CCRepeatForever actionWithAction:seq]];
