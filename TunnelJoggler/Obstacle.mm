@@ -22,7 +22,7 @@
     b2BodyDef paddleBodyDef;
     paddleBodyDef.type = b2_kinematicBody;
     paddleBodyDef.position.Set(position.x/PTM_RATIO, position.y/PTM_RATIO);
-    self.tag = 2;
+    self.tag = kObstacleObject;
     paddleBodyDef.userData = self;
     body_ = world_->CreateBody(&paddleBodyDef);
     

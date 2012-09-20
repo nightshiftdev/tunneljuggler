@@ -28,6 +28,7 @@
 
 - (id)initWithWorld:(b2World *)world terrainLength:(int)terrainLength {
     if ((self = [super init])) {
+
         _hillSegmentWidth = 5;
         if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
             _hillSegmentWidth = 7;
@@ -61,8 +62,11 @@
     
     b2BodyDef bd;
     bd.position.Set(0, 0);
+    bd.userData = self;
     
     _body = _world->CreateBody(&bd);
+    
+    self.tag = kTerrainObject;
     
     b2PolygonShape shape;
     

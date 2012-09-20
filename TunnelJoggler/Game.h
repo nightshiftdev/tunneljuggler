@@ -32,6 +32,14 @@ static const double MAX_CYCLES_PER_FRAME = 5;
 @class Player;
 @class Level;
 
+typedef enum {
+    kBallBulletObject = 1,
+    kObstacleObject,
+    kPaddleObject,
+    kTerrainObject
+    
+} kObjectType;
+
 @interface Game : CCLayer <TerrainObserver>
 {
 	CCSprite *background_;

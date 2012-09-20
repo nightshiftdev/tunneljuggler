@@ -19,7 +19,7 @@
     b2BodyDef ballBulletBodyDef;
     ballBulletBodyDef.type = b2_dynamicBody;
     ballBulletBodyDef.position.Set(position.x/PTM_RATIO, position.y/PTM_RATIO);
-    self.tag = 1;
+    self.tag = kBallBulletObject;
     ballBulletBodyDef.userData = self;
     body_ = world_->CreateBody(&ballBulletBodyDef);
     

@@ -61,7 +61,7 @@
         ballBullets_ = [[NSMutableArray alloc] init];
         terrain_ = [[Terrain alloc] initWithWorld:world_ terrainLength:[self.currentLevel.length integerValue]];
         terrain_.terrainObserver = self;
-        paddle_ = [[[Paddle alloc] initWithWorld:world_] autorelease];
+        paddle_ = [[[Paddle alloc] initWithWorld:world_ game:self] autorelease];
         
         [self genBackground];
         [self addChild:terrain_ z:1];
@@ -365,58 +365,47 @@
     std::vector<MyContact>::iterator pos;
     BOOL destroyPaddle = NO;
     for(pos = contactListener_->_contacts.begin(); pos != contactListener_->_contacts.end(); ++pos) {
-        //            NSLog(@"inside contact listener loop");
         MyContact contact = *pos;
-        
-        //        if ((contact.fixtureA == _bottomFixture && contact.fixtureB == _ballFixture) ||
-        //            (contact.fixtureA == _ballFixture && contact.fixtureB == _bottomFixture)) {
-        //            GameOverScene *gameOverScene = [GameOverScene node];
-        //            [gameOverScene.layer.label setString:@"You Lose :["];
-        //            [[CCDirector sharedDirector] replaceScene:gameOverScene];
-        //        } 
-        
         b2Body *bodyA = contact.fixtureA->GetBody();
         b2Body *bodyB = contact.fixtureB->GetBody();
-        
-        //            NSLog(@"bodyA data %@", bodyA->GetUserData());
-        //            NSLog(@"bodyB data %@", bodyB->GetUserData());
         
         if (bodyA->GetUserData() != NULL && bodyB->GetUserData() != NULL) {
             CCSprite *spriteA = (CCSprite *) bodyA->GetUserData();
             CCSprite *spriteB = (CCSprite *) bodyB->GetUserData();
             
-            //                NSLog(@"A tag %d", spriteA.tag);
-            //                NSLog(@"B tag %d", spriteB.tag);
-            
             // Sprite A = ball, Sprite B = Block
-            if (spriteA.tag == 1 && spriteB.tag == 2) {
+            if (spriteA.tag == kBallBulletObject && spriteB.tag == kObstacleObject) {
                 if (std::find(toDestroy.begin(), toDestroy.end(), bodyB) == toDestroy.end()) {
                     toDestroy.push_back(bodyB);
-                    //                        NSLog(@"ball touched block bodyB");
                 }
             }
             // Sprite B = block, Sprite A = ball
-            else if (spriteA.tag == 2 && spriteB.tag == 1) {
+            else if (spriteA.tag == kObstacleObject && spriteB.tag == kBallBulletObject) {
                 if (std::find(toDestroy.begin(), toDestroy.end(), bodyA) == toDestroy.end()) {
                     toDestroy.push_back(bodyA);
-                    //                        NSLog(@"ball touched block bodyA");
                 }
-            } else if (spriteA.tag == 2 && spriteB.tag == 3) {
+            } else if (spriteA.tag == kObstacleObject && spriteB.tag == kPaddleObject) {
                 if (std::find(toDestroy.begin(), toDestroy.end(), bodyA) == toDestroy.end()) {
                     toDestroy.push_back(bodyA); 
                     destroyPaddle = YES;
                 }
-            } else if (spriteA.tag == 3 && spriteB.tag == 2) {
+            } else if (spriteA.tag == kPaddleObject && spriteB.tag == kObstacleObject) {
                 if (std::find(toDestroy.begin(), toDestroy.end(), bodyA) == toDestroy.end()) {
                     toDestroy.push_back(bodyA);
                     destroyPaddle = YES;
                 }
-            } else if (spriteA.tag == 1 && spriteB.tag == 3) {
+            } else if (spriteA.tag == kBallBulletObject && spriteB.tag == kPaddleObject) {
                 // ball touched paddle
                 [self.hud onUpdateScore:1];
-            } else if (spriteA.tag == 3 && spriteB.tag == 1) {
+            } else if (spriteA.tag == kPaddleObject && spriteB.tag == kBallBulletObject) {
                 // ball touched paddle
                 [self.hud onUpdateScore:1];
+            } else if (spriteA.tag == kTerrainObject && spriteB.tag == kPaddleObject) {
+                // paddle touched terrain
+                [paddle_ bumpedTerrain];
+            } else if (spriteA.tag == kPaddleObject && spriteB.tag == kTerrainObject) {
+                // terrain touched paddle
+                [paddle_ bumpedTerrain];
             }
         }                 
     }
