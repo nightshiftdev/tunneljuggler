@@ -354,7 +354,6 @@
         });
     }
     
-    //        NSLog(@"offset %f", offset);
     CGSize textureSize = background_.textureRect.size;
     [background_ setTextureRect:CGRectMake(offset, 0, textureSize.width, textureSize.height)];
     
@@ -386,13 +385,17 @@
                 }
             } else if (spriteA.tag == kObstacleObject && spriteB.tag == kPaddleObject) {
                 if (std::find(toDestroy.begin(), toDestroy.end(), bodyA) == toDestroy.end()) {
-                    toDestroy.push_back(bodyA); 
+                    toDestroy.push_back(bodyA);
+                    [paddle_ explode];
                     destroyPaddle = YES;
+                    self.state = kGameStatePaused;
                 }
             } else if (spriteA.tag == kPaddleObject && spriteB.tag == kObstacleObject) {
                 if (std::find(toDestroy.begin(), toDestroy.end(), bodyA) == toDestroy.end()) {
                     toDestroy.push_back(bodyA);
+                    [paddle_ explode];
                     destroyPaddle = YES;
+                    self.state = kGameStatePaused;
                 }
             } else if (spriteA.tag == kBallBulletObject && spriteB.tag == kPaddleObject) {
                 // ball touched paddle
@@ -400,14 +403,8 @@
             } else if (spriteA.tag == kPaddleObject && spriteB.tag == kBallBulletObject) {
                 // ball touched paddle
                 [self.hud onUpdateScore:1];
-            } else if (spriteA.tag == kTerrainObject && spriteB.tag == kPaddleObject) {
-                // paddle touched terrain
-                [paddle_ bumpedTerrain];
-            } else if (spriteA.tag == kPaddleObject && spriteB.tag == kTerrainObject) {
-                // terrain touched paddle
-                [paddle_ bumpedTerrain];
             }
-        }                 
+        }
     }
     
     std::vector<b2Body *>::iterator pos2;
@@ -433,11 +430,15 @@
     }
     
     if (destroyPaddle) {
-        CCSprite *paddleSprite = (CCSprite *)paddle_.body->GetUserData();
-        paddleSprite.visible = NO;
-        [terrain_ removeChild: paddle_ cleanup: YES];
-        world_->DestroyBody(paddle_.body);
-        [self.hud gameOver: NO touchedFatalObject: YES];
+        double delayInSeconds = 0.3;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            CCSprite *paddleSprite = (CCSprite *)paddle_.body->GetUserData();
+            paddleSprite.visible = NO;
+            [terrain_ removeChild: paddle_ cleanup: YES];
+            world_->DestroyBody(paddle_.body);
+            [self.hud gameOver: NO touchedFatalObject: YES];
+        });
     }
 }
 

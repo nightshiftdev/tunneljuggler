@@ -58,7 +58,6 @@
 - (id)initWithWorld:(b2World *)world game: (Game *) g {
     NSString *paddleGraphicName = @"paddle-1.png";
     if ((self = [super initWithSpriteFrameName: paddleGraphicName])) {
-        _emitterLife = 0.1;
         self.game = g;
         world_ = world;
         [self createBody];
@@ -71,15 +70,6 @@
         decreaseRate_ = fabs(horizontalForce_/40);
     }
     decreaseHorizontalForceToZero_ = decrease;
-}
-
-- (void) removeEmitter:(ccTime)dt {
-    if ((_emitterLife -= dt) < 0 || (horizontalForce_ == 0)) {
-        if (self.emitter) {
-            [self.game removeChild:self.emitter cleanup:YES];
-            self.emitter = nil;
-        }
-    }
 }
 
 - (void)update:(ccTime)dt {
@@ -97,7 +87,6 @@
     self.offset += self.speed;
     body_->SetLinearVelocity(b2Vec2(-(body_->GetPosition().x*PTM_RATIO - self.offset), horizontalForce_));
     self.position = ccp(body_->GetPosition().x*PTM_RATIO, body_->GetPosition().y*PTM_RATIO);
-    [self removeEmitter:dt];
 }
 
 - (b2Body *) body {
@@ -123,22 +112,18 @@
     self.speed += self.speedIncreaseAmount;
 }
 
-- (void)bumpedTerrain {
-    if (!self.emitter && fabs(horizontalForce_) > 0) {
-        _emitterLife = 0.1;
-        self.emitter = [CCParticleFire node];
-        [self.game addChild: emitter z:1];
-        self.emitter.scale = 0.3;
-        float x = self.position.x + self.game.terrain.position.x;
-        float y = self.position.y;
-        if (horizontalForce_ > 0) {
-            y += self.contentSize.height/2;
-        } else {
-            y -= self.contentSize.height/2;
-        }
-        self.emitter.position = CGPointMake(x - 2*self.contentSize.width, y);
-        self.emitter.positionType = kCCPositionTypeRelative;
+- (void)explode {
+    self.emitter = [CCParticleExplosion node];
+	[self.game addChild: emitter z:1];
+    float scale = 1.0;
+    if (([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)) {
+        scale = 2.0;
     }
+    self.emitter.scale = scale;
+    self.emitter.positionType = kCCPositionTypeRelative;
+    float x = self.position.x + self.game.terrain.position.x;
+    self.emitter.life = 0.1;
+    self.emitter.position = CGPointMake(x, self.position.y);
 }
 
 - (void) dealloc {

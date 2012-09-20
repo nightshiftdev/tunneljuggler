@@ -21,14 +21,13 @@ static const float MIN_PADDLE_SPEED = 1.0;
     float decreaseRate_;
     BOOL decreaseHorizontalForceToZero_;
     float offset_;
-    float _emitterLife;
 }
 
 - (id)initWithWorld:(b2World *)world game: (Game *) g;
 - (void)update:(ccTime)dt;
 - (b2Body *) body;
 - (void)increasePaddleSpeed;
-- (void)bumpedTerrain;
+- (void)explode;
 
 @property (assign, nonatomic) float horizontalForce;
 @property (assign, nonatomic) BOOL decreaseHorizontalForceToZero;
