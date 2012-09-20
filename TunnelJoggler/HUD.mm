@@ -59,10 +59,10 @@
 		CGSize s = [[CCDirector sharedDirector] winSize];
 		
         NSString *buttonsPlist = @"buttons.plist";
-        _labelPosFactor = 8;
+        _labelPosFactor = 6.5;
         if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
             buttonsPlist = @"buttons-ipad.plist";
-            _labelPosFactor = 9.5;
+            _labelPosFactor = 8;
         }
         [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:buttonsPlist];
 		
@@ -106,22 +106,22 @@
         
         CCMenuItem *itemChallenge = [SoundMenuItem itemFromNormalSpriteFrameName:@"level-indicator.png" selectedSpriteFrameName:@"level-indicator.png" target:nil selector:nil];
         itemChallenge.isEnabled = NO;
-        itemChallenge.scale = 1.5;
+        itemChallenge.scale = 0.75;
         itemChallenge.rotation = -20;
 		CCMenu *menuChallenge = [CCMenu menuWithItems:itemChallenge, nil];
 		[self addChild:menuChallenge z:1];
 		[menuChallenge setPosition:ccp(s.width/1.05, s.height/23)];
         
         // Score
-        float fontSize = 25.0;
+        float fontSize = 23.0;
         if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-            fontSize = 50.0;
+            fontSize = 46.0;
         }
         self.score = [[[GameController sharedController] player].score intValue];
 		scoreLabel_ = [CCLabelTTF labelWithString:[NSString stringWithFormat:@" %d ", self.score] fontName:@"BosoxRevised.ttf" fontSize:fontSize];
-        scoreLabel_.color = ccc3(204, 0, 0);
+        scoreLabel_.color = ccc3(255, 255, 255);
 		[self addChild:scoreLabel_ z:1];
-		[scoreLabel_ setPosition:ccp(s.width/1.04, s.height/2)];
+		[scoreLabel_ setPosition:ccp(s.width/1.07, s.height/_labelPosFactor)];
         scoreLabel_.rotation = 90;
         
         [self setupCountDownTimer];
@@ -138,7 +138,7 @@
         } else {
             challengeIcon = [CCSprite spriteWithSpriteFrameName:@"length-challenge.png"];
         }
-        challengeIcon.position = ccp(s.width/1.17, s.height/20);
+        challengeIcon.position = ccp(s.width/1.06, s.height/1.4);
         challengeIcon.scale = 0.3;
         [self addChild:challengeIcon z:2];
 
@@ -220,7 +220,7 @@
     
     if (self.pointsLevelChallenge) {
         self.scoreToPassLevel += addScore;
-        [_scoreChallengeLabel setString: [NSString stringWithFormat:@" %d ", self.scoreToPassLevel]];
+        [_scoreChallengeLabel setString: [NSString stringWithFormat:@" %d (%d) ", self.scoreToPassLevel, [self.currentLevel.scoreToPass intValue]]];
         if (self.scoreToPassLevel >= [self.currentLevel.scoreToPass intValue]) {
             [self gameOver:YES touchedFatalObject:NO];
         }
@@ -272,14 +272,14 @@
         } else {
             counterLabelFormat = [NSString stringWithFormat:@"%d : %d", _minutes, _seconds];
         }
-        float fontSize = 26.0;
+        float fontSize = 25.0;
         if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-            fontSize = 52.0;
+            fontSize = 50.0;
         }
         _timeLabel = [CCLabelTTF labelWithString:counterLabelFormat fontName:@"BosoxRevised.ttf" fontSize:fontSize];
-        _timeLabel.color = ccc3(255, 255, 255);
+        _timeLabel.color = ccc3(204, 0, 0);
         [self addChild:_timeLabel z:3];
-        [_timeLabel setPosition:ccp(s.width/1.07, s.height/_labelPosFactor)];
+        [_timeLabel setPosition:ccp(s.width/1.04, s.height/2)];
         _timeLabel.rotation = 90;
     }
 }
@@ -288,21 +288,15 @@
     if (self.pointsLevelChallenge == YES) {
         self.scoreToPassLevel = 0;
         CGSize s = [[CCDirector sharedDirector] winSize];
-        float fontSize = 26.0;
+        float fontSize = 24.0;
         if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-            fontSize = 52.0;
+            fontSize = 48.0;
         }
-        _scoreChallengeLabel = [CCLabelTTF labelWithString:[NSString stringWithFormat:@" %d ", self.scoreToPassLevel] fontName:@"BosoxRevised.ttf" fontSize:fontSize];
-        _scoreToPassChallengeLabel = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"(%d)", [self.currentLevel.scoreToPass intValue]] fontName:@"BosoxRevised.ttf" fontSize:fontSize];
-        _scoreChallengeLabel.color = ccc3(255, 255, 255);
-        _scoreToPassChallengeLabel.color = ccc3(255, 255, 255);
+        _scoreChallengeLabel = [CCLabelTTF labelWithString:[NSString stringWithFormat:@" %d (%d) ", self.scoreToPassLevel, [self.currentLevel.scoreToPass intValue]] fontName:@"BosoxRevised.ttf" fontSize:fontSize];
+        _scoreChallengeLabel.color = ccc3(204, 0, 0);
         [self addChild:_scoreChallengeLabel z:2];
-        [self addChild:_scoreToPassChallengeLabel z:3];
-        [_scoreChallengeLabel setPosition:ccp(s.width/1.04, s.height/_labelPosFactor)];
-        [_scoreToPassChallengeLabel setPosition:ccp(s.width/1.09, s.height/_labelPosFactor)];
+        [_scoreChallengeLabel setPosition:ccp(s.width/1.04, s.height/2)];
         _scoreChallengeLabel.rotation = 90;
-        _scoreToPassChallengeLabel.rotation = 90;
-        
     }
 }
 
@@ -310,14 +304,14 @@
     if (YES == self.lengthLevelChallenge) {
         CGSize s = [[CCDirector sharedDirector] winSize];
         self.lengthRemainingToPassLevel = game_.terrain.levelLength - (s.width + (s.width * 0.4));
-        float fontSize = 26.0;
+        float fontSize = 25.0;
         if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-            fontSize = 52.0;
+            fontSize = 50.0;
         }
         _lengthChallengeLabel = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"%d", (int)self.lengthRemainingToPassLevel] fontName:@"BosoxRevised.ttf" fontSize:fontSize];
-        _lengthChallengeLabel.color = ccc3(255, 255, 255);
+        _lengthChallengeLabel.color = ccc3(204, 0, 0);
         [self addChild:_lengthChallengeLabel z:3];
-        [_lengthChallengeLabel setPosition:ccp(s.width/1.07, s.height/_labelPosFactor)];
+        [_lengthChallengeLabel setPosition:ccp(s.width/1.04, s.height/2)];
         _lengthChallengeLabel.rotation = 90;
     }
 }

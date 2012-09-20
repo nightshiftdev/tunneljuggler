@@ -16,7 +16,6 @@
     CCLabelTTF *scoreLabel_;
     CCLabelTTF *_timeLabel;
     CCLabelTTF *_scoreChallengeLabel;
-    CCLabelTTF *_scoreToPassChallengeLabel;
     CCLabelTTF *_lengthChallengeLabel;
     CCMenu *menu_;
     int _minutes;
