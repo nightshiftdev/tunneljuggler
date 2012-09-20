@@ -62,11 +62,8 @@
     
     b2BodyDef bd;
     bd.position.Set(0, 0);
-    bd.userData = self;
     
     _body = _world->CreateBody(&bd);
-    
-    self.tag = kTerrainObject;
     
     b2PolygonShape shape;
     
