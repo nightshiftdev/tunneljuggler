@@ -97,6 +97,9 @@
             itemScoreRibbon.isEnabled = NO;
             CCMenu *menuScoreRibbon = [CCMenu menuWithItems: itemScoreRibbon, nil];
             menuScoreRibbon.position = ccp(s.width/1.58, s.height/2);
+            if (IS_IPHONE_5) {
+                menuScoreRibbon.position = ccp(s.width/1.66, s.height/2);
+            }
             [self addChild:menuScoreRibbon z:4];
             
             // Score
@@ -114,6 +117,9 @@
             CCMenuItem *itemGameCenter = [SoundMenuItem itemFromNormalSpriteFrameName:@"game-center-off.png" selectedSpriteFrameName:@"game-center-on.png" target:self selector:@selector(highScoreGameCenter:)];
             CCMenu *menuGameCenter = [CCMenu menuWithItems: itemGameCenter, nil];
             menuGameCenter.position = ccp(s.width/9, s.height/2);
+            if (IS_IPHONE_5) {
+                menuGameCenter.position = ccp(s.width/6, s.height/2);
+            }
             id scaleGameCenterButtonTo = [CCScaleTo actionWithDuration:1.0f scale:0.95f];
             id scaleGameCenterButtonBack = [CCScaleTo actionWithDuration:1.0f scale:1.0f];
             seq = [CCSequence actions:scaleGameCenterButtonTo, scaleGameCenterButtonBack, nil];
@@ -164,6 +170,9 @@
     [self addChild:_scoreLabel z:5];
     CGSize s = [[CCDirector sharedDirector] winSize];
     [_scoreLabel setPosition:ccp(s.width/1.55, s.height/2)];
+    if (IS_IPHONE_5) {
+        [_scoreLabel setPosition:ccp(s.width/1.63, s.height/2)];
+    }
     _scoreLabel.rotation = 90;
 }
 
@@ -246,6 +255,9 @@
     
     CGSize s = [[CCDirector sharedDirector] winSize];
     menuExperienceLevel.position = ccp(s.width/1.75, s.height/2);
+    if (IS_IPHONE_5) {
+        menuExperienceLevel.position = ccp(s.width/1.83, s.height/2);
+    }
     [self addChild:menuExperienceLevel z:4];
     
 }
@@ -291,7 +303,9 @@
     self.itemUserPicture.isEnabled = NO;
     self.playerPictureMenu = [CCMenu menuWithItems: self.itemUserPicture, nil];
     self.playerPictureMenu.position = ccp(s.width/1.21, s.height/1.65);
-    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+    if (IS_IPHONE_5) {
+        self.playerPictureMenu.position = ccp(s.width/1.29, s.height/1.65);
+    } else if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
         self.playerPictureMenu.position = ccp(s.width/1.22, s.height/1.75);
     }
     self.playerPictureMenu.isTouchEnabled = YES;

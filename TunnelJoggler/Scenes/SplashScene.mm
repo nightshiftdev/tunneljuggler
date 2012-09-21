@@ -76,7 +76,9 @@
         
 		
 		CCSprite *background = [BackgroundUtils genBackground];
-        if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+        if (IS_IPHONE_5) {
+            background.position = ccp(284, 160);
+        } else if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
             background.position = ccp(512, 384);
         } else {
             background.position = ccp(240, 160);

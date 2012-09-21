@@ -59,6 +59,9 @@
         
         CCSprite *happyClown = [CCSprite spriteWithSpriteFrameName:@"clown-happy.png"];
         [happyClown setPosition:ccp(s.width/1.4, s.height/2.2)];
+        if (IS_IPHONE_5) {
+            [happyClown setPosition:ccp(s.width/1.43, s.height/2.07)];
+        }
         [self addChild:happyClown z:2];
         
         CCSprite *experience = [CCSprite spriteWithSpriteFrameName:@"experience-on.png"];

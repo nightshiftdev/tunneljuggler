@@ -9,6 +9,7 @@
 #import "GameController.h"
 #import "Level.h"
 #import "Player.h"
+#import "BackgroundUtils.h"
 
 @interface Game ()
 @property (readwrite, nonatomic, retain) Player *player;
@@ -530,11 +531,17 @@
     glEnable(GL_TEXTURE_2D);
     
     CCSprite *noise = [CCSprite spriteWithFile:@"Noise.png"];
-    if (([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)) {
+    if (IS_IPHONE_5) {
+        noise = [CCSprite spriteWithFile:@"Noise_ipad.png"];
+    }  else if (([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)) {
         noise = [CCSprite spriteWithFile:@"Noise_ipad.png"];
     }
     [noise setBlendFunc:(ccBlendFunc){GL_DST_COLOR, GL_ZERO}];
     noise.position = ccp(textureSize/2, textureSize/2);
+    if (IS_IPHONE_5) {
+        // defect with drawing texture, 45 degrees line
+        noise.rotation = 0.1;
+    }
     [noise visit];
     
     // 4: Call CCRenderTexture:end
@@ -675,7 +682,9 @@
     }
     
     float textureSize = 512;
-    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+    if (IS_IPHONE_5) {
+        textureSize = 1024;
+    }  else if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
         textureSize = 1024;
     }
     

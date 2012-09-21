@@ -15,6 +15,7 @@
 #import "Level.h"
 #import "ChallengeScene.h"
 #import "GameCompleteScene.h"
+#import "BackgroundUtils.h"
 
 @interface HUD()
 @property (nonatomic, assign) BOOL isGameOver;
@@ -82,11 +83,17 @@
         
         _happyClown = [CCSprite spriteWithSpriteFrameName:@"clown-happy.png"];
         [_happyClown setPosition:ccp(s.width/1.3, s.height/2)];
+        if (IS_IPHONE_5) {
+            [_happyClown setPosition:ccp(s.width/1.36, s.height/2)];
+        }
         [self addChild:_happyClown z:2];
         _happyClown.visible = NO;
         
         _sadClown = [CCSprite spriteWithSpriteFrameName:@"clown-sad.png"];
         [_sadClown setPosition:ccp(s.width/1.3, s.height/2)];
+        if (IS_IPHONE_5) {
+            [_sadClown setPosition:ccp(s.width/1.36, s.height/2)];
+        }
         [self addChild:_sadClown z:2];
         _sadClown.visible = NO;
         

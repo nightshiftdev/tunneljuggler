@@ -220,6 +220,7 @@
 		E5C3584B15C5B71E00788E1B /* BackgroundUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = E5C3584A15C5B71D00788E1B /* BackgroundUtils.mm */; };
 		E5C3585B15CF249A00788E1B /* GameCenterManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E5C3585A15CF249A00788E1B /* GameCenterManager.m */; };
 		E5C3585D15CFED0F00788E1B /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5C3585C15CFED0E00788E1B /* GameKit.framework */; };
+		FA0340F9160B9EC500D41494 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FA0340F8160B9EC500D41494 /* Default-568h@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -610,6 +611,7 @@
 		E5C3585915CF249A00788E1B /* GameCenterManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameCenterManager.h; path = GameCenter/GameCenterManager.h; sourceTree = "<group>"; };
 		E5C3585A15CF249A00788E1B /* GameCenterManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GameCenterManager.m; path = GameCenter/GameCenterManager.m; sourceTree = "<group>"; };
 		E5C3585C15CFED0E00788E1B /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
+		FA0340F8160B9EC500D41494 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "Resources/Default-568h@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -718,6 +720,7 @@
 				E501220515EAAE5D002E17B0 /* buttons-ipad.png */,
 				E598D42615792A0600DF181A /* buttons.plist */,
 				E598D42715792A0600DF181A /* buttons.png */,
+				FA0340F8160B9EC500D41494 /* Default-568h@2x.png */,
 				E5A5DA0215FF6B7300C631CE /* Default-Landscape@2x~ipad.png */,
 				E5A5DA0315FF6B7300C631CE /* Default-Landscape~ipad.png */,
 				E5A5DA0415FF6B7300C631CE /* Default-Portrait@2x~ipad.png */,
@@ -1245,6 +1248,7 @@
 				E5A5DA0A15FF6B7300C631CE /* Default-Portrait~ipad.png in Resources */,
 				E5A5DA0B15FF6B7300C631CE /* Default@2x.png in Resources */,
 				E5A5DA1616037E1900C631CE /* Icon-144.png in Resources */,
+				FA0340F9160B9EC500D41494 /* Default-568h@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
