@@ -119,17 +119,7 @@
 		[self addChild:menuChallenge z:1];
 		[menuChallenge setPosition:ccp(s.width/1.05, s.height/23)];
         
-        // Score
-        float fontSize = 23.0;
-        if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-            fontSize = 46.0;
-        }
         self.score = [[[GameController sharedController] player].score intValue];
-		scoreLabel_ = [CCLabelTTF labelWithString:[NSString stringWithFormat:@" %d ", self.score] fontName:@"BosoxRevised.ttf" fontSize:fontSize];
-        scoreLabel_.color = ccc3(255, 255, 255);
-		[self addChild:scoreLabel_ z:1];
-		[scoreLabel_ setPosition:ccp(s.width/1.07, s.height/_labelPosFactor)];
-        scoreLabel_.rotation = 90;
         
         [self setupCountDownTimer];
         
@@ -145,7 +135,7 @@
         } else {
             challengeIcon = [CCSprite spriteWithSpriteFrameName:@"length-challenge.png"];
         }
-        challengeIcon.position = ccp(s.width/1.06, s.height/1.4);
+        challengeIcon.position = ccp(s.width/1.07, s.height/_labelPosFactor);
         challengeIcon.scale = 0.3;
         [self addChild:challengeIcon z:2];
 
@@ -218,13 +208,6 @@
 
 -(void) onUpdateScore:(int)addScore {
 	self.score += addScore;
-	[scoreLabel_ setString: [NSString stringWithFormat:@" %d ", self.score]];
-	[scoreLabel_ stopAllActions];
-	id scaleTo = [CCScaleTo actionWithDuration:0.1f scale:1.2f];
-	id scaleBack = [CCScaleTo actionWithDuration:0.1f scale:1];
-	id seq = [CCSequence actions:scaleTo, scaleBack, nil];
-	[scoreLabel_ runAction:seq];
-    
     if (self.pointsLevelChallenge) {
         self.scoreToPassLevel += addScore;
         [_scoreChallengeLabel setString: [NSString stringWithFormat:@" %d (%d) ", self.scoreToPassLevel, [self.currentLevel.scoreToPass intValue]]];

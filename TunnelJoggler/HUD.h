@@ -13,7 +13,6 @@
 
 @interface HUD : CCLayer {
     Game *game_;
-    CCLabelTTF *scoreLabel_;
     CCLabelTTF *_timeLabel;
     CCLabelTTF *_scoreChallengeLabel;
     CCLabelTTF *_lengthChallengeLabel;
