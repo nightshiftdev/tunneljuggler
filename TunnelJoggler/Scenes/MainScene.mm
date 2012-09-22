@@ -201,7 +201,7 @@
     verLabel.color = ccc3(255, 255, 255);
     [self addChild:verLabel z:5];
     CGSize s = [[CCDirector sharedDirector] winSize];
-    [verLabel setPosition:ccp(fontSize, s.height/2)];
+    [verLabel setPosition:ccp(fontSize, s.height/1.05)];
     verLabel.rotation = 90;
 }
 
