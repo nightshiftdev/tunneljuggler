@@ -77,22 +77,22 @@
         _pauseBackgroundColor.visible = NO;
         
         _clownBody = [CCSprite spriteWithSpriteFrameName:@"clown-body.png"];
-        [_clownBody setPosition:ccp(s.width/1.75, s.height/2.1)];
+        [_clownBody setPosition:ccp(s.width/2, s.height/2.1)];
         [self addChild:_clownBody z:2];
         _clownBody.visible = NO;
         
         _happyClown = [CCSprite spriteWithSpriteFrameName:@"clown-happy.png"];
-        [_happyClown setPosition:ccp(s.width/1.3, s.height/2)];
+        [_happyClown setPosition:ccp(s.width/1.43, s.height/2)];
         if (IS_IPHONE_5) {
-            [_happyClown setPosition:ccp(s.width/1.36, s.height/2)];
+            [_happyClown setPosition:ccp(s.width/1.59, s.height/2)];
         }
         [self addChild:_happyClown z:2];
         _happyClown.visible = NO;
         
         _sadClown = [CCSprite spriteWithSpriteFrameName:@"clown-sad.png"];
-        [_sadClown setPosition:ccp(s.width/1.3, s.height/2)];
+        [_sadClown setPosition:ccp(s.width/1.43, s.height/2)];
         if (IS_IPHONE_5) {
-            [_sadClown setPosition:ccp(s.width/1.36, s.height/2)];
+            [_sadClown setPosition:ccp(s.width/1.59, s.height/2)];
         }
         [self addChild:_sadClown z:2];
         _sadClown.visible = NO;
@@ -205,7 +205,7 @@
         menu_ = [CCMenu menuWithItems:item0, item1, nil];
         CGSize s = [[CCDirector sharedDirector] winSize];
         [menu_ alignItemsVertically];
-        [menu_ setPosition:ccp(s.width/2.4, s.height/2)];
+        [menu_ setPosition:ccp(s.width/3.5, s.height/2)];
         [self addChild:menu_ z:10];
         
         double delayInSeconds = 0.1;
