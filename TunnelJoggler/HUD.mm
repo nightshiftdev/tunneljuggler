@@ -84,7 +84,7 @@
         _happyClown = [CCSprite spriteWithSpriteFrameName:@"clown-happy.png"];
         [_happyClown setPosition:ccp(s.width/1.43, s.height/2)];
         if (IS_IPHONE_5) {
-            [_happyClown setPosition:ccp(s.width/1.59, s.height/2)];
+            [_happyClown setPosition:ccp(s.width/1.49, s.height/2)];
         }
         [self addChild:_happyClown z:2];
         _happyClown.visible = NO;
@@ -92,7 +92,7 @@
         _sadClown = [CCSprite spriteWithSpriteFrameName:@"clown-sad.png"];
         [_sadClown setPosition:ccp(s.width/1.43, s.height/2)];
         if (IS_IPHONE_5) {
-            [_sadClown setPosition:ccp(s.width/1.59, s.height/2)];
+            [_sadClown setPosition:ccp(s.width/1.49, s.height/2)];
         }
         [self addChild:_sadClown z:2];
         _sadClown.visible = NO;
