@@ -220,6 +220,8 @@
 		E5C3584B15C5B71E00788E1B /* BackgroundUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = E5C3584A15C5B71D00788E1B /* BackgroundUtils.mm */; };
 		E5C3585B15CF249A00788E1B /* GameCenterManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E5C3585A15CF249A00788E1B /* GameCenterManager.m */; };
 		E5C3585D15CFED0F00788E1B /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5C3585C15CFED0E00788E1B /* GameKit.framework */; };
+		E5C8C48F16133B6300B58D23 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = E5C8C48E16133B6300B58D23 /* Icon.png */; };
+		E5C8C49116133B7100B58D23 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E5C8C49016133B7000B58D23 /* Icon@2x.png */; };
 		FA0340F9160B9EC500D41494 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FA0340F8160B9EC500D41494 /* Default-568h@2x.png */; };
 /* End PBXBuildFile section */
 
@@ -611,6 +613,8 @@
 		E5C3585915CF249A00788E1B /* GameCenterManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameCenterManager.h; path = GameCenter/GameCenterManager.h; sourceTree = "<group>"; };
 		E5C3585A15CF249A00788E1B /* GameCenterManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GameCenterManager.m; path = GameCenter/GameCenterManager.m; sourceTree = "<group>"; };
 		E5C3585C15CFED0E00788E1B /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
+		E5C8C48E16133B6300B58D23 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
+		E5C8C49016133B7000B58D23 /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
 		FA0340F8160B9EC500D41494 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "Resources/Default-568h@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -638,6 +642,8 @@
 		E53C610F150828850047EF66 = {
 			isa = PBXGroup;
 			children = (
+				E5C8C49016133B7000B58D23 /* Icon@2x.png */,
+				E5C8C48E16133B6300B58D23 /* Icon.png */,
 				E5342BD815DA82B700863A06 /* TunnelJoggler.entitlements */,
 				E53C612E150828860047EF66 /* TunnelJoggler */,
 				E53C611D150828860047EF66 /* Frameworks */,
@@ -1249,6 +1255,8 @@
 				E5A5DA0B15FF6B7300C631CE /* Default@2x.png in Resources */,
 				E5A5DA1616037E1900C631CE /* Icon-144.png in Resources */,
 				FA0340F9160B9EC500D41494 /* Default-568h@2x.png in Resources */,
+				E5C8C48F16133B6300B58D23 /* Icon.png in Resources */,
+				E5C8C49116133B7100B58D23 /* Icon@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
