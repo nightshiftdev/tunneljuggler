@@ -54,7 +54,7 @@
 -(void) selected {
 	[super selected];
 
-	[[SimpleAudioEngine sharedEngine] playEffect:@"blip.caf" pitch:1.0 pan:1.0 gain:0.3];
+	[[SimpleAudioEngine sharedEngine] playEffect:@"blip.caf" pitch:1.0 pan:0.0 gain:0.3];
 }
 
 @end
