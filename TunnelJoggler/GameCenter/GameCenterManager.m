@@ -118,7 +118,9 @@
 	}
 	else
 	{
-		NSLog(@"Missed Method");
+#ifdef DEBUG
+        NSLog(@"Missed Method");
+#endif
 	}
 }
 

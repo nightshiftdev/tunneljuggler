@@ -142,7 +142,9 @@ static NSOperationQueue *_presentedItemOperationQueue;
 	}
 	else
 	{
-		NSLog(@"Missed Method");
+#ifdef DEBUG
+        NSLog(@"Missed Method");
+#endif
 	}
 }
 
@@ -516,10 +518,12 @@ static NSOperationQueue *_presentedItemOperationQueue;
         [moc setPersistentStoreCoordinator:_psc];
         NSUInteger i = 1;
         for (Player *p in players) {
-            NSLog(@"seedStore ======%d======", i);
-            NSLog(@"Player experienceLevel %d", [p.experienceLevel intValue]);
-            NSLog(@"Player score %d", [p.score integerValue]);
-            NSLog(@"seedStore ==============");
+            if (DEBUG_LOG) {
+                NSLog(@"seedStore ======%d======", i);
+                NSLog(@"Player experienceLevel %d", [p.experienceLevel intValue]);
+                NSLog(@"Player score %d", [p.score integerValue]);
+                NSLog(@"seedStore ==============");
+            }
             [self addPlayer:p toStore:store withContext:moc];
             if (0 == (i % batchSize)) {
                 success = [moc save:&localError];
@@ -1504,10 +1508,12 @@ static NSOperationQueue *_presentedItemOperationQueue;
             NSLog(@"WARNING: Expected only one local player, but has %d", [fetchedLocalPlayers count]);
             int index = 0;
             for (LocalPlayer *lp in fetchedLocalPlayers) {
-                NSLog(@"======%d======", index);
-                NSLog(@"LocalPlayer experienceLevel %d", [lp.experienceLevel intValue]);
-                NSLog(@"LocalPlayer score %d", [lp.score integerValue]);
-                NSLog(@"==============");
+                if (DEBUG_LOG) {
+                    NSLog(@"======%d======", index);
+                    NSLog(@"LocalPlayer experienceLevel %d", [lp.experienceLevel intValue]);
+                    NSLog(@"LocalPlayer score %d", [lp.score integerValue]);
+                    NSLog(@"==============");
+                }
                 index++;
             }
         }
@@ -1524,7 +1530,9 @@ static NSOperationQueue *_presentedItemOperationQueue;
             NSLog(@"==============");
         }
     } else {
-        NSLog(@"WARNING: Does not have any players stored");
+        if (DEBUG_LOG) {
+            NSLog(@"WARNING: Does not have any players stored");
+        }
     }
     return resultLocalPlayer;
 }
@@ -1596,7 +1604,9 @@ static NSOperationQueue *_presentedItemOperationQueue;
             NSLog(@"==============");
         }
     } else {
-        NSLog(@"WARNING: Does not have any players stored");
+        if (DEBUG_LOG) {
+            NSLog(@"WARNING: Does not have any players stored");
+        }
     }
     return p;
 }
